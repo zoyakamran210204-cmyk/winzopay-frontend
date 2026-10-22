@@ -15,6 +15,7 @@ body {
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden; /* Prevent horizontal scroll on mobile */
 }
 
 /* Remove default button styles */
@@ -65,4 +66,216 @@ a {
 
 .text-center {
     text-align: center;
+}
+
+/* ================================
+   GLOBAL MOBILE RESPONSIVE FIXES
+   ================================ */
+
+@media (max-width: 768px) {
+    /* Container padding for mobile */
+    .container,
+    .db-main,
+    .dep-container,
+    .buyrp-container,
+    .mining-container,
+    .sellrp-container,
+    .wd-container,
+    .lg-container,
+    .pr-container,
+    .mt-container {
+        padding: 15px !important;
+        flex-direction: column !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    /* Headings smaller on mobile */
+    h1, .hero-title, .buyrp-title, .mining-title, .wd-title, .lg-title, .pr-name, .mt-hero-title {
+        font-size: 24px !important;
+        line-height: 1.3 !important;
+    }
+
+    h2, .plans-title {
+        font-size: 20px !important;
+    }
+
+    h3 {
+        font-size: 16px !important;
+    }
+
+    /* Grid layouts to single column */
+    .plans-grid,
+    .hero-cards,
+    .quick-actions,
+    .balance-mini-cards,
+    .dep-quick-amounts,
+    .dep-payment-grid,
+    .buyrp-plan-grid,
+    .buyrp-quick-amounts,
+    .mining-stats,
+    .mining-details,
+    .adm-stats-grid,
+    .adm-dash-grid,
+    .adm-ud-stats,
+    .adm-ud-grid,
+    .adm-ud-bank-grid,
+    .adm-users-stats,
+    .wd-status-grid,
+    .lg-stats {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* Header navigation - stack items */
+    .db-header,
+    .adm-header {
+        flex-direction: column !important;
+        padding: 10px !important;
+        gap: 10px !important;
+    }
+
+    .db-header-left,
+    .adm-header-left {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 10px !important;
+    }
+
+    .db-nav,
+    .adm-nav {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    .db-nav-item,
+    .adm-nav-item {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+
+    .db-header-right,
+    .adm-header-right {
+        width: 100% !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    /* Tables scroll on mobile */
+    .adm-users-table {
+        overflow-x: auto !important;
+    }
+
+    .adm-users-table-header,
+    .adm-user-row {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 12px !important;
+    }
+
+    /* Hide table header on mobile */
+    .adm-users-table-header {
+        display: none !important;
+    }
+
+    /* Forms - full width */
+    .form-input-wrapper,
+    .wd-amount-input-wrap,
+    .buyrp-amount-input-wrap,
+    .dep-amount-input-wrap {
+        width: 100% !important;
+    }
+
+    /* Buttons full width */
+    .submit-btn,
+    .buyrp-buy-btn,
+    .dep-proceed-btn,
+    .mining-action-btn,
+    .sellrp-submit-btn,
+    .wd-submit-btn,
+    .plan-deposit-btn {
+        width: 100% !important;
+        font-size: 14px !important;
+        padding: 14px !important;
+    }
+
+    /* Hero section on auth page */
+    .auth-hero {
+        max-width: 100% !important;
+        text-align: center !important;
+    }
+
+    .auth-form-wrapper {
+        width: 100% !important;
+        padding: 20px !important;
+    }
+
+    /* Stat values smaller */
+    .balance-value,
+    .adm-stat-value,
+    .adm-ud-stat-value {
+        font-size: 24px !important;
+    }
+
+    /* Hide some desktop-only elements */
+    .crypto-rates-bar {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        padding: 10px !important;
+    }
+
+    .crypto-rate-item {
+        flex: 1 1 calc(50% - 8px) !important;
+        min-width: 120px !important;
+    }
+
+    /* Profile page - stack */
+    .pr-container {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Transaction items */
+    .adm-tx-card-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .adm-tx-card-right {
+        align-items: flex-start !important;
+        text-align: left !important;
+    }
+
+    /* Fixed image sizes */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small screens */
+    h1, .hero-title {
+        font-size: 20px !important;
+    }
+
+    h2 {
+        font-size: 18px !important;
+    }
+
+    .hero-badge,
+    .plans-badge {
+        font-size: 10px !important;
+        padding: 4px 10px !important;
+    }
+
+    .balance-value {
+        font-size: 20px !important;
+    }
+
+    .adm-nav-item span:not(.db-nav-icon) {
+        display: none;
+    }
 }
