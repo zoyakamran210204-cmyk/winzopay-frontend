@@ -3,7 +3,7 @@ import axios from 'axios';
 // ================================
 // Backend URL (localhost)
 // ================================
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://winzopay-backend.vercel.app/api';
 
 // Axios instance
 const api = axios.create({
