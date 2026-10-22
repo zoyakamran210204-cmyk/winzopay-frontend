@@ -1,0 +1,257 @@
+/* ================================
+   Dashboard Header Styles
+   ================================ */
+
+.db-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0f172a;
+    padding: 12px 20px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Left - Logo */
+.db-header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.db-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.db-logo-icon {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid #d4af37;
+}
+
+.db-logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.db-logo-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.3px;
+}
+
+.db-logo-sub {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Navigation */
+.db-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 5px;
+    border-radius: 30px;
+}
+
+.db-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: transparent;
+    color: #cbd5e1;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.db-nav-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.db-nav-item.active {
+    background: white;
+    color: #0f172a;
+}
+
+.db-nav-icon {
+    font-size: 14px;
+}
+
+/* Right Side */
+.db-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.db-topup-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    background: #1e293b;
+    color: white;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid #334155;
+}
+
+.db-topup-btn:hover {
+    background: #334155;
+}
+
+.db-topup-amount {
+    color: #22c55e;
+    font-weight: 700;
+}
+
+.db-icon-btn {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1e293b;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    position: relative;
+    transition: all 0.2s;
+    border: 1px solid #334155;
+}
+
+.db-icon-btn:hover {
+    background: #334155;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #ef4444;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #0f172a;
+}
+
+.db-share-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    background: #1e293b;
+    color: white;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid #334155;
+}
+
+.db-share-btn:hover {
+    background: #334155;
+}
+
+.db-install-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    background: #065f46;
+    color: white;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid #10b981;
+}
+
+.db-install-btn:hover {
+    background: #047857;
+}
+
+/* Mobile Menu */
+.db-mobile-menu {
+    display: none;
+    background: none;
+    color: white;
+    font-size: 24px;
+    padding: 8px;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media (max-width: 1200px) {
+    .db-nav-item {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .db-share-btn span,
+    .db-install-btn span {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .db-nav {
+        display: none;
+    }
+    
+    .db-mobile-menu {
+        display: block;
+    }
+    
+    .db-topup-btn span:not(.db-topup-amount) {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .db-header {
+        padding: 10px 12px;
+    }
+    
+    .db-header-left {
+        gap: 12px;
+    }
+    
+    .db-logo-sub {
+        display: none;
+    }
+    
+    .db-logo-title {
+        font-size: 14px;
+    }
+}

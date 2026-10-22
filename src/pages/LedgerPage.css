@@ -1,0 +1,275 @@
+/* ================================
+   Ledger Page Styles
+   ================================ */
+
+.lg-page {
+    min-height: 100vh;
+    background: #f1f5f9;
+}
+
+.lg-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.lg-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.lg-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.lg-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lg-live-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: lgPulse 1.5s infinite;
+}
+
+@keyframes lgPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Stats Cards */
+.lg-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.lg-stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.lg-stat-label {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lg-stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.lg-stat-value.green { color: #16a34a; }
+
+/* Filter Tabs */
+.lg-filters {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.lg-filter {
+    padding: 10px 16px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.lg-filter:hover {
+    background: #f8fafc;
+}
+
+.lg-filter.active {
+    background: #0f172a;
+    color: white;
+    border-color: #0f172a;
+}
+
+.lg-filter-count {
+    margin-left: 6px;
+    padding: 1px 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    font-size: 10px;
+}
+
+.lg-filter:not(.active) .lg-filter-count {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* Search */
+.lg-search {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.lg-search-input {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.lg-search-input:focus {
+    border-color: #1e40af;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.lg-search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 16px;
+}
+
+/* Transaction List */
+.lg-list {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.lg-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+}
+
+.lg-item:last-child {
+    border-bottom: none;
+}
+
+.lg-item:hover {
+    background: #f8fafc;
+}
+
+.lg-item-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.lg-item-icon.deposit { background: #dbeafe; color: #1e40af; }
+.lg-item-icon.withdraw { background: #fed7aa; color: #9a3412; }
+.lg-item-icon.buy { background: #fce7f3; color: #9f1239; }
+.lg-item-icon.sell { background: #dcfce7; color: #166534; }
+
+.lg-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.lg-item-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 3px;
+}
+
+.lg-item-meta {
+    font-size: 11px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lg-item-amount {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
+    white-space: nowrap;
+}
+
+.lg-item-amount.positive { color: #16a34a; }
+.lg-item-amount.negative { color: #dc2626; }
+
+.lg-item-status {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.lg-item-status.pending { background: #fef3c7; color: #92400e; }
+.lg-item-status.approved { background: #dcfce7; color: #166534; }
+.lg-item-status.rejected { background: #fee2e2; color: #991b1b; }
+
+/* Empty State */
+.lg-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.lg-empty-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.4;
+}
+
+.lg-empty-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.lg-empty-text {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lg-stats { grid-template-columns: repeat(2, 1fr); }
+    .lg-container { padding: 20px 15px; }
+    .lg-item { padding: 14px 16px; gap: 10px; }
+    .lg-item-amount { font-size: 13px; }
+}

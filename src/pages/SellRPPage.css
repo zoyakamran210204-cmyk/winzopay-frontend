@@ -1,0 +1,426 @@
+/* ================================
+   Sell RP Page Styles
+   ================================ */
+
+.sellrp-page {
+    min-height: 100vh;
+    background: #f1f5f9;
+}
+
+.sellrp-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.sellrp-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.sellrp-header-icon { font-size: 32px; }
+
+.sellrp-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.sellrp-subtitle {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* Steps */
+.sellrp-step-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.sellrp-step-num {
+    width: 32px;
+    height: 32px;
+    background: #1e40af;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.sellrp-step-content { flex: 1; }
+
+.sellrp-step-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.sellrp-step-sub {
+    font-size: 11px;
+    color: #64748b;
+}
+
+/* Balance Grid */
+.sellrp-balance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.sellrp-balance-card {
+    padding: 20px;
+    background: white;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+}
+
+.sellrp-balance-card.green {
+    background: #f0fdf4;
+    border-color: #86efac;
+}
+
+.sellrp-balance-label {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sellrp-balance-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.sellrp-balance-card.green .sellrp-balance-value {
+    color: #16a34a;
+}
+
+/* Section */
+.sellrp-section {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.sellrp-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.sellrp-section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sellrp-section-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 8px;
+}
+
+/* Plan Selector */
+.sellrp-plan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sellrp-plan-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sellrp-plan-item:hover {
+    background: #f1f5f9;
+}
+
+.sellrp-plan-item.selected {
+    background: #eff6ff;
+    border-color: #1e40af;
+}
+
+.sellrp-plan-badge {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.sellrp-plan-info { flex: 1; }
+
+.sellrp-plan-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.sellrp-plan-meta {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.sellrp-plan-value {
+    font-size: 15px;
+    font-weight: 800;
+    color: #16a34a;
+}
+
+/* Empty */
+.sellrp-empty {
+    text-align: center;
+    padding: 30px 20px;
+    color: #94a3b8;
+    font-size: 13px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px dashed #cbd5e1;
+}
+
+/* Buyer List */
+.sellrp-buyer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sellrp-buyer-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sellrp-buyer-item:hover {
+    background: #f1f5f9;
+}
+
+.sellrp-buyer-item.selected {
+    background: #eff6ff;
+    border-color: #1e40af;
+}
+
+.sellrp-buyer-radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sellrp-buyer-item.selected .sellrp-buyer-radio {
+    border-color: #1e40af;
+}
+
+.sellrp-buyer-item.selected .sellrp-buyer-radio::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #1e40af;
+    border-radius: 50%;
+}
+
+.sellrp-buyer-info { flex: 1; }
+
+.sellrp-buyer-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sellrp-buyer-tag {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+}
+
+.sellrp-buyer-tag.green {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.sellrp-buyer-tag.blue {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.sellrp-buyer-tag.orange {
+    background: #fed7aa;
+    color: #9a3412;
+}
+
+.sellrp-buyer-rating {
+    font-size: 11px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Summary */
+.sellrp-summary {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.sellrp-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.sellrp-summary-row:last-child {
+    margin-bottom: 0;
+    padding-top: 8px;
+    border-top: 1px dashed #cbd5e1;
+    font-weight: 800;
+}
+
+.sellrp-summary-label { color: #64748b; font-weight: 600; }
+.sellrp-summary-value { color: #0f172a; font-weight: 700; }
+.sellrp-summary-value.green { color: #16a34a; }
+
+/* Button */
+.sellrp-submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: #0f172a;
+    color: white;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 800;
+    transition: all 0.2s;
+}
+
+.sellrp-submit-btn:hover:not(:disabled) {
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
+}
+
+.sellrp-submit-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Alert */
+.sellrp-alert {
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.sellrp-alert.error { background: #fee2e2; color: #991b1b; }
+.sellrp-alert.success { background: #dcfce7; color: #166534; }
+
+/* Rules */
+.sellrp-rules {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.sellrp-rules-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sellrp-rules-list {
+    list-style: none;
+    padding: 0;
+}
+
+.sellrp-rules-list li {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.sellrp-rules-list li::before {
+    content: '•';
+    position: absolute;
+    left: 6px;
+    color: #1e40af;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sellrp-container { padding: 20px 15px; }
+    .sellrp-balance-grid { grid-template-columns: 1fr; }
+}

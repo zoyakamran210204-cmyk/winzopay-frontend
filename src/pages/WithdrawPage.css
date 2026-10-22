@@ -1,0 +1,546 @@
+/* ================================
+   Withdraw Page Styles
+   ================================ */
+
+.wd-page {
+    min-height: 100vh;
+    background: #f1f5f9;
+}
+
+.wd-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.wd-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.wd-header-icon { font-size: 32px; }
+
+.wd-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.wd-subtitle {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* Steps */
+.wd-step-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.wd-step-num {
+    width: 32px;
+    height: 32px;
+    background: #1e40af;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.wd-step-content { flex: 1; }
+
+.wd-step-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.wd-step-sub {
+    font-size: 11px;
+    color: #64748b;
+}
+
+/* Balance Card */
+.wd-balance-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.wd-balance-label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.wd-balance-value {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.wd-balance-badge {
+    padding: 6px 14px;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 20px;
+    color: #22c55e;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Info Card */
+.wd-info-card {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.wd-info-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.wd-info-content {
+    flex: 1;
+}
+
+.wd-info-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #1e40af;
+    margin-bottom: 6px;
+}
+
+.wd-info-text {
+    font-size: 12px;
+    color: #1e40af;
+    line-height: 1.6;
+}
+
+/* Status Grid */
+.wd-status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.wd-status-card {
+    padding: 16px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.wd-status-label {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.wd-status-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.wd-status-value.green { color: #16a34a; }
+.wd-status-value.orange { color: #ea580c; }
+
+.wd-status-sub {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+/* Payout Method Tabs */
+.wd-payout-tabs {
+    display: flex;
+    gap: 4px;
+    background: white;
+    padding: 5px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.wd-payout-tab {
+    flex: 1;
+    padding: 12px;
+    background: transparent;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.wd-payout-tab.active {
+    background: #0f172a;
+    color: white;
+}
+
+/* Bank Section */
+.wd-section {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.wd-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.wd-section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wd-add-bank-btn {
+    font-size: 12px;
+    color: #1e40af;
+    font-weight: 700;
+    background: none;
+    cursor: pointer;
+}
+
+/* Bank Empty */
+.wd-bank-empty {
+    padding: 30px 20px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.wd-bank-empty-text {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.wd-bank-link-btn {
+    padding: 10px 20px;
+    background: #0f172a;
+    color: white;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Bank Select */
+.wd-bank-select {
+    width: 100%;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    cursor: pointer;
+}
+
+.wd-bank-select:focus {
+    border-color: #1e40af;
+    background-color: white;
+    outline: none;
+}
+
+/* Amount Section */
+.wd-amount-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.wd-amount-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.wd-amount-limits {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.wd-amount-input-wrap {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    transition: all 0.2s;
+}
+
+.wd-amount-input-wrap:focus-within {
+    border-color: #1e40af;
+    background: white;
+}
+
+.wd-amount-prefix {
+    font-size: 22px;
+    font-weight: 800;
+    color: #64748b;
+    margin-right: 12px;
+}
+
+.wd-amount-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.wd-amount-input:focus { outline: none; }
+
+.wd-quick-amounts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.wd-quick-btn {
+    padding: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+    transition: all 0.2s;
+}
+
+.wd-quick-btn:hover {
+    background: #eff6ff;
+    border-color: #1e40af;
+    color: #1e40af;
+}
+
+.wd-quick-btn.active {
+    background: #1e40af;
+    border-color: #1e40af;
+    color: white;
+}
+
+/* Summary */
+.wd-summary {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.wd-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.wd-summary-row:last-child {
+    margin-bottom: 0;
+    padding-top: 8px;
+    border-top: 1px dashed #cbd5e1;
+    font-weight: 800;
+}
+
+.wd-summary-label { color: #64748b; font-weight: 600; }
+.wd-summary-value { color: #0f172a; font-weight: 700; }
+.wd-summary-value.green { color: #16a34a; }
+
+/* Submit Button */
+.wd-submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: #0f172a;
+    color: white;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 800;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.wd-submit-btn:hover:not(:disabled) {
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2);
+}
+
+.wd-submit-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Alert */
+.wd-alert {
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.wd-alert.error { background: #fee2e2; color: #991b1b; }
+.wd-alert.success { background: #dcfce7; color: #166534; }
+
+/* History */
+.wd-history-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.wd-history-icon {
+    width: 36px;
+    height: 36px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.wd-history-content { flex: 1; }
+
+.wd-history-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.wd-history-date {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.wd-history-status {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.wd-history-status.pending { background: #fef3c7; color: #92400e; }
+.wd-history-status.approved { background: #dcfce7; color: #166534; }
+.wd-history-status.rejected { background: #fee2e2; color: #991b1b; }
+
+/* Rules */
+.wd-rules {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    margin-top: 20px;
+}
+
+.wd-rules-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wd-rules-list {
+    list-style: none;
+    padding: 0;
+}
+
+.wd-rules-list li {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.wd-rules-list li::before {
+    content: '•';
+    position: absolute;
+    left: 6px;
+    color: #1e40af;
+    font-weight: 800;
+    font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .wd-container { padding: 20px 15px; }
+    .wd-status-grid { grid-template-columns: 1fr; }
+    .wd-quick-amounts { grid-template-columns: repeat(2, 1fr); }
+    .wd-payout-tabs { flex-direction: column; }
+}
