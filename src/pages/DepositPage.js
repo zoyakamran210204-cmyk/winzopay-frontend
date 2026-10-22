@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '../context/AuthContext';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import DashboardHeader from '../components/DashboardHeader';
 import api from '../utils/api';
 import './DepositPage.css';
 
 const DepositPage = () => {
-    const { t } = useTranslation();
-    const { user } = useAuth();
     const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
-
+    
     const planParam = searchParams.get('plan');
     const amountParam = searchParams.get('amount');
 
@@ -25,8 +20,8 @@ const DepositPage = () => {
     const [history, setHistory] = useState([]);
     const [copied, setCopied] = useState('');
     const [transactionId, setTransactionId] = useState('');
-    const [paymentProof, setPaymentProof] = useState(''); // Text area for notes
-    const [paymentImage, setPaymentImage] = useState(null); // File object
+    const [paymentProof, setPaymentProof] = useState('');
+    const [paymentImage, setPaymentImage] = useState(null);
 
     useEffect(() => {
         const loadSettings = async () => {
@@ -85,10 +80,6 @@ const DepositPage = () => {
 
         setLoading(true);
         try {
-            // Hum file upload ke liye FormData use karenge agar image hai
-            // Lekin filhal backend simple JSON accept kar raha hai. 
-            // Isliye hum paymentProof (text) aur paymentImage (file name) dono bhejenge.
-            
             await api.post('/transaction/deposit', {
                 amount: amt,
                 cryptoType,
@@ -99,13 +90,11 @@ const DepositPage = () => {
 
             setSuccess('✅ Deposit request submitted! Admin will verify your payment.');
             
-            // Form clear karein
             setTransactionId('');
             setPaymentProof('');
             setPaymentImage(null);
             setAmount('');
             
-            // History refresh karein
             const res = await api.get('/transaction/my-transactions');
             setHistory(res.data.filter(tx => tx.type === 'Deposit'));
 
@@ -240,7 +229,6 @@ const DepositPage = () => {
                         ))}
                     </div>
 
-                    {/* Wallet / Bank Address */}
                     {settingsLoading ? (
                         <div style={{ textAlign: 'center', padding: 20, color: '#94a3b8' }}>
                             ⏳ Loading payment details...
@@ -319,7 +307,6 @@ const DepositPage = () => {
                         </div>
                     )}
 
-                    {/* Transaction ID - ONLY FOR BANK */}
                     {cryptoType === 'Bank' && (
                         <div style={{
                             background: '#fef3c7',
@@ -363,7 +350,6 @@ const DepositPage = () => {
                         </div>
                     )}
 
-                    {/* Optional: Payment Proof (Text + File Upload) */}
                     <div style={{ marginBottom: 20 }}>
                         <label style={{
                             display: 'block',
@@ -377,7 +363,6 @@ const DepositPage = () => {
                             📝 Payment Proof (Optional)
                         </label>
                         
-                        {/* File Upload */}
                         <div style={{ marginBottom: 10 }}>
                             <input 
                                 type="file" 
@@ -399,7 +384,6 @@ const DepositPage = () => {
                             )}
                         </div>
 
-                        {/* Text Notes */}
                         <textarea
                             placeholder="Additional notes..."
                             value={paymentProof}
@@ -460,7 +444,6 @@ const DepositPage = () => {
                     )}
                 </div>
 
-                {/* History */}
                 <div className="dep-card">
                     <div className="dep-card-title">📜 Your Deposit History</div>
                     <div className="dep-card-sub">{history.length} records</div>

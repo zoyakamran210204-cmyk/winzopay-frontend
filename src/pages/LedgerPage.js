@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 import DashboardHeader from '../components/DashboardHeader';
 import api from '../utils/api';
 import './LedgerPage.css';
 
 const LedgerPage = () => {
-    const { user } = useAuth();
     const [transactions, setTransactions] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [activeFilter, setActiveFilter] = useState('all');
@@ -95,7 +93,6 @@ const LedgerPage = () => {
                     </div>
                 </div>
 
-                {/* Stats */}
                 <div className="lg-stats">
                     <div className="lg-stat-card">
                         <div className="lg-stat-label">⬇️ Deposited</div>
@@ -115,7 +112,6 @@ const LedgerPage = () => {
                     </div>
                 </div>
 
-                {/* Filters */}
                 <div className="lg-filters">
                     {filters.map(f => (
                         <button
@@ -129,7 +125,6 @@ const LedgerPage = () => {
                     ))}
                 </div>
 
-                {/* Search */}
                 <div className="lg-search">
                     <span className="lg-search-icon">🔍</span>
                     <input
@@ -141,7 +136,6 @@ const LedgerPage = () => {
                     />
                 </div>
 
-                {/* List */}
                 <div className="lg-list">
                     {loading ? (
                         <div className="lg-empty">
