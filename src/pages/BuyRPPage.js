@@ -2,27 +2,39 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import api from '../utils/api'; // ⚠️ api import
+import api from '../utils/api';
 import DashboardHeader from '../components/DashboardHeader';
 import './BuyRPPage.css';
 
 const BuyRPPage = () => {
     const { t } = useTranslation();
-    const { user, login } = useAuth(); // ⚠️ login bhi import
+    const { user, login } = useAuth();
     const navigate = useNavigate();
 
     const [selectedPlan, setSelectedPlan] = useState('A');
     const [amount, setAmount] = useState('');
     const [selectedCrypto, setSelectedCrypto] = useState('BTC');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState(''); // ⚠️ success message state
-    const [loading, setLoading] = useState(false); // ⚠️ loading state
+    const [success, setSuccess] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const plans = [
-        { id: 'A', name: 'Starter RP Miner', roi: '5%', min: 100, max: 500, cycle: '120s', hashrate: '25.4 MH/s' },
-        { id: 'B', name: 'Silver Growth Rig', roi: '8%', min: 501, max: 1000, cycle: '300s', hashrate: '64.8 MH/s' },
-        { id: 'C', name: 'Gold Pro Mining Farm', roi: '10%', min: 1001, max: 1500, cycle: '300s', hashrate: '142.5 MH/s' },
-        { id: 'D', name: 'Diamond Quantum Miner', roi: '12%', min: 10000, max: 100000, cycle: '500s', hashrate: '380.0 MH/s' }
+        { 
+            id: 'A', name: 'Starter RP Miner', roi: '5%', min: 100, max: 500, cycle: '120s', hashrate: '25.4 MH/s',
+            quickAmounts: [100, 200, 300, 500]
+        },
+        { 
+            id: 'B', name: 'Silver Growth Rig', roi: '8%', min: 501, max: 1000, cycle: '300s', hashrate: '64.8 MH/s',
+            quickAmounts: [501, 700, 800, 1000]
+        },
+        { 
+            id: 'C', name: 'Gold Pro Mining Farm', roi: '10%', min: 1001, max: 1500, cycle: '300s', hashrate: '142.5 MH/s',
+            quickAmounts: [1001, 2000, 5000, 10000]
+        },
+        { 
+            id: 'D', name: 'Diamond Quantum Miner', roi: '12%', min: 10000, max: 100000, cycle: '500s', hashrate: '380.0 MH/s',
+            quickAmounts: [10001, 20000, 50000, 100000]
+        }
     ];
 
     const cryptoOptions = [
@@ -34,16 +46,6 @@ const BuyRPPage = () => {
 
     const currentPlan = plans.find(p => p.id === selectedPlan);
 
-    const quickAmounts = [
-        currentPlan.min,
-        Math.round(currentPlan.min * 2),
-        Math.round(currentPlan.min * 5),
-        currentPlan.max
-    ];
-
-    // ================================
-    // ⚠️ NAYA: Direct Buy (No Deposit Page)
-    // ================================
     const handleBuy = async () => {
         setError('');
         setSuccess('');
@@ -66,13 +68,11 @@ const BuyRPPage = () => {
 
         setLoading(true);
         try {
-            // Direct Buy API call (no admin approval needed)
             const res = await api.post('/transaction/buy-rp', {
                 planName: selectedPlan,
                 amount: amt
             });
 
-            // Update user context
             const updatedUser = { ...user, ...res.data.user };
             login(updatedUser, localStorage.getItem('winzopay_token'));
 
@@ -168,20 +168,21 @@ const BuyRPPage = () => {
                         />
                     </div>
 
+                    {/* ⚠️ UPDATED: Plan-specific Quick Amounts */}
                     <div className="buyrp-quick-amounts">
-                        {quickAmounts.map((amt, idx) => (
+                        {currentPlan.quickAmounts.map((amt, idx) => (
                             <button
                                 key={idx}
                                 type="button"
                                 className={`buyrp-quick-btn ${Number(amount) === amt ? 'active' : ''}`}
                                 onClick={() => setAmount(String(amt))}
                             >
-                                R$ {amt >= 1000 ? `${(amt / 1000).toFixed(0)}K` : amt}
+                                {amt >= 1000 ? `R$ ${(amt / 1000).toFixed(0)}K` : `R$ ${amt}`}
                             </button>
                         ))}
                     </div>
 
-                    {/* Crypto Selection (Optional - sirf display ke liye) */}
+                    {/* Crypto Selection */}
                     <div style={{ marginTop: '20px', marginBottom: '15px' }}>
                         <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', marginBottom: '10px' }}>
                             🪙 Select Crypto Method

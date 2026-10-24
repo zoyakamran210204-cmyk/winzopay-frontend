@@ -2,21 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getCryptoRates, getMe } from '../utils/api'; // ⚠️ getMe import
+import { getCryptoRates, getMe } from '../utils/api';
 import DashboardHeader from '../components/DashboardHeader';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
     const { t } = useTranslation();
-    const { user, login } = useAuth(); // ⚠️ login bhi import
+    const { user, login } = useAuth();
     const navigate = useNavigate();
 
     const [cryptoRates, setCryptoRates] = useState(null);
     const [ratesLoading, setRatesLoading] = useState(true);
 
-    // ================================
-    // ⚠️ NAYA: Instant Refresh Logic (Har 2 second)
-    // ================================
+    // ⚠️ Instant Refresh
     useEffect(() => {
         const refreshUser = async () => {
             try {
@@ -26,14 +24,10 @@ const DashboardPage = () => {
                 console.error('Refresh failed:', err);
             }
         };
-
         const interval = setInterval(refreshUser, 2000);
         return () => clearInterval(interval);
     }, [login]);
 
-    // ================================
-    // Fetch Crypto Rates
-    // ================================
     useEffect(() => {
         const fetchRates = async () => {
             try {
@@ -45,7 +39,6 @@ const DashboardPage = () => {
                 setRatesLoading(false);
             }
         };
-
         fetchRates();
         const interval = setInterval(fetchRates, 60000);
         return () => clearInterval(interval);
@@ -64,25 +57,29 @@ const DashboardPage = () => {
     };
 
     const handleDepositClick = (plan) => {
-        navigate(`/deposit?plan=${plan.id}&amount=${plan.depositMin}`);
+        navigate(`/deposit?plan=${plan.id}&amount=${plan.quickAmounts[0]}`);
     };
 
     const plans = [
         {
             id: 'A', name: t('plan_a_name') || 'Starter RP Miner', returnValue: '5%', returnLabel: 'RETURN', depositMin: 100, depositMax: 500, cycle: '120s Fast Mining', hashrate: '25.4 MH/s',
-            benefits: [t('plan_a_benefit_1') || '5% Guaranteed Mining Yield', t('plan_a_benefit_2') || 'Quick 120-Second Mining Period', t('plan_a_benefit_3') || 'Instant Auto-Completion', t('plan_a_benefit_4') || 'Direct Seller Marketplace Liquidity'], popular: false
+            benefits: [t('plan_a_benefit_1') || '5% Guaranteed Mining Yield', t('plan_a_benefit_2') || 'Quick 120-Second Mining Period', t('plan_a_benefit_3') || 'Instant Auto-Completion', t('plan_a_benefit_4') || 'Direct Seller Marketplace Liquidity'], popular: false,
+            quickAmounts: [100, 200, 300, 500]
         },
         {
             id: 'B', name: t('plan_b_name') || 'Silver Growth Rig', returnValue: '8%', returnLabel: 'RETURN', depositMin: 501, depositMax: 1000, cycle: '300s Mining Cycle', hashrate: '64.8 MH/s',
-            benefits: [t('plan_b_benefit_1') || '8% Return on Total Investment', t('plan_b_benefit_2') || 'Dual-Cluster GPU Hash Processing', t('plan_b_benefit_3') || 'Priority Seller Settlement Lane', t('plan_b_benefit_4') || 'Zero Transaction Deductions'], popular: true
+            benefits: [t('plan_b_benefit_1') || '8% Return on Total Investment', t('plan_b_benefit_2') || 'Dual-Cluster GPU Hash Processing', t('plan_b_benefit_3') || 'Priority Seller Settlement Lane', t('plan_b_benefit_4') || 'Zero Transaction Deductions'], popular: true,
+            quickAmounts: [501, 700, 800, 1000]
         },
         {
             id: 'C', name: t('plan_c_name') || 'Gold Pro Mining Farm', returnValue: '10%', returnLabel: 'RETURN', depositMin: 1001, depositMax: 1500, cycle: '300s High Yield', hashrate: '142.5 MH/s',
-            benefits: [t('plan_c_benefit_1') || '10% High Commission Profit', t('plan_c_benefit_2') || 'Dedicated ASIC Mining Rig Allocation', t('plan_c_benefit_3') || 'VIP Verified Buyer Matching', t('plan_c_benefit_4') || 'Instant Return to Top-Up Balance'], popular: false
+            benefits: [t('plan_c_benefit_1') || '10% High Commission Profit', t('plan_c_benefit_2') || 'Dedicated ASIC Mining Rig Allocation', t('plan_c_benefit_3') || 'VIP Verified Buyer Matching', t('plan_c_benefit_4') || 'Instant Return to Top-Up Balance'], popular: false,
+            quickAmounts: [1001, 2000, 5000, 10000]
         },
         {
             id: 'D', name: t('plan_d_name') || 'Diamond Quantum Miner', returnValue: '12%', returnLabel: 'RETURN', depositMin: 10000, depositMax: 100000, cycle: '500s VIP Master Cycle', hashrate: '380.0 MH/s',
-            benefits: [t('plan_d_benefit_1') || '12% Maximum Top-Tier Mining Return', t('plan_d_benefit_2') || 'Highest Mining Power & Speed', t('plan_d_benefit_3') || 'Direct 1-Click Instant Sale to Official Desk', t('plan_d_benefit_4') || 'Instant Auto-Refund of Capital + Profit'], popular: false
+            benefits: [t('plan_d_benefit_1') || '12% Maximum Top-Tier Mining Return', t('plan_d_benefit_2') || 'Highest Mining Power & Speed', t('plan_d_benefit_3') || 'Direct 1-Click Instant Sale to Official Desk', t('plan_d_benefit_4') || 'Instant Auto-Refund of Capital + Profit'], popular: false,
+            quickAmounts: [10001, 20000, 50000, 100000]
         }
     ];
 
@@ -208,8 +205,9 @@ const DashboardPage = () => {
                                         <div key={idx} className="plan-benefit">{benefit}</div>
                                     ))}
                                 </div>
+                                {/* ⚠️ UPDATED: Quick Amount Show karega */}
                                 <button className="plan-deposit-btn" onClick={() => handleDepositClick(plan)}>
-                                    {t('deposit')} →
+                                    {t('deposit')} R$ {plan.quickAmounts[0].toLocaleString()} →
                                 </button>
                             </div>
                         ))}
