@@ -28,10 +28,11 @@ const DepositPage = () => {
     const [paymentProof, setPaymentProof] = useState('');
     const [paymentImage, setPaymentImage] = useState(null);
 
+    // ⚠️ NAYA: Plan ke hisaab se quick amounts
     const planQuickAmounts = {
         'A': [100, 200, 300, 500],
         'B': [501, 700, 800, 1000],
-        'C': [1001, 2000, 5000],
+        'C': [1001, 2000, 5000, 10000],
         'D': [10001, 20000, 50000, 100000]
     };
 
@@ -97,7 +98,7 @@ const DepositPage = () => {
             await api.post('/transaction/deposit', {
                 amount: amt,
                 cryptoType,
-                planName: null, // ⚠️ Ab plan name nahi bhej rahe
+                planName: planParam || null,
                 transactionId: cryptoType === 'Bank' ? transactionId.trim() : null,
                 paymentProof: paymentProof || (paymentImage ? paymentImage.name : null)
             });
@@ -167,15 +168,30 @@ const DepositPage = () => {
                     <span>←</span>
                     <div>
                         <div className="dep-breadcrumb-title">
-                            Top-Up Balance (Deposit)
+                            {planParam ? `Pay for Plan ${planParam}` : 'Top-Up Balance (Deposit)'}
                         </div>
                         <div style={{ fontSize: '12px', color: '#64748b' }}>
-                            Step 1: Deposit funds to purchase RP Plans
+                            {planParam 
+                                ? `Amount to deposit: R$ ${Number(amountParam || 0).toLocaleString()}`
+                                : 'Step 1: Deposit funds to purchase RP Plans'}
                         </div>
                     </div>
                 </div>
 
-                {/* ⚠️ Plan Warning Hata Diya Gaya Hai */}
+                {planParam && (
+                    <div style={{
+                        padding: '14px 18px',
+                        background: '#fef3c7',
+                        border: '1px solid #fcd34d',
+                        borderRadius: 12,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: '#92400e',
+                        marginBottom: 20
+                    }}>
+                        ⚠️ You are depositing for <strong>Plan {planParam}</strong>. After admin approval, your plan will activate automatically.
+                    </div>
+                )}
 
                 {error && <div className="dep-alert error">⚠️ {error}</div>}
                 {success && <div className="dep-alert success">{success}</div>}
@@ -197,6 +213,7 @@ const DepositPage = () => {
                         />
                     </div>
 
+                    {/* ⚠️ Plan specific quick amounts */}
                     <div className="dep-quick-amounts">
                         {quickAmounts.map(amt => (
                             <button
@@ -314,9 +331,13 @@ const DepositPage = () => {
                             marginBottom: 20
                         }}>
                             <label style={{
-                                display: 'block', fontSize: 11, fontWeight: 800,
-                                color: '#92400e', textTransform: 'uppercase',
-                                marginBottom: 8, letterSpacing: '0.3px'
+                                display: 'block',
+                                fontSize: 11,
+                                fontWeight: 800,
+                                color: '#92400e',
+                                textTransform: 'uppercase',
+                                marginBottom: 8,
+                                letterSpacing: '0.3px'
                             }}>
                                 🔑 Payment Transaction ID / UTR (Required for Bank)
                             </label>
@@ -326,10 +347,16 @@ const DepositPage = () => {
                                 value={transactionId}
                                 onChange={(e) => setTransactionId(e.target.value)}
                                 style={{
-                                    width: '100%', padding: '12px 14px', background: 'white',
-                                    border: '2px solid #fcd34d', borderRadius: 10,
-                                    fontSize: 14, fontWeight: 600, color: '#0f172a',
-                                    outline: 'none', fontFamily: 'monospace'
+                                    width: '100%',
+                                    padding: '12px 14px',
+                                    background: 'white',
+                                    border: '2px solid #fcd34d',
+                                    borderRadius: 10,
+                                    fontSize: 14,
+                                    fontWeight: 600,
+                                    color: '#0f172a',
+                                    outline: 'none',
+                                    fontFamily: 'monospace'
                                 }}
                             />
                         </div>
@@ -337,9 +364,13 @@ const DepositPage = () => {
 
                     <div style={{ marginBottom: 20 }}>
                         <label style={{
-                            display: 'block', fontSize: 11, fontWeight: 800,
-                            color: '#64748b', textTransform: 'uppercase',
-                            marginBottom: 8, letterSpacing: '0.3px'
+                            display: 'block',
+                            fontSize: 11,
+                            fontWeight: 800,
+                            color: '#64748b',
+                            textTransform: 'uppercase',
+                            marginBottom: 8,
+                            letterSpacing: '0.3px'
                         }}>
                             📝 Payment Proof (Optional)
                         </label>
@@ -350,8 +381,12 @@ const DepositPage = () => {
                                 accept="image/*"
                                 onChange={(e) => setPaymentImage(e.target.files[0])}
                                 style={{
-                                    width: '100%', padding: '8px', background: '#f8fafc',
-                                    border: '1px solid #e2e8f0', borderRadius: 10, fontSize: 12
+                                    width: '100%',
+                                    padding: '8px',
+                                    background: '#f8fafc',
+                                    border: '1px solid #e2e8f0',
+                                    borderRadius: 10,
+                                    fontSize: 12
                                 }}
                             />
                             {paymentImage && (
@@ -367,10 +402,16 @@ const DepositPage = () => {
                             onChange={(e) => setPaymentProof(e.target.value)}
                             rows={2}
                             style={{
-                                width: '100%', padding: '10px 12px', background: '#f8fafc',
-                                border: '1px solid #e2e8f0', borderRadius: 10,
-                                fontSize: 13, fontWeight: 500, color: '#0f172a',
-                                outline: 'none', resize: 'vertical'
+                                width: '100%',
+                                padding: '10px 12px',
+                                background: '#f8fafc',
+                                border: '1px solid #e2e8f0',
+                                borderRadius: 10,
+                                fontSize: 13,
+                                fontWeight: 500,
+                                color: '#0f172a',
+                                outline: 'none',
+                                resize: 'vertical'
                             }}
                         />
                     </div>
