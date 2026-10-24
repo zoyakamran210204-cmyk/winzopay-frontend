@@ -408,40 +408,6 @@ const WithdrawPage = () => {
                         />
                     </div>
 
-                    {/* ✅ FIXED: Quick Amount Buttons */}
-                    <div className="wd-quick-amounts">
-                        {[25, 50, 75, 100].map(percent => {
-                            const balance = user?.withdrawableBalance || 0;
-                            let amt = Math.floor(balance * percent / 100);
-
-                            // MAX button poora balance use kare
-                            if (percent === 100) {
-                                amt = Number(balance.toFixed(2));
-                            }
-
-                            const isDisabled = amt < 100;
-                            const isActive = Number(amount) === amt;
-
-                            return (
-                                <button
-                                    key={percent}
-                                    type="button"
-                                    className={`wd-quick-btn ${isActive ? 'active' : ''}`}
-                                    onClick={() => {
-                                        if (!isDisabled) setAmount(String(amt));
-                                    }}
-                                    disabled={isDisabled}
-                                    style={{
-                                        opacity: isDisabled ? 0.4 : 1,
-                                        cursor: isDisabled ? 'not-allowed' : 'pointer'
-                                    }}
-                                >
-                                    {percent === 100 ? 'MAX' : `${percent}%`}
-                                </button>
-                            );
-                        })}
-                    </div>
-
                     <div className="wd-summary">
                         <div className="wd-summary-row">
                             <span className="wd-summary-label">Withdrawal Amount:</span>
