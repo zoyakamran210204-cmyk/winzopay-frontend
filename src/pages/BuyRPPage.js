@@ -3,24 +3,31 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DashboardHeader from '../components/DashboardHeader';
-import api from '../utils/api';
 import './BuyRPPage.css';
 
 const BuyRPPage = () => {
     const { t } = useTranslation();
-    const { user, login } = useAuth();
+    const { user } = useAuth();
     const navigate = useNavigate();
 
     const [selectedPlan, setSelectedPlan] = useState('A');
     const [amount, setAmount] = useState('');
+    const [selectedCrypto, setSelectedCrypto] = useState('BTC'); // ⚠️ Naya State
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
 
     const plans = [
         { id: 'A', name: 'Starter RP Miner', roi: '5%', min: 100, max: 500, cycle: '120s', hashrate: '25.4 MH/s' },
         { id: 'B', name: 'Silver Growth Rig', roi: '8%', min: 501, max: 1000, cycle: '300s', hashrate: '64.8 MH/s' },
         { id: 'C', name: 'Gold Pro Mining Farm', roi: '10%', min: 1001, max: 1500, cycle: '300s', hashrate: '142.5 MH/s' },
         { id: 'D', name: 'Diamond Quantum Miner', roi: '12%', min: 10000, max: 100000, cycle: '500s', hashrate: '380.0 MH/s' }
+    ];
+
+    // ⚠️ Crypto Options
+    const cryptoOptions = [
+        { key: 'BTC', label: 'BTC', color: 'btc', icon: '₿' },
+        { key: 'BTC(r)', label: 'BTC(r)', color: 'btcr', icon: '₿' },
+        { key: 'USDT', label: 'USDT', color: 'usdt', icon: '₮' },
+        { key: 'ETH', label: 'ETH', color: 'eth', icon: 'Ξ' }
     ];
 
     const currentPlan = plans.find(p => p.id === selectedPlan);
@@ -32,10 +39,10 @@ const BuyRPPage = () => {
         currentPlan.max
     ];
 
-    const handleBuy = async () => {
+    const handleBuy = () => {
         setError('');
-        const amt = Number(amount);
 
+        const amt = Number(amount);
         if (!amt) {
             setError('Please enter amount');
             return;
@@ -46,36 +53,8 @@ const BuyRPPage = () => {
             return;
         }
 
-        // ⚠️ BALANCE CHECK — Agar balance kam hai to wahin message dikhao
-        if (amt > (user?.balance || 0)) {
-            setError(`Insufficient Top-Up balance. You have R$ ${user?.balance?.toFixed(2) || '0.00'} but need R$ ${amt.toLocaleString()}. Please deposit funds first.`);
-            return;
-        }
-
-        // Balance kaafi hai — Buy RP API call karein
-        setLoading(true);
-        try {
-            const res = await api.post('/transaction/buy-rp', {
-                planName: selectedPlan,
-                amount: amt
-            });
-
-            // Update user context
-            const updatedUser = { ...user, ...res.data.user };
-            login(updatedUser, localStorage.getItem('winzopay_token'));
-
-            // Mining par redirect (kyunke plan kharid liya)
-            navigate('/mining');
-
-        } catch (err) {
-            if (err.response?.data?.message === 'INSUFFICIENT_BALANCE') {
-                setError(`Insufficient balance. Please deposit funds first.`);
-            } else {
-                setError(err.response?.data?.message || 'Purchase failed');
-            }
-        } finally {
-            setLoading(false);
-        }
+        // Deposit page par redirect with plan, amount, aur crypto
+        navigate(`/deposit?plan=${selectedPlan}&amount=${amt}&method=${selectedCrypto}`);
     };
 
     const expectedProfit = amount ? (Number(amount) * parseInt(currentPlan.roi) / 100) : 0;
@@ -115,21 +94,7 @@ const BuyRPPage = () => {
                     </button>
                 </div>
 
-                {/* ⚠️ Error Message (Balance kam hone par yahan aayega) */}
-                {error && (
-                    <div className="buyrp-alert error" style={{ 
-                        background: '#fee2e2', 
-                        color: '#991b1b', 
-                        border: '1px solid #fca5a5',
-                        padding: '14px 18px',
-                        borderRadius: 12,
-                        fontSize: 14,
-                        fontWeight: 700,
-                        marginBottom: 16
-                    }}>
-                        ⚠️ {error}
-                    </div>
-                )}
+                {error && <div className="buyrp-alert error">⚠️ {error}</div>}
 
                 <div className="buyrp-section-title">📋 Select RP Mining Plan</div>
                 <div className="buyrp-plan-grid">
@@ -137,7 +102,7 @@ const BuyRPPage = () => {
                         <div
                             key={plan.id}
                             className={`buyrp-plan-card ${selectedPlan === plan.id ? 'selected' : ''}`}
-                            onClick={() => { setSelectedPlan(plan.id); setAmount(''); setError(''); }}
+                            onClick={() => { setSelectedPlan(plan.id); setAmount(''); }}
                         >
                             <div className="buyrp-plan-header">
                                 <div className="buyrp-plan-name">{plan.name}</div>
@@ -167,7 +132,7 @@ const BuyRPPage = () => {
                             className="buyrp-amount-input"
                             placeholder="0"
                             value={amount}
-                            onChange={(e) => { setAmount(e.target.value); setError(''); }}
+                            onChange={(e) => setAmount(e.target.value)}
                         />
                     </div>
 
@@ -177,17 +142,75 @@ const BuyRPPage = () => {
                                 key={idx}
                                 type="button"
                                 className={`buyrp-quick-btn ${Number(amount) === amt ? 'active' : ''}`}
-                                onClick={() => { setAmount(String(amt)); setError(''); }}
+                                onClick={() => setAmount(String(amt))}
                             >
                                 R$ {amt >= 1000 ? `${(amt / 1000).toFixed(0)}K` : amt}
                             </button>
                         ))}
                     </div>
 
+                    {/* ⚠️ NAYA: Crypto Selection */}
+                    <div style={{ marginTop: '20px', marginBottom: '15px' }}>
+                        <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', marginBottom: '10px' }}>
+                            🪙 Select Crypto Method
+                        </div>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(4, 1fr)',
+                            gap: '8px'
+                        }}>
+                            {cryptoOptions.map(crypto => (
+                                <button
+                                    key={crypto.key}
+                                    type="button"
+                                    onClick={() => setSelectedCrypto(crypto.key)}
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        gap: '6px',
+                                        padding: '12px 8px',
+                                        background: selectedCrypto === crypto.key ? '#eff6ff' : '#f8fafc',
+                                        border: selectedCrypto === crypto.key ? '2px solid #1e40af' : '1px solid #e2e8f0',
+                                        borderRadius: '10px',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <div style={{
+                                        width: '32px',
+                                        height: '32px',
+                                        borderRadius: '50%',
+                                        background: crypto.key === 'BTC' ? '#f7931a' : crypto.key === 'BTC(r)' ? '#16a34a' : crypto.key === 'USDT' ? '#26a17b' : '#627eea',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: 'white',
+                                        fontWeight: 800,
+                                        fontSize: '14px'
+                                    }}>
+                                        {crypto.icon}
+                                    </div>
+                                    <span style={{
+                                        fontSize: '11px',
+                                        fontWeight: 700,
+                                        color: selectedCrypto === crypto.key ? '#1e40af' : '#475569'
+                                    }}>
+                                        {crypto.label}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="buyrp-summary">
                         <div className="buyrp-summary-row">
                             <span className="buyrp-summary-label">Plan Purchase Amount:</span>
                             <span className="buyrp-summary-value red">- R$ {Number(amount || 0).toLocaleString()}</span>
+                        </div>
+                        <div className="buyrp-summary-row">
+                            <span className="buyrp-summary-label">Selected Crypto:</span>
+                            <span className="buyrp-summary-value">{selectedCrypto}</span>
                         </div>
                         <div className="buyrp-summary-row">
                             <span className="buyrp-summary-label">Mining Cycle:</span>
@@ -205,14 +228,10 @@ const BuyRPPage = () => {
 
                     <button
                         className="buyrp-buy-btn"
-                        disabled={!canBuy || loading}
+                        disabled={!canBuy}
                         onClick={handleBuy}
                     >
-                        {loading 
-                            ? '⏳ Processing...' 
-                            : Number(amount) > (user?.balance || 0)
-                                ? `🚨 Insufficient Balance — Deposit First`
-                                : `▶ Buy Plan Now (R$ ${Number(amount || 0).toLocaleString()})`}
+                        ▶ Proceed to Payment via {selectedCrypto} (R$ {Number(amount || 0).toLocaleString()})
                     </button>
 
                     {!canBuy && amount && (
