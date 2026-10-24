@@ -15,17 +15,11 @@ const DashboardPage = () => {
     const [ratesLoading, setRatesLoading] = useState(true);
 
     const [selectedCrypto, setSelectedCrypto] = useState({
-        A: 'BTC',
-        B: 'BTC',
-        C: 'BTC',
-        D: 'BTC'
+        A: 'BTC', B: 'BTC', C: 'BTC', D: 'BTC'
     });
 
     const [selectedBank, setSelectedBank] = useState({
-        A: '',
-        B: '',
-        C: '',
-        D: ''
+        A: '', B: '', C: '', D: ''
     });
 
     useEffect(() => {
@@ -86,54 +80,10 @@ const DashboardPage = () => {
     };
 
     const plans = [
-        {
-            id: 'A',
-            name: t('plan_a_name'),
-            returnValue: '5%',
-            returnLabel: t('return'),
-            depositMin: 100,
-            depositMax: 500,
-            cycle: '120s Fast Mining',
-            hashrate: '25.4 MH/s',
-            benefits: [t('plan_a_benefit_1'), t('plan_a_benefit_2'), t('plan_a_benefit_3'), t('plan_a_benefit_4')],
-            popular: false
-        },
-        {
-            id: 'B',
-            name: t('plan_b_name'),
-            returnValue: '8%',
-            returnLabel: t('return'),
-            depositMin: 501,
-            depositMax: 1000,
-            cycle: '300s Mining Cycle',
-            hashrate: '64.8 MH/s',
-            benefits: [t('plan_b_benefit_1'), t('plan_b_benefit_2'), t('plan_b_benefit_3'), t('plan_b_benefit_4')],
-            popular: true
-        },
-        {
-            id: 'C',
-            name: t('plan_c_name'),
-            returnValue: '10%',
-            returnLabel: t('return'),
-            depositMin: 1001,
-            depositMax: 1500,
-            cycle: '300s High Yield',
-            hashrate: '142.5 MH/s',
-            benefits: [t('plan_c_benefit_1'), t('plan_c_benefit_2'), t('plan_c_benefit_3'), t('plan_c_benefit_4')],
-            popular: false
-        },
-        {
-            id: 'D',
-            name: t('plan_d_name'),
-            returnValue: '12%',
-            returnLabel: t('return'),
-            depositMin: 10000,
-            depositMax: 100000,
-            cycle: '500s VIP Master Cycle',
-            hashrate: '380.0 MH/s',
-            benefits: [t('plan_d_benefit_1'), t('plan_d_benefit_2'), t('plan_d_benefit_3'), t('plan_d_benefit_4')],
-            popular: false
-        }
+        { id: 'A', name: t('plan_a_name'), returnValue: '5%', returnLabel: t('return'), depositMin: 100, depositMax: 500, cycle: '120s Fast Mining', hashrate: '25.4 MH/s', benefits: [t('plan_a_benefit_1'), t('plan_a_benefit_2'), t('plan_a_benefit_3'), t('plan_a_benefit_4')], popular: false },
+        { id: 'B', name: t('plan_b_name'), returnValue: '8%', returnLabel: t('return'), depositMin: 501, depositMax: 1000, cycle: '300s Mining Cycle', hashrate: '64.8 MH/s', benefits: [t('plan_b_benefit_1'), t('plan_b_benefit_2'), t('plan_b_benefit_3'), t('plan_b_benefit_4')], popular: true },
+        { id: 'C', name: t('plan_c_name'), returnValue: '10%', returnLabel: t('return'), depositMin: 1001, depositMax: 1500, cycle: '300s High Yield', hashrate: '142.5 MH/s', benefits: [t('plan_c_benefit_1'), t('plan_c_benefit_2'), t('plan_c_benefit_3'), t('plan_c_benefit_4')], popular: false },
+        { id: 'D', name: t('plan_d_name'), returnValue: '12%', returnLabel: t('return'), depositMin: 10000, depositMax: 100000, cycle: '500s VIP Master Cycle', hashrate: '380.0 MH/s', benefits: [t('plan_d_benefit_1'), t('plan_d_benefit_2'), t('plan_d_benefit_3'), t('plan_d_benefit_4')], popular: false }
     ];
 
     return (
@@ -146,11 +96,8 @@ const DashboardPage = () => {
                     <div className="balance-card">
                         <div className="balance-header">
                             <div className="balance-label">💰 {t('top_up_balance')} ⓘ</div>
-                            <div className="currency-toggle">
-                                <button className="currency-btn active">R$ BRL</button>
-                            </div>
+                            <div className="currency-toggle"><button className="currency-btn active">R$ BRL</button></div>
                         </div>
-
                         <div className="balance-value">R$ {user?.balance?.toFixed(2) || '0.00'}</div>
                         <div className="balance-sub">{t('balance_step_1')}</div>
 
@@ -158,17 +105,14 @@ const DashboardPage = () => {
                             <div className="mini-card">
                                 <div className="mini-card-label">💵 {t('withdrawable')}</div>
                                 <div className="mini-card-value">R$ {user?.withdrawableBalance?.toFixed(2) || '0.00'}</div>
-                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>{t('withdrawable_step')}</div>
                             </div>
                             <div className="mini-card">
                                 <div className="mini-card-label">⛏️ {t('mining_capital')}</div>
                                 <div className="mini-card-value">R$ {user?.miningCapital?.toFixed(2) || '0.00'}</div>
-                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>{t('mining_step')}</div>
                             </div>
                             <div className="mini-card">
                                 <div className="mini-card-label">💎 {t('rp_balance')}</div>
                                 <div className="mini-card-value">R$ {user?.rpBalance?.toFixed(2) || '0.00'}</div>
-                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>{t('rp_step')}</div>
                             </div>
                         </div>
                     </div>
@@ -176,77 +120,45 @@ const DashboardPage = () => {
                     <div className="quick-actions">
                         <div className="action-card" onClick={() => navigate('/deposit')} style={{ cursor: 'pointer' }}>
                             <div className="action-icon blue">⬇️</div>
-                            <div className="action-content">
-                                <div className="action-title">{t('deposit')}</div>
-                                <div className="action-sub">{t('top_up_balance_label')}</div>
-                            </div>
+                            <div className="action-content"><div className="action-title">{t('deposit')}</div><div className="action-sub">{t('top_up_balance_label')}</div></div>
                             <div className="action-step">Step 1</div>
                         </div>
-
                         <div className="action-card" onClick={() => navigate('/buy-rp')} style={{ cursor: 'pointer' }}>
                             <div className="action-icon dark">💰</div>
-                            <div className="action-content">
-                                <div className="action-title">{t('buy_rp')}</div>
-                                <div className="action-sub">{t('rp_mining_plan')}</div>
-                            </div>
+                            <div className="action-content"><div className="action-title">{t('buy_rp')}</div><div className="action-sub">{t('rp_mining_plan')}</div></div>
                             <div className="action-step">Step 2</div>
                         </div>
-
                         <div className="action-card" onClick={() => navigate('/sell-rp')} style={{ cursor: 'pointer' }}>
                             <div className="action-icon orange">💱</div>
-                            <div className="action-content">
-                                <div className="action-title">{t('sell_rp')}</div>
-                                <div className="action-sub">{t('sell_to_seller')}</div>
-                            </div>
+                            <div className="action-content"><div className="action-title">{t('sell_rp')}</div><div className="action-sub">{t('sell_to_seller')}</div></div>
                             <div className="action-step">Step 5</div>
                         </div>
-
                         <div className="action-card" onClick={() => navigate('/withdraw')} style={{ cursor: 'pointer' }}>
                             <div className="action-icon green">⬆️</div>
-                            <div className="action-content">
-                                <div className="action-title">{t('withdraw')}</div>
-                                <div className="action-sub">{t('withdrawable_bal')}</div>
-                            </div>
+                            <div className="action-content"><div className="action-title">{t('withdraw')}</div><div className="action-sub">{t('withdrawable_bal')}</div></div>
                             <div className="action-step">Step 6</div>
                         </div>
                     </div>
 
-                    {/* ✅ TRANSACTION RECORDS - Ab Clickable */}
                     <div className="transaction-records">
                         <div className="section-title">{t('transaction_records')}</div>
                         <div className="transaction-grid">
-                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}>
-                                <div className="transaction-icon">⬇️</div>
-                                <div className="transaction-label">{t('deposits')}</div>
-                            </div>
-                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}>
-                                <div className="transaction-icon">💰</div>
-                                <div className="transaction-label">{t('plan_purchases')}</div>
-                            </div>
-                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}>
-                                <div className="transaction-icon">💱</div>
-                                <div className="transaction-label">{t('rp_sales')}</div>
-                            </div>
-                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}>
-                                <div className="transaction-icon">⬆️</div>
-                                <div className="transaction-label">{t('withdrawals')}</div>
-                            </div>
+                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}><div className="transaction-icon">⬇️</div><div className="transaction-label">{t('deposits')}</div></div>
+                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}><div className="transaction-icon">💰</div><div className="transaction-label">{t('plan_purchases')}</div></div>
+                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}><div className="transaction-icon">💱</div><div className="transaction-label">{t('rp_sales')}</div></div>
+                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}><div className="transaction-icon">⬆️</div><div className="transaction-label">{t('withdrawals')}</div></div>
                         </div>
                     </div>
 
-                    {/* ✅ LINK BANK ACCOUNT - Ab Clickable */}
+                    {/* ✅ LINK BANK ACCOUNT - Ab Profile Par Jayega */}
                     <div className="bank-account-section">
                         <div className="bank-header">
                             <div className="bank-title">🏦 {t('linked_bank')}</div>
-                            <button className="bank-manage" onClick={() => alert('Bank management coming soon')}>
-                                {t('manage')} (0)
-                            </button>
+                            <button className="bank-manage" onClick={() => navigate('/profile')}>{t('manage')} (0)</button>
                         </div>
                         <div className="bank-empty">
                             <p>{t('bank_empty_msg')}</p>
-                            <button className="bank-link-btn" onClick={() => alert('Bank linking coming soon')}>
-                                {t('link_bank')}
-                            </button>
+                            <button className="bank-link-btn" onClick={() => navigate('/profile')}>{t('link_bank')}</button>
                         </div>
                     </div>
                 </div>
@@ -255,126 +167,58 @@ const DashboardPage = () => {
                 <div className="db-right">
                     <div className="crypto-rates-bar">
                         <div className="crypto-rates-label">🔴 LIVE RATES (BRL)</div>
-
-                        {ratesLoading ? (
-                            <div className="crypto-loading">
-                                <span className="spin">⏳</span> Loading rates...
-                            </div>
-                        ) : (
+                        {ratesLoading ? (<div className="crypto-loading"><span className="spin">⏳</span> Loading rates...</div>) : (
                             cryptoOptions.map(crypto => (
                                 <div key={crypto.key} className="crypto-rate-item">
-                                    <div className={`crypto-icon ${crypto.color}`}>
-                                        {crypto.symbol.charAt(0)}
-                                    </div>
-                                    <div className="crypto-info">
-                                        <div className="crypto-symbol">{crypto.symbol}</div>
-                                        <div className="crypto-value">
-                                            {formatBRL(cryptoRates?.[crypto.key])}
-                                        </div>
-                                    </div>
+                                    <div className={`crypto-icon ${crypto.color}`}>{crypto.symbol.charAt(0)}</div>
+                                    <div className="crypto-info"><div className="crypto-symbol">{crypto.symbol}</div><div className="crypto-value">{formatBRL(cryptoRates?.[crypto.key])}</div></div>
                                 </div>
                             ))
                         )}
-
                         <div className="crypto-live-dot"></div>
                     </div>
 
                     <div className="plans-header">
-                        <div>
-                            <div className="plans-badge">⚡ {t('rp_trading_plans')}</div>
-                            <h2 className="plans-title">{t('plans_title')}</h2>
-                            <p className="plans-subtitle">{t('plans_subtitle')}</p>
-                        </div>
-                        <div className="plans-platform-badge">
-                            <div className="platform-badge-title">{t('platform_fee')}</div>
-                            <div className="platform-badge-sub">{t('direct_bank_payout')}</div>
-                        </div>
+                        <div><div className="plans-badge">⚡ {t('rp_trading_plans')}</div><h2 className="plans-title">{t('plans_title')}</h2><p className="plans-subtitle">{t('plans_subtitle')}</p></div>
+                        <div className="plans-platform-badge"><div className="platform-badge-title">{t('platform_fee')}</div><div className="platform-badge-sub">{t('direct_bank_payout')}</div></div>
                     </div>
 
                     <div className="plans-grid">
                         {plans.map(plan => (
                             <div key={plan.id} className={`plan-card ${plan.popular ? 'popular' : ''}`}>
                                 {plan.popular && <div className="popular-badge">{t('most_popular')}</div>}
-
                                 <div className="plan-header">
-                                    <div className="plan-info">
-                                        <div className="plan-name">{plan.name}</div>
-                                    </div>
-                                    <div className="plan-return">
-                                        <div className="plan-return-value">{plan.returnValue}</div>
-                                        <div className="plan-return-label">{plan.returnLabel}</div>
-                                    </div>
+                                    <div className="plan-info"><div className="plan-name">{plan.name}</div></div>
+                                    <div className="plan-return"><div className="plan-return-value">{plan.returnValue}</div><div className="plan-return-label">{plan.returnLabel}</div></div>
                                 </div>
-
                                 <div className="plan-details">
                                     <div className="plan-detail">⏱️ {t('cycle')}: <strong>{plan.cycle}</strong></div>
                                     <div className="plan-detail">⚡ {t('hashrate')}: <strong>{plan.hashrate}</strong></div>
                                 </div>
-
-                                <div className="plan-deposit-range">
-                                    {t('deposit_range')}: <strong>R$ {plan.depositMin.toLocaleString()} to R$ {plan.depositMax.toLocaleString()}</strong>
-                                </div>
-
+                                <div className="plan-deposit-range">{t('deposit_range')}: <strong>R$ {plan.depositMin.toLocaleString()} to R$ {plan.depositMax.toLocaleString()}</strong></div>
                                 <div className="payment-section">
                                     <div className="payment-section-title">💳 {t('payment_method')}</div>
-
-                                    <div className="payment-section-title" style={{ marginTop: '4px', color: '#1e40af' }}>
-                                        🪙 {t('crypto_payment')}
-                                    </div>
+                                    <div className="payment-section-title" style={{ marginTop: '4px', color: '#1e40af' }}>🪙 {t('crypto_payment')}</div>
                                     <div className="plan-crypto-options">
                                         {cryptoOptions.map(crypto => (
-                                            <button
-                                                key={crypto.key}
-                                                className={`plan-crypto-btn ${selectedCrypto[plan.id] === crypto.key ? 'active' : ''}`}
-                                                onClick={() => handleCryptoSelect(plan.id, crypto.key)}
-                                                type="button"
-                                            >
-                                                <div className={`crypto-icon ${crypto.color}`}>
-                                                    {crypto.symbol.charAt(0)}
-                                                </div>
+                                            <button key={crypto.key} className={`plan-crypto-btn ${selectedCrypto[plan.id] === crypto.key ? 'active' : ''}`} onClick={() => handleCryptoSelect(plan.id, crypto.key)} type="button">
+                                                <div className={`crypto-icon ${crypto.color}`}>{crypto.symbol.charAt(0)}</div>
                                                 <span className="crypto-name">{crypto.label}</span>
                                             </button>
                                         ))}
                                     </div>
-
-                                    <div className="payment-section-title" style={{ marginTop: '8px', color: '#16a34a' }}>
-                                        🏦 {t('bank_payment')}
-                                    </div>
-                                    <select
-                                        className={`plan-bank-select ${selectedBank[plan.id] ? 'active' : ''}`}
-                                        value={selectedBank[plan.id]}
-                                        onChange={(e) => handleBankSelect(plan.id, e.target.value)}
-                                    >
+                                    <div className="payment-section-title" style={{ marginTop: '8px', color: '#16a34a' }}>🏦 {t('bank_payment')}</div>
+                                    <select className={`plan-bank-select ${selectedBank[plan.id] ? 'active' : ''}`} value={selectedBank[plan.id]} onChange={(e) => handleBankSelect(plan.id, e.target.value)}>
                                         <option value="">{t('bank_placeholder')}</option>
-                                        {brazilianBanks.map(bank => (
-                                            <option key={bank.code} value={bank.code}>
-                                                {bank.code} - {bank.name}
-                                            </option>
-                                        ))}
+                                        {brazilianBanks.map(bank => (<option key={bank.code} value={bank.code}>{bank.code} - {bank.name}</option>))}
                                     </select>
-
-                                    {selectedBank[plan.id] && (
-                                        <div className="bank-selected-badge">
-                                            ✅ {t('selected')}: {brazilianBanks.find(b => b.code === selectedBank[plan.id])?.name}
-                                        </div>
-                                    )}
+                                    {selectedBank[plan.id] && (<div className="bank-selected-badge">✅ {t('selected')}: {brazilianBanks.find(b => b.code === selectedBank[plan.id])?.name}</div>)}
                                 </div>
-
                                 <div className="plan-benefits">
-                                    {plan.benefits.map((benefit, idx) => (
-                                        <div key={idx} className="plan-benefit">{benefit}</div>
-                                    ))}
+                                    {plan.benefits.map((benefit, idx) => (<div key={idx} className="plan-benefit">{benefit}</div>))}
                                 </div>
-
-                                <button 
-                                    className="plan-deposit-btn"
-                                    onClick={() => handleDepositClick(plan)}
-                                >
-                                    {t('deposit')}{' '}
-                                    {selectedBank[plan.id]
-                                        ? brazilianBanks.find(b => b.code === selectedBank[plan.id])?.name
-                                        : selectedCrypto[plan.id]
-                                    } →
+                                <button className="plan-deposit-btn" onClick={() => handleDepositClick(plan)}>
+                                    {t('deposit')}{' '}{selectedBank[plan.id] ? brazilianBanks.find(b => b.code === selectedBank[plan.id])?.name : selectedCrypto[plan.id]} →
                                 </button>
                             </div>
                         ))}
