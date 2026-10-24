@@ -85,7 +85,7 @@ const ProfilePage = () => {
         }
     };
 
-    const maskIP = (ip) => (!ip || ip === 'Unknown') ? 'Unknown' : ip;
+    
 
     // Services List
     const services = [
@@ -150,11 +150,7 @@ const ProfilePage = () => {
                             <div className="pr-balance-card"><div className="pr-balance-label">💼 WALLET BALANCE</div><div className="pr-balance-value">R$ {user?.balance?.toFixed(2) || '0.00'}</div></div>
                             <div className="pr-balance-card"><div className="pr-balance-label">💰 COMMISSION</div><div className="pr-balance-value">R$ 0.00</div></div>
                         </div>
-                        <div className="pr-ip-card">
-                            <div className="pr-ip-label">🌐 LAST LOGIN IP ADDRESS</div>
-                            <div className="pr-ip-value">{maskIP(user?.ipAddress)}</div>
-                            <div className="pr-ip-note">Visible to Admin for security</div>
-                        </div>
+                        
                         {/* ⚠️ Referral Box Removed */}
                         <button className="pr-signout-btn" onClick={handleLogout}>⏻ Sign Out / Switch Account</button>
                     </div>
