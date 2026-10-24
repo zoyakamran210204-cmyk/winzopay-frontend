@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './DashboardHeader.css';
 
@@ -8,6 +8,7 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
     const { t } = useTranslation();
     const { user } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
     
     const [showNotifications, setShowNotifications] = useState(false);
     const [showInstallModal, setShowInstallModal] = useState(false);
@@ -23,15 +24,15 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
         { key: 'profile', label: t('profile'), icon: '👤', path: '/profile' },
     ];
 
-    const handleNav = (path) => {
-        navigate(path);
-    };
-
     return (
         <header className="db-header">
-            {/* Left - Logo */}
+            {/* Left - Logo (Clickable) */}
             <div className="db-header-left">
-                <div className="db-logo" onClick={() => handleNav('/dashboard')} style={{ cursor: 'pointer' }}>
+                <div 
+                    className="db-logo" 
+                    onClick={() => navigate('/dashboard')}
+                    style={{ cursor: 'pointer' }}
+                >
                     <div className="db-logo-icon">WP</div>
                     <div className="db-logo-text">
                         <div className="db-logo-title">WinzoPay</div>
@@ -45,7 +46,7 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
                         <button
                             key={item.key}
                             className={`db-nav-item ${activeNav === item.key ? 'active' : ''}`}
-                            onClick={() => handleNav(item.path)}
+                            onClick={() => navigate(item.path)}
                         >
                             <span className="db-nav-icon">{item.icon}</span>
                             {item.label}
@@ -56,11 +57,10 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
 
             {/* Right Side */}
             <div className="db-header-right">
-                <button className="db-topup-btn" onClick={() => handleNav('/deposit')}>
+                <button className="db-topup-btn" onClick={() => navigate('/deposit')}>
                     💰 {t('top_up')}: <span className="db-topup-amount">R$ {user?.balance?.toFixed(2) || '0.00'}</span>
                 </button>
 
-                {/* 🔔 Notifications */}
                 <div style={{ position: 'relative' }}>
                     <button className="db-icon-btn" onClick={() => setShowNotifications(!showNotifications)}>
                         🔔
@@ -78,7 +78,6 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
                     )}
                 </div>
 
-                {/* ↗️ Share Button (Desktop Only) - Mobile par CSS se hide hoga */}
                 <button className="db-share-btn hide-on-mobile" onClick={async () => {
                     const shareData = { title: 'WinzoPay', text: 'Join WinzoPay - Buy & Sell RP Instantly!', url: window.location.origin };
                     try {
@@ -89,16 +88,12 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
                     ↗️ <span>{t('share')}</span>
                 </button>
 
-                {/* 📱 Install App Button (Desktop Only) - Mobile par CSS se hide hoga */}
                 <button className="db-install-btn hide-on-mobile" onClick={() => setShowInstallModal(true)}>
                     📱 <span>{t('install_app')}</span>
                 </button>
-
-                {/* Mobile Menu Button (agar future mein zaroorat pade) */}
-                <button className="db-mobile-menu">☰</button>
             </div>
 
-            {/* ⚠️ Install App Modal */}
+            {/* Install App Modal */}
             {showInstallModal && (
                 <div style={{
                     position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
