@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // ================================
-// Backend URL (localhost)
+// Backend URL
 // ================================
 const API_URL = 'https://winzopay-backend.vercel.app/api';
 
@@ -56,6 +56,16 @@ export const getCryptoRates = async () => {
     try {
         const response = await api.get('/auth/crypto-rates');
         return response.data;
+    } catch (error) {
+        throw error.response?.data || { message: 'Network error' };
+    }
+};
+
+// ⚠️ NAYA: Get Current User Data (For Instant Refresh)
+export const getMe = async () => {
+    try {
+        const response = await api.get('/auth/me');
+        return response.data.user;
     } catch (error) {
         throw error.response?.data || { message: 'Network error' };
     }
