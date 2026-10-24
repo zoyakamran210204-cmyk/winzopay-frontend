@@ -189,7 +189,7 @@ const DepositPage = () => {
                         color: '#92400e',
                         marginBottom: 20
                     }}>
-                        ⚠️ You are depositing for <strong>Plan {planParam}</strong>. After admin approval, your plan will activate automatically.
+                        
                     </div>
                 )}
 
