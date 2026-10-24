@@ -50,6 +50,9 @@ img { max-width: 100%; height: auto; }
     /* Nav items - hide on mobile (bottom nav handles it) */
     .db-nav { display: none !important; }
 
+    /* ⚠️ NAYA: Mobile menu (3 lines) ko hide karein */
+    .db-mobile-menu { display: none !important; }
+
     .db-header-right {
         gap: 6px !important;
     }
@@ -64,7 +67,6 @@ img { max-width: 100%; height: auto; }
 
     .db-share-btn span, .db-install-btn span { display: none !important; }
     
-
     /* Main Content */
     .db-main, .auth-main, .dep-container, .buyrp-container, 
     .mining-container, .sellrp-container, .wd-container, 
