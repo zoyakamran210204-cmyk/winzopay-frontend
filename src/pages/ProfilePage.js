@@ -8,8 +8,7 @@ import './ProfilePage.css';
 const ProfilePage = () => {
     const { user, logout, login } = useAuth();
     const navigate = useNavigate();
-    const [copied, setCopied] = useState(false);
-    
+
     // Bank Form States
     const [showBankForm, setShowBankForm] = useState(false);
     const [bankForm, setBankForm] = useState({
@@ -28,11 +27,11 @@ const ProfilePage = () => {
     const [resetForm, setResetForm] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
     const [resetLoading, setResetLoading] = useState(false);
 
-    // ⚠️ NAYA: USDT Wallet State
+    // USDT Wallet State
     const [showWalletForm, setShowWalletForm] = useState(false);
     const [walletForm, setWalletForm] = useState({ network: 'TRC20', walletAddress: '', label: '' });
 
-    // ⚠️ NAYA: FAQ Modal State
+    // FAQ Modal State
     const [showFaqModal, setShowFaqModal] = useState(false);
 
     const brazilianBanks = [
@@ -44,13 +43,6 @@ const ProfilePage = () => {
     ];
 
     const handleLogout = () => { logout(); navigate('/'); };
-
-    const copyReferral = () => {
-        const code = `WZP-${user?._id?.slice(-6).toUpperCase() || 'XXXXXX'}`;
-        navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
 
     // Add Bank
     const handleAddBank = async (e) => {
@@ -109,7 +101,7 @@ const ProfilePage = () => {
             title: 'USDT Wallets', 
             sub: '0 Added (Link for Crypto)', 
             tag: 'Crypto',
-            onClick: () => setShowWalletForm(true) // ⚠️ Ab form khulega
+            onClick: () => setShowWalletForm(true)
         },
         { 
             icon: '📒', 
@@ -123,7 +115,7 @@ const ProfilePage = () => {
             title: 'Common FAQs', 
             sub: 'Trading & UTR questions', 
             tag: null,
-            onClick: () => setShowFaqModal(true) // ⚠️ Ab modal khulega
+            onClick: () => setShowFaqModal(true)
         },
         { 
             icon: '🔑', 
@@ -163,11 +155,7 @@ const ProfilePage = () => {
                             <div className="pr-ip-value">{maskIP(user?.ipAddress)}</div>
                             <div className="pr-ip-note">Visible to Admin for security</div>
                         </div>
-                        <div className="pr-referral-box">
-                            <div className="pr-referral-title">🎁 Referral ID & Origin</div>
-                            <div className="pr-referral-code"><span>WZP-{user?._id?.slice(-6).toUpperCase() || 'XXXXXX'}</span><button className="pr-referral-copy" onClick={copyReferral}>{copied ? '✅ Copied' : '📋 Copy'}</button></div>
-                            <div className="pr-referral-source"><span>JOINED VIA</span><span style={{ color: '#0f172a', fontWeight: 700 }}>Direct Signup</span></div>
-                        </div>
+                        {/* ⚠️ Referral Box Removed */}
                         <button className="pr-signout-btn" onClick={handleLogout}>⏻ Sign Out / Switch Account</button>
                     </div>
                 </div>
@@ -189,7 +177,6 @@ const ProfilePage = () => {
                             ))}
                         </div>
                     </div>
-                    {/* ✅ Community Banner Removed */}
                 </div>
             </div>
 
