@@ -9,38 +9,21 @@ const WithdrawPage = () => {
 
     const [amount, setAmount] = useState('');
     const [payoutMethod, setPayoutMethod] = useState('Bank');
+    const [selectedBank, setSelectedBank] = useState('');
+    const [agency, setAgency] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
+    const [cpfCnpj, setCpfCnpj] = useState('');
+    const [accountType, setAccountType] = useState('Corrente');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
     const [history, setHistory] = useState([]);
 
-    // BANK details
-    const [bankCode, setBankCode] = useState('');
-    const [bankHolderName, setBankHolderName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
-    const [bankCpf, setBankCpf] = useState('');
-
-    // PIX details
-    const [pixBankCode, setPixBankCode] = useState('');
-    const [pixKeyType, setPixKeyType] = useState('CPF');
-    const [pixKey, setPixKey] = useState('');
-    const [pixHolderName, setPixHolderName] = useState('');
-
-    // USDT details
-    const [usdtNetwork, setUsdtNetwork] = useState('TRC20');
-    const [usdtWalletAddress, setUsdtWalletAddress] = useState('');
-    const [usdtLabel, setUsdtLabel] = useState('');
-
     const brazilianBanks = [
-        { code: '260', name: 'Nubank' },
-        { code: '341', name: 'Itaú Unibanco' },
-        { code: '237', name: 'Bradesco' },
-        { code: '001', name: 'Banco do Brasil' },
-        { code: '104', name: 'Caixa Econômica' },
-        { code: '033', name: 'Santander' },
-        { code: '077', name: 'Banco Inter' },
-        { code: '380', name: 'PicPay' },
-        { code: '323', name: 'Mercado Pago' },
-        { code: '290', name: 'PagBank' }
+        { code: '260', name: 'Nubank' }, { code: '341', name: 'Itaú Unibanco' },
+        { code: '237', name: 'Bradesco' }, { code: '001', name: 'Banco do Brasil' },
+        { code: '104', name: 'Caixa Econômica' }, { code: '033', name: 'Santander' },
+        { code: '077', name: 'Banco Inter' }, { code: '380', name: 'PicPay' },
+        { code: '323', name: 'Mercado Pago' }, { code: '290', name: 'PagBank' }
     ];
 
     useEffect(() => {
@@ -55,9 +38,6 @@ const WithdrawPage = () => {
         loadHistory();
     }, []);
 
-    // ================================
-    // Handle Withdraw Submit
-    // ================================
     const handleWithdraw = async () => {
         setMessage({ type: '', text: '' });
         const amt = Number(amount);
@@ -72,65 +52,50 @@ const WithdrawPage = () => {
             return;
         }
 
-        // Validation
-        if (payoutMethod === 'Bank') {
-            if (!bankCode || !bankHolderName || !accountNumber || !bankCpf) {
-                setMessage({ type: 'error', text: 'Please fill all bank details' });
+        if (payoutMethod === 'Bank' || payoutMethod === 'PIX') {
+            if (!selectedBank) {
+                setMessage({ type: 'error', text: 'Please select a Brazilian bank' });
                 return;
             }
-        } else if (payoutMethod === 'PIX') {
-            if (!pixKeyType || !pixKey || !pixHolderName) {
-                setMessage({ type: 'error', text: 'Please fill all PIX details' });
+            if (!agency) {
+                setMessage({ type: 'error', text: 'Please enter bank agency' });
                 return;
             }
-        } else if (payoutMethod === 'USDT') {
-            if (!usdtNetwork || !usdtWalletAddress) {
-                setMessage({ type: 'error', text: 'Please fill all USDT details' });
+            if (!accountNumber) {
+                setMessage({ type: 'error', text: 'Please enter account number' });
+                return;
+            }
+            if (!cpfCnpj) {
+                setMessage({ type: 'error', text: 'Please enter CPF/CNPJ' });
                 return;
             }
         }
 
         setLoading(true);
         try {
-            const payload = {
+            const selectedBankObj = brazilianBanks.find(b => b.code === selectedBank);
+
+            await api.post('/transaction/withdraw', {
                 amount: amt,
                 cryptoType: payoutMethod,
-                bankDetails: payoutMethod === 'Bank' ? {
-                    bankCode: bankCode,
-                    bankName: brazilianBanks.find(b => b.code === bankCode)?.name || '',
-                    accountHolderName: bankHolderName,
+                bankAccount: selectedBank || null,
+                bankDetails: (payoutMethod === 'Bank' || payoutMethod === 'PIX') ? {
+                    bankCode: selectedBank,
+                    bankName: selectedBankObj?.name || '',
+                    agency: agency,
                     accountNumber: accountNumber,
-                    cpfCnpj: bankCpf
-                } : null,
-                pixDetails: payoutMethod === 'PIX' ? {
-                    bankCode: pixBankCode,
-                    bankName: brazilianBanks.find(b => b.code === pixBankCode)?.name || '',
-                    pixKeyType: pixKeyType,
-                    pixKey: pixKey,
-                    accountHolderName: pixHolderName
-                } : null,
-                cryptoDetails: payoutMethod === 'USDT' ? {
-                    network: usdtNetwork,
-                    walletAddress: usdtWalletAddress,
-                    label: usdtLabel
+                    accountType: accountType,
+                    cpfCnpj: cpfCnpj
                 } : null
-            };
-
-            await api.post('/transaction/withdraw', payload);
+            });
 
             setMessage({ type: 'success', text: '✅ Withdraw request submitted! Please wait for admin approval.' });
-            
-            // Reset
             setAmount('');
-            setBankCode('');
-            setBankHolderName('');
+            setSelectedBank('');
+            setAgency('');
             setAccountNumber('');
-            setBankCpf('');
-            setPixBankCode('');
-            setPixKey('');
-            setPixHolderName('');
-            setUsdtWalletAddress('');
-            setUsdtLabel('');
+            setCpfCnpj('');
+            setAccountType('Corrente');
 
             const res = await api.get('/transaction/my-transactions');
             setHistory(res.data.filter(tx => tx.type === 'Withdraw'));
@@ -149,52 +114,23 @@ const WithdrawPage = () => {
         });
     };
 
-    // Check if details complete
-    const bankComplete = bankCode && bankHolderName && accountNumber && bankCpf;
-    const pixComplete = pixKeyType && pixKey && pixHolderName;
-    const usdtComplete = usdtNetwork && usdtWalletAddress;
+    const bankDetailsComplete = selectedBank && agency && accountNumber && cpfCnpj;
 
     const canWithdraw = 
         amount && 
         Number(amount) >= 100 && 
         Number(amount) <= (user?.withdrawableBalance || 0) &&
-        (
-            (payoutMethod === 'Bank' && bankComplete) ||
-            (payoutMethod === 'PIX' && pixComplete) ||
-            (payoutMethod === 'USDT' && usdtComplete)
-        );
+        (payoutMethod !== 'Bank' || bankDetailsComplete) &&
+        (payoutMethod !== 'PIX' || bankDetailsComplete);
 
     const pendingWithdraws = history.filter(h => h.status === 'Pending').length;
     const approvedWithdraws = history.filter(h => h.status === 'Approved').reduce((s, h) => s + h.amount, 0);
-
-    const inputStyle = {
-        width: '100%',
-        padding: '14px 16px',
-        background: '#f8fafc',
-        border: '2px solid #e2e8f0',
-        borderRadius: '12px',
-        fontSize: '14px',
-        fontWeight: 600,
-        color: '#0f172a',
-        outline: 'none'
-    };
-
-    const labelStyle = {
-        display: 'block',
-        fontSize: '11px',
-        fontWeight: 700,
-        color: '#64748b',
-        textTransform: 'uppercase',
-        marginBottom: '6px',
-        letterSpacing: '0.3px'
-    };
 
     return (
         <div className="wd-page">
             <DashboardHeader activeNav="withdraw" />
 
             <div className="wd-container">
-
                 <div className="wd-header">
                     <div className="wd-header-icon">📤</div>
                     <div>
@@ -218,7 +154,7 @@ const WithdrawPage = () => {
                             R$ {user?.withdrawableBalance?.toFixed(2) || '0.00'}
                         </div>
                     </div>
-                    <div className="wd-balance-badge">24x7 Fast • 0% Payout Fee</div>
+                    <div className="wd-balance-badge">24x7 IMPS Fast • 0% Payout Fee</div>
                 </div>
 
                 <div className="wd-info-card">
@@ -226,7 +162,7 @@ const WithdrawPage = () => {
                     <div className="wd-info-content">
                         <div className="wd-info-title">How to load money into Withdrawable Balance?</div>
                         <div className="wd-info-text">
-                            Deposit → Buy RP Plan → Mine for cycle → Sell RP → Withdraw (You are here)
+                            Deposit funds to Top-Up (Step 1) → Buy RP plan (Step 2) → Mine for cycle (Steps 3 & 4) → Sell RP (Step 5) → Withdraw to Bank (Step 6)
                         </div>
                     </div>
                 </div>
@@ -241,7 +177,7 @@ const WithdrawPage = () => {
                         <div className="wd-status-value green">
                             R$ {approvedWithdraws.toFixed(2)}
                         </div>
-                        <div className="wd-status-sub">Settled to your account</div>
+                        <div className="wd-status-sub">Settled to your bank/account</div>
                     </div>
                     <div className="wd-status-card">
                         <div className="wd-status-label">⏳ PENDING MONEY</div>
@@ -252,45 +188,46 @@ const WithdrawPage = () => {
                     </div>
                 </div>
 
-                {/* Payout Method Tabs */}
                 <div className="wd-payout-tabs">
                     <button
                         className={`wd-payout-tab ${payoutMethod === 'Bank' ? 'active' : ''}`}
                         onClick={() => setPayoutMethod('Bank')}
                     >
-                        🏦 Bank Transfer
+                        🏦 Bank
                     </button>
                     <button
                         className={`wd-payout-tab ${payoutMethod === 'PIX' ? 'active' : ''}`}
                         onClick={() => setPayoutMethod('PIX')}
                     >
-                        📱 PIX
+                        📱 PIX / QR
                     </button>
                     <button
                         className={`wd-payout-tab ${payoutMethod === 'USDT' ? 'active' : ''}`}
                         onClick={() => setPayoutMethod('USDT')}
                     >
-                        🪙 USDT (Crypto)
+                        🪙 USDT Crypto
                     </button>
                 </div>
 
-                {/* ================================
-                    BANK SECTION
-                    ================================ */}
                 {payoutMethod === 'Bank' && (
                     <div className="wd-section">
                         <div className="wd-section-header">
-                            <div className="wd-section-title">🏦 BANK TRANSFER DETAILS</div>
+                            <div className="wd-section-title">🏦 RECEIVING BANK ACCOUNT</div>
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>Select Brazilian Bank</label>
+                            <label style={{
+                                display: 'block', fontSize: '11px', fontWeight: 700,
+                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                            }}>
+                                Select Brazilian Bank
+                            </label>
                             <select
                                 className="wd-bank-select"
-                                value={bankCode}
-                                onChange={(e) => setBankCode(e.target.value)}
+                                value={selectedBank}
+                                onChange={(e) => setSelectedBank(e.target.value)}
                             >
-                                <option value="">-- Select Bank --</option>
+                                <option value="">-- Select Brazilian Bank --</option>
                                 {brazilianBanks.map(bank => (
                                     <option key={bank.code} value={bank.code}>
                                         {bank.code} - {bank.name}
@@ -299,58 +236,97 @@ const WithdrawPage = () => {
                             </select>
                         </div>
 
-                        <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>Account Holder Full Name</label>
-                            <input
-                                type="text"
-                                style={inputStyle}
-                                placeholder="e.g. João Silva Santos"
-                                value={bankHolderName}
-                                onChange={(e) => setBankHolderName(e.target.value)}
-                            />
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                            <div>
+                                <label style={{
+                                    display: 'block', fontSize: '11px', fontWeight: 700,
+                                    color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                                }}>
+                                    Agency
+                                </label>
+                                <input
+                                    type="text"
+                                    className="wd-bank-select"
+                                    placeholder="e.g. 0001"
+                                    value={agency}
+                                    onChange={(e) => setAgency(e.target.value)}
+                                    style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                                />
+                            </div>
+                            <div>
+                                <label style={{
+                                    display: 'block', fontSize: '11px', fontWeight: 700,
+                                    color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                                }}>
+                                    Account Number
+                                </label>
+                                <input
+                                    type="text"
+                                    className="wd-bank-select"
+                                    placeholder="e.g. 12345-6"
+                                    value={accountNumber}
+                                    onChange={(e) => setAccountNumber(e.target.value)}
+                                    style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                                />
+                            </div>
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>Account Number</label>
-                            <input
-                                type="text"
-                                style={inputStyle}
-                                placeholder="e.g. 12345-6"
-                                value={accountNumber}
-                                onChange={(e) => setAccountNumber(e.target.value)}
-                            />
+                            <label style={{
+                                display: 'block', fontSize: '11px', fontWeight: 700,
+                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                            }}>
+                                Account Type
+                            </label>
+                            <select
+                                className="wd-bank-select"
+                                value={accountType}
+                                onChange={(e) => setAccountType(e.target.value)}
+                            >
+                                <option value="Corrente">Conta Corrente (Checking)</option>
+                                <option value="Poupanca">Conta Poupança (Savings)</option>
+                                <option value="Pagamento">Conta de Pagamento (Payment)</option>
+                            </select>
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>CPF / CNPJ</label>
+                            <label style={{
+                                display: 'block', fontSize: '11px', fontWeight: 700,
+                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                            }}>
+                                CPF / CNPJ
+                            </label>
                             <input
                                 type="text"
-                                style={inputStyle}
+                                className="wd-bank-select"
                                 placeholder="e.g. 123.456.789-00"
-                                value={bankCpf}
-                                onChange={(e) => setBankCpf(e.target.value)}
+                                value={cpfCnpj}
+                                onChange={(e) => setCpfCnpj(e.target.value)}
+                                style={{ backgroundImage: 'none', paddingRight: '14px' }}
                             />
                         </div>
                     </div>
                 )}
 
-                {/* ================================
-                    PIX SECTION
-                    ================================ */}
                 {payoutMethod === 'PIX' && (
                     <div className="wd-section">
                         <div className="wd-section-header">
-                            <div className="wd-section-title">📱 PIX TRANSFER DETAILS</div>
+                            <div className="wd-section-title">📱 RECEIVING PIX ACCOUNT</div>
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>Bank (PIX Provider) - Optional</label>
+                            <label style={{
+                                display: 'block', fontSize: '11px', fontWeight: 700,
+                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                            }}>
+                                Select Brazilian Bank (PIX-linked)
+                            </label>
                             <select
                                 className="wd-bank-select"
-                                value={pixBankCode}
-                                onChange={(e) => setPixBankCode(e.target.value)}
+                                value={selectedBank}
+                                onChange={(e) => setSelectedBank(e.target.value)}
                             >
-                                <option value="">-- Select Bank (Optional) --</option>
+                                <option value="">-- Select Bank for PIX --</option>
                                 {brazilianBanks.map(bank => (
                                     <option key={bank.code} value={bank.code}>
                                         {bank.code} - {bank.name}
@@ -359,112 +335,60 @@ const WithdrawPage = () => {
                             </select>
                         </div>
 
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                            <div>
+                                <label style={{
+                                    display: 'block', fontSize: '11px', fontWeight: 700,
+                                    color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                                }}>
+                                    Agency
+                                </label>
+                                <input
+                                    type="text"
+                                    className="wd-bank-select"
+                                    placeholder="e.g. 0001"
+                                    value={agency}
+                                    onChange={(e) => setAgency(e.target.value)}
+                                    style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                                />
+                            </div>
+                            <div>
+                                <label style={{
+                                    display: 'block', fontSize: '11px', fontWeight: 700,
+                                    color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                                }}>
+                                    Account Number
+                                </label>
+                                <input
+                                    type="text"
+                                    className="wd-bank-select"
+                                    placeholder="e.g. 12345-6"
+                                    value={accountNumber}
+                                    onChange={(e) => setAccountNumber(e.target.value)}
+                                    style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                                />
+                            </div>
+                        </div>
+
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>PIX Key Type</label>
-                            <select
+                            <label style={{
+                                display: 'block', fontSize: '11px', fontWeight: 700,
+                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
+                            }}>
+                                CPF / CNPJ (PIX Key Holder)
+                            </label>
+                            <input
+                                type="text"
                                 className="wd-bank-select"
-                                value={pixKeyType}
-                                onChange={(e) => setPixKeyType(e.target.value)}
-                            >
-                                <option value="CPF">CPF</option>
-                                <option value="CNPJ">CNPJ</option>
-                                <option value="Email">Email</option>
-                                <option value="Phone">Phone Number</option>
-                                <option value="Random">Random Key</option>
-                            </select>
-                        </div>
-
-                        <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>PIX Key</label>
-                            <input
-                                type="text"
-                                style={inputStyle}
-                                placeholder={
-                                    pixKeyType === 'CPF' ? 'e.g. 123.456.789-00' :
-                                    pixKeyType === 'Email' ? 'e.g. example@email.com' :
-                                    pixKeyType === 'Phone' ? 'e.g. +55 11 98765-4321' :
-                                    'e.g. Your PIX key'
-                                }
-                                value={pixKey}
-                                onChange={(e) => setPixKey(e.target.value)}
-                            />
-                        </div>
-
-                        <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>Account Holder Full Name</label>
-                            <input
-                                type="text"
-                                style={inputStyle}
-                                placeholder="e.g. João Silva Santos"
-                                value={pixHolderName}
-                                onChange={(e) => setPixHolderName(e.target.value)}
+                                placeholder="e.g. 123.456.789-00"
+                                value={cpfCnpj}
+                                onChange={(e) => setCpfCnpj(e.target.value)}
+                                style={{ backgroundImage: 'none', paddingRight: '14px' }}
                             />
                         </div>
                     </div>
                 )}
 
-                {/* ================================
-                    USDT SECTION
-                    ================================ */}
-                {payoutMethod === 'USDT' && (
-                    <div className="wd-section">
-                        <div className="wd-section-header">
-                            <div className="wd-section-title">🪙 USDT WALLET DETAILS</div>
-                        </div>
-
-                        <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>Network / Blockchain</label>
-                            <select
-                                className="wd-bank-select"
-                                value={usdtNetwork}
-                                onChange={(e) => setUsdtNetwork(e.target.value)}
-                            >
-                                <option value="TRC20">TRC20 (Tron - Low Fee)</option>
-                                <option value="BEP20">BEP20 (BSC - Binance Smart Chain)</option>
-                            </select>
-                        </div>
-
-                        <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>USDT Wallet Address</label>
-                            <input
-                                type="text"
-                                style={inputStyle}
-                                placeholder={
-                                    usdtNetwork === 'TRC20'
-                                        ? 'e.g. TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE'
-                                        : 'e.g. 0x1234567890abcdef1234567890abcdef12345678'
-                                }
-                                value={usdtWalletAddress}
-                                onChange={(e) => setUsdtWalletAddress(e.target.value)}
-                            />
-                        </div>
-
-                        <div style={{ marginBottom: '12px' }}>
-                            <label style={labelStyle}>Label (Optional)</label>
-                            <input
-                                type="text"
-                                style={inputStyle}
-                                placeholder="e.g. My Binance Wallet"
-                                value={usdtLabel}
-                                onChange={(e) => setUsdtLabel(e.target.value)}
-                            />
-                        </div>
-
-                        <div style={{
-                            padding: '12px 14px',
-                            background: '#fef3c7',
-                            border: '1px solid #fcd34d',
-                            borderRadius: '10px',
-                            fontSize: '11px',
-                            color: '#92400e',
-                            fontWeight: 600
-                        }}>
-                            ⚠️ Double-check the network and wallet address. Wrong address = lost funds.
-                        </div>
-                    </div>
-                )}
-
-                {/* Amount Section */}
                 <div className="wd-section">
                     <div className="wd-amount-label">
                         <div className="wd-amount-title">💵 Withdrawal Amount</div>
@@ -487,12 +411,13 @@ const WithdrawPage = () => {
                     <div className="wd-quick-amounts">
                         {[25, 50, 75, 100].map(percent => {
                             const amt = Math.floor((user?.withdrawableBalance || 0) * percent / 100);
+                            const finalAmt = amt < 100 ? 100 : amt; // ⚠️ Agar 100 se kam hai to 100 set karo
                             return (
                                 <button
                                     key={percent}
-                                    className={`wd-quick-btn ${Number(amount) === amt ? 'active' : ''}`}
-                                    onClick={() => setAmount(String(amt))}
-                                    disabled={amt < 100}
+                                    className={`wd-quick-btn ${Number(amount) === finalAmt ? 'active' : ''}`}
+                                    onClick={() => setAmount(String(finalAmt))}
+                                    disabled={(user?.withdrawableBalance || 0) < 100} // ⚠️ Sirf tab disable ho jab total balance hi 100 se kam ho
                                 >
                                     {percent === 100 ? 'MAX' : `${percent}%`}
                                 </button>
@@ -510,7 +435,7 @@ const WithdrawPage = () => {
                             <span className="wd-summary-value green">R$ 0 (FREE 0%)</span>
                         </div>
                         <div className="wd-summary-row">
-                            <span className="wd-summary-label">Amount Received via {payoutMethod}:</span>
+                            <span className="wd-summary-label">Amount Received in {payoutMethod}:</span>
                             <span className="wd-summary-value">R$ {Number(amount || 0).toLocaleString()}</span>
                         </div>
                     </div>
@@ -522,7 +447,9 @@ const WithdrawPage = () => {
                     >
                         {loading 
                             ? '⏳ Processing...' 
-                            : `📤 Request Withdrawal via ${payoutMethod} (R$ ${Number(amount || 0).toLocaleString()})`}
+                            : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !bankDetailsComplete
+                                ? '🏦 Complete Bank Details First' 
+                                : `📤 Request Withdrawal (R$ ${Number(amount || 0).toLocaleString()})`}
                     </button>
 
                     {!canWithdraw && amount && (
@@ -533,20 +460,21 @@ const WithdrawPage = () => {
                             color: '#dc2626',
                             fontWeight: 600
                         }}>
-                            {payoutMethod === 'Bank' && !bankComplete
-                                ? '⚠️ Please complete all bank details above'
-                                : payoutMethod === 'PIX' && !pixComplete
-                                    ? '⚠️ Please complete all PIX details above'
-                                    : payoutMethod === 'USDT' && !usdtComplete
-                                        ? '⚠️ Please complete all USDT details above'
-                                        : Number(amount) > (user?.withdrawableBalance || 0)
-                                            ? '⚠️ Insufficient withdrawable balance'
-                                            : '⚠️ Amount must be at least R$ 100'}
+                            {(payoutMethod === 'Bank' || payoutMethod === 'PIX') && !selectedBank
+                                ? '⚠️ Please select a Brazilian bank'
+                                : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !agency
+                                    ? '⚠️ Please enter bank agency'
+                                    : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !accountNumber
+                                        ? '⚠️ Please enter account number'
+                                        : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !cpfCnpj
+                                            ? '⚠️ Please enter CPF/CNPJ'
+                                            : Number(amount) > (user?.withdrawableBalance || 0)
+                                                ? '⚠️ Insufficient withdrawable balance'
+                                                : '⚠️ Amount must be at least R$ 100'}
                         </div>
                     )}
                 </div>
 
-                {/* History */}
                 <div className="wd-section">
                     <div className="wd-section-header">
                         <div className="wd-section-title">📜 Your Withdrawal History</div>
@@ -581,18 +509,16 @@ const WithdrawPage = () => {
                     )}
                 </div>
 
-                {/* Rules */}
                 <div className="wd-rules">
                     <div className="wd-rules-title">ℹ️ Withdrawal Guidelines</div>
                     <ul className="wd-rules-list">
-                        <li>Withdrawal requests are processed via automated 24x7 rails.</li>
-                        <li>Bank transfer takes 5-15 minutes. PIX is instant. USDT in 10-30 min.</li>
+                        <li>Withdrawal requests are processed via automated 24x7 IMPS banking rails.</li>
+                        <li>Prorated settlement takes between 5 to 15 minutes.</li>
                         <li>Minimum withdrawal amount is R$ 100.00.</li>
-                        <li>Complete payment details are required for each method.</li>
+                        <li>Bank selection is required for Bank and PIX withdrawals.</li>
                         <li>Admin approval is required for all withdrawals.</li>
                     </ul>
                 </div>
-
             </div>
         </div>
     );
