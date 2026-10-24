@@ -2,18 +2,38 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getCryptoRates } from '../utils/api';
+import { getCryptoRates, getMe } from '../utils/api'; // ⚠️ getMe import
 import DashboardHeader from '../components/DashboardHeader';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
     const { t } = useTranslation();
-    const { user } = useAuth();
+    const { user, login } = useAuth(); // ⚠️ login bhi import
     const navigate = useNavigate();
 
     const [cryptoRates, setCryptoRates] = useState(null);
     const [ratesLoading, setRatesLoading] = useState(true);
 
+    // ================================
+    // ⚠️ NAYA: Instant Refresh Logic (Har 2 second)
+    // ================================
+    useEffect(() => {
+        const refreshUser = async () => {
+            try {
+                const freshUser = await getMe();
+                login(freshUser, localStorage.getItem('winzopay_token'));
+            } catch (err) {
+                console.error('Refresh failed:', err);
+            }
+        };
+
+        const interval = setInterval(refreshUser, 2000);
+        return () => clearInterval(interval);
+    }, [login]);
+
+    // ================================
+    // Fetch Crypto Rates
+    // ================================
     useEffect(() => {
         const fetchRates = async () => {
             try {
@@ -188,7 +208,6 @@ const DashboardPage = () => {
                                         <div key={idx} className="plan-benefit">{benefit}</div>
                                     ))}
                                 </div>
-                                {/* ⚠️ Button text chota kar diya (sirf "Deposit →") */}
                                 <button className="plan-deposit-btn" onClick={() => handleDepositClick(plan)}>
                                     {t('deposit')} →
                                 </button>
