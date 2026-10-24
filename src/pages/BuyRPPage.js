@@ -2,18 +2,21 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import api from '../utils/api'; // ⚠️ api import
 import DashboardHeader from '../components/DashboardHeader';
 import './BuyRPPage.css';
 
 const BuyRPPage = () => {
     const { t } = useTranslation();
-    const { user } = useAuth();
+    const { user, login } = useAuth(); // ⚠️ login bhi import
     const navigate = useNavigate();
 
     const [selectedPlan, setSelectedPlan] = useState('A');
     const [amount, setAmount] = useState('');
-    const [selectedCrypto, setSelectedCrypto] = useState('BTC'); // ⚠️ Naya State
+    const [selectedCrypto, setSelectedCrypto] = useState('BTC');
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState(''); // ⚠️ success message state
+    const [loading, setLoading] = useState(false); // ⚠️ loading state
 
     const plans = [
         { id: 'A', name: 'Starter RP Miner', roi: '5%', min: 100, max: 500, cycle: '120s', hashrate: '25.4 MH/s' },
@@ -22,7 +25,6 @@ const BuyRPPage = () => {
         { id: 'D', name: 'Diamond Quantum Miner', roi: '12%', min: 10000, max: 100000, cycle: '500s', hashrate: '380.0 MH/s' }
     ];
 
-    // ⚠️ Crypto Options
     const cryptoOptions = [
         { key: 'BTC', label: 'BTC', color: 'btc', icon: '₿' },
         { key: 'BTC(r)', label: 'BTC(r)', color: 'btcr', icon: '₿' },
@@ -39,8 +41,12 @@ const BuyRPPage = () => {
         currentPlan.max
     ];
 
-    const handleBuy = () => {
+    // ================================
+    // ⚠️ NAYA: Direct Buy (No Deposit Page)
+    // ================================
+    const handleBuy = async () => {
         setError('');
+        setSuccess('');
 
         const amt = Number(amount);
         if (!amt) {
@@ -53,13 +59,38 @@ const BuyRPPage = () => {
             return;
         }
 
-        // Deposit page par redirect with plan, amount, aur crypto
-        navigate(`/deposit?plan=${selectedPlan}&amount=${amt}&method=${selectedCrypto}`);
+        if (amt > (user?.balance || 0)) {
+            setError(`Insufficient balance. You have R$ ${user?.balance?.toFixed(2) || '0.00'}, need R$ ${amt.toFixed(2)}`);
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // Direct Buy API call (no admin approval needed)
+            const res = await api.post('/transaction/buy-rp', {
+                planName: selectedPlan,
+                amount: amt
+            });
+
+            // Update user context
+            const updatedUser = { ...user, ...res.data.user };
+            login(updatedUser, localStorage.getItem('winzopay_token'));
+
+            setSuccess(`✅ ${res.data.message} Redirecting to Mining...`);
+            setAmount('');
+
+            setTimeout(() => navigate('/mining'), 2000);
+
+        } catch (err) {
+            setError(err.response?.data?.message || 'Purchase failed');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const expectedProfit = amount ? (Number(amount) * parseInt(currentPlan.roi) / 100) : 0;
     const totalReturn = amount ? (Number(amount) + expectedProfit) : 0;
-    const canBuy = amount && Number(amount) >= currentPlan.min && Number(amount) <= currentPlan.max;
+    const canBuy = amount && Number(amount) >= currentPlan.min && Number(amount) <= currentPlan.max && Number(amount) <= (user?.balance || 0);
 
     return (
         <div className="buyrp-page">
@@ -70,7 +101,7 @@ const BuyRPPage = () => {
                     <div className="buyrp-header-icon">💰</div>
                     <div>
                         <div className="buyrp-title">{t('buy_rp')} Mining Plan</div>
-                        <div className="buyrp-subtitle">Step 2: Choose plan & proceed to payment</div>
+                        <div className="buyrp-subtitle">Step 2: Choose plan & start mining</div>
                     </div>
                 </div>
 
@@ -79,7 +110,7 @@ const BuyRPPage = () => {
                         <div className="buyrp-step-num">2</div>
                         <div>
                             <div className="buyrp-step-title">RP Mining Plan Purchase</div>
-                            <div className="buyrp-step-sub">Select plan and amount → proceed to payment</div>
+                            <div className="buyrp-step-sub">Select plan and amount → start mining instantly</div>
                         </div>
                     </div>
                 </div>
@@ -95,6 +126,7 @@ const BuyRPPage = () => {
                 </div>
 
                 {error && <div className="buyrp-alert error">⚠️ {error}</div>}
+                {success && <div className="buyrp-alert success">{success}</div>}
 
                 <div className="buyrp-section-title">📋 Select RP Mining Plan</div>
                 <div className="buyrp-plan-grid">
@@ -149,16 +181,12 @@ const BuyRPPage = () => {
                         ))}
                     </div>
 
-                    {/* ⚠️ NAYA: Crypto Selection */}
+                    {/* Crypto Selection (Optional - sirf display ke liye) */}
                     <div style={{ marginTop: '20px', marginBottom: '15px' }}>
                         <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', marginBottom: '10px' }}>
                             🪙 Select Crypto Method
                         </div>
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(4, 1fr)',
-                            gap: '8px'
-                        }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
                             {cryptoOptions.map(crypto => (
                                 <button
                                     key={crypto.key}
@@ -228,15 +256,17 @@ const BuyRPPage = () => {
 
                     <button
                         className="buyrp-buy-btn"
-                        disabled={!canBuy}
+                        disabled={!canBuy || loading}
                         onClick={handleBuy}
                     >
-                        ▶ Proceed to Payment via {selectedCrypto} (R$ {Number(amount || 0).toLocaleString()})
+                        {loading ? '⏳ Processing...' : `▶ Start Mining via ${selectedCrypto} (R$ ${Number(amount || 0).toLocaleString()})`}
                     </button>
 
                     {!canBuy && amount && (
                         <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '12px', color: '#dc2626', fontWeight: 600 }}>
-                            ⚠️ Amount must be within R$ {currentPlan.min.toLocaleString()} - R$ {currentPlan.max.toLocaleString()}
+                            {Number(amount) > (user?.balance || 0)
+                                ? '⚠️ Insufficient balance. Please Top-Up first.'
+                                : `⚠️ Amount must be within R$ ${currentPlan.min.toLocaleString()} - R$ ${currentPlan.max.toLocaleString()}`}
                         </div>
                     )}
                 </div>
@@ -244,10 +274,11 @@ const BuyRPPage = () => {
                 <div className="buyrp-rules">
                     <div className="buyrp-rules-title">ℹ️ RP Mining Plan Rules</div>
                     <ul className="buyrp-rules-list">
-                        <li>After payment, admin will verify and activate your plan within 5-15 minutes.</li>
-                        <li>Your investment enters an automated mining period with live hashrate calculation.</li>
+                        <li>Plan is purchased directly from your Top-Up balance.</li>
+                        <li>Mining starts instantly (no admin approval needed).</li>
+                        <li>Your investment enters an automated mining period.</li>
                         <li>RP cannot be sold until mining duration completes.</li>
-                        <li>Once completed, proceed to Step 5: Sell RP to Seller to receive Capital + Profit.</li>
+                        <li>Once completed, proceed to Step 5: Sell RP to receive Capital + Profit.</li>
                     </ul>
                 </div>
             </div>
