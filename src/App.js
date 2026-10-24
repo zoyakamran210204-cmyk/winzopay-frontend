@@ -9,7 +9,7 @@ import SellRPPage from './pages/SellRPPage';
 import WithdrawPage from './pages/WithdrawPage';
 import LedgerPage from './pages/LedgerPage';
 import ProfilePage from './pages/ProfilePage';
-import MyTeamPage from './pages/MyTeamPage';
+
 import BottomNav from './components/BottomNav'; // Bottom Nav Import
 
 // Yeh component check karega ke user Login page par hai ya nahi
@@ -31,7 +31,7 @@ function AppLayout() {
                 <Route path="/withdraw" element={<WithdrawPage />} />
                 <Route path="/ledger" element={<LedgerPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/my-team" element={<MyTeamPage />} />
+               
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
 
