@@ -188,8 +188,9 @@ const DashboardPage = () => {
                                         <div key={idx} className="plan-benefit">{benefit}</div>
                                     ))}
                                 </div>
+                                {/* ⚠️ Button text chota kar diya (sirf "Deposit →") */}
                                 <button className="plan-deposit-btn" onClick={() => handleDepositClick(plan)}>
-                                    {t('deposit')} R$ {plan.depositMin.toLocaleString()} →
+                                    {t('deposit')} →
                                 </button>
                             </div>
                         ))}
