@@ -119,98 +119,6 @@
     color: white;
 }
 
-/* App Banner */
-.app-banner {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    border-radius: 16px;
-    padding: 20px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.app-banner-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex: 1;
-}
-
-.app-banner-icon {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    color: white;
-    font-size: 16px;
-    flex-shrink: 0;
-}
-
-.app-banner-content h3 {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.official-badge {
-    background: #065f46;
-    color: white;
-    font-size: 9px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-weight: 700;
-}
-
-.app-banner-content p {
-    font-size: 12px;
-    color: #94a3b8;
-    line-height: 1.4;
-}
-
-.app-banner-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.app-btn-install {
-    padding: 10px 20px;
-    background: #065f46;
-    color: white;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 700;
-    border: 1px solid #10b981;
-    transition: all 0.2s;
-}
-
-.app-btn-install:hover {
-    background: #047857;
-}
-
-.app-btn-share {
-    padding: 10px 16px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 700;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    transition: all 0.2s;
-}
-
-.app-btn-share:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
 /* Quick Actions */
 .quick-actions {
     display: grid;
@@ -462,6 +370,7 @@
     gap: 15px;
 }
 
+/* ⚠️ YEH SABSE AHEM CHANGE HAI: Buttons ko neeche align karne ke liye */
 .plan-card {
     background: white;
     border-radius: 16px;
@@ -469,6 +378,10 @@
     border: 2px solid #e2e8f0;
     position: relative;
     transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Buttons ko neeche push karega */
+    height: 100%;
 }
 
 .plan-card:hover {
@@ -513,15 +426,6 @@
     font-size: 14px;
     font-weight: 800;
     color: #0f172a;
-}
-
-.plan-roi-badge {
-    background: #dbeafe;
-    color: #1e40af;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 8px;
 }
 
 .plan-return {
@@ -578,11 +482,13 @@
     font-weight: 800;
 }
 
+/* ⚠️ Benefits ko flexible height dein taake space bhar sakein */
 .plan-benefits {
     display: flex;
     flex-direction: column;
     gap: 6px;
     margin-bottom: 15px;
+    flex-grow: 1; 
 }
 
 .plan-benefit {
@@ -601,6 +507,7 @@
     flex-shrink: 0;
 }
 
+/* ⚠️ Button hamesha sabse neeche rahega */
 .plan-deposit-btn {
     width: 100%;
     padding: 12px;
@@ -610,6 +517,7 @@
     font-size: 13px;
     font-weight: 700;
     transition: all 0.2s;
+    margin-top: auto; /* Extra space ko button ke upar daal dega */
 }
 
 .plan-deposit-btn:hover {
@@ -624,68 +532,6 @@
     background: #1e3a8a;
 }
 
-/* ================================
-   RESPONSIVE
-   ================================ */
-@media (max-width: 1200px) {
-    .db-main {
-        grid-template-columns: 1fr;
-    }
-    
-    .plans-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .db-main {
-        padding: 12px;
-        gap: 15px;
-    }
-    
-    .balance-value {
-        font-size: 32px;
-    }
-    
-    .balance-mini-cards {
-        grid-template-columns: 1fr;
-    }
-    
-    .quick-actions {
-        grid-template-columns: 1fr;
-    }
-    
-    .app-banner {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .app-banner-buttons {
-        justify-content: stretch;
-    }
-    
-    .app-btn-install,
-    .app-btn-share {
-        flex: 1;
-    }
-    
-    .transaction-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .plans-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .plans-header {
-        flex-direction: column;
-    }
-    
-    .plans-platform-badge {
-        text-align: left;
-        width: 100%;
-    }
-}
 /* ================================
    CRYPTO RATES BAR
    ================================ */
@@ -773,60 +619,6 @@
     50% { opacity: 0.4; }
 }
 
-/* ================================
-   PLAN CRYPTO OPTIONS
-   ================================ */
-.plan-crypto-options {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    margin: 12px 0;
-    padding-top: 12px;
-    border-top: 1px solid #f1f5f9;
-}
-
-.plan-crypto-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 8px 4px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.plan-crypto-btn:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.plan-crypto-btn.active {
-    background: #eff6ff;
-    border-color: #1e40af;
-    box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.1);
-}
-
-.plan-crypto-btn .crypto-icon {
-    width: 22px;
-    height: 22px;
-    font-size: 10px;
-}
-
-.plan-crypto-btn .crypto-name {
-    font-size: 9px;
-    font-weight: 700;
-    color: #475569;
-    letter-spacing: 0.3px;
-}
-
-.plan-crypto-btn.active .crypto-name {
-    color: #1e40af;
-}
-
-/* Loading State */
 .crypto-loading {
     display: flex;
     align-items: center;
@@ -845,131 +637,52 @@
     animation: spin 1s linear infinite;
     display: inline-block;
 }
+
 /* ================================
-   PLAN PAYMENT METHOD SECTIONS
+   RESPONSIVE
    ================================ */
-.payment-section {
-    margin: 12px 0;
-    padding-top: 12px;
-    border-top: 1px solid #f1f5f9;
-}
-
-.payment-section-title {
-    font-size: 10px;
-    font-weight: 800;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-/* Crypto Options */
-.plan-crypto-options {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    margin-bottom: 8px;
-}
-
-.plan-crypto-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 8px 4px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.plan-crypto-btn:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.plan-crypto-btn.active {
-    background: #eff6ff;
-    border-color: #1e40af;
-    box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.1);
-}
-
-.plan-crypto-btn .crypto-icon {
-    width: 22px;
-    height: 22px;
-    font-size: 10px;
-}
-
-.plan-crypto-btn .crypto-name {
-    font-size: 9px;
-    font-weight: 700;
-    color: #475569;
-    letter-spacing: 0.3px;
-}
-
-.plan-crypto-btn.active .crypto-name {
-    color: #1e40af;
-}
-
-/* Bank Options */
-.plan-bank-select {
-    width: 100%;
-    padding: 10px 12px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #0f172a;
-    cursor: pointer;
-    transition: all 0.2s;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 14px;
-    padding-right: 35px;
-}
-
-.plan-bank-select:hover {
-    background-color: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.plan-bank-select:focus {
-    background-color: white;
-    border-color: #1e40af;
-    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
-    outline: none;
-}
-
-.plan-bank-select.active {
-    background-color: #eff6ff;
-    border-color: #1e40af;
-    color: #1e40af;
-}
-
-/* Bank Badge */
-.bank-selected-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 6px;
-    padding: 4px 10px;
-    background: #dcfce7;
-    color: #166534;
-    border-radius: 8px;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .plan-crypto-options {
+@media (max-width: 1200px) {
+    .db-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .plans-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .db-main {
+        padding: 12px;
+        gap: 15px;
+    }
+    
+    .balance-value {
+        font-size: 32px;
+    }
+    
+    .balance-mini-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .transaction-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .plans-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .plans-header {
+        flex-direction: column;
+    }
+    
+    .plans-platform-badge {
+        text-align: left;
+        width: 100%;
     }
 }

@@ -11,7 +11,6 @@ const DashboardPage = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
 
-    // Crypto Rates (Top bar ke liye, plans se hataya ja raha hai)
     const [cryptoRates, setCryptoRates] = useState(null);
     const [ratesLoading, setRatesLoading] = useState(true);
 
@@ -44,88 +43,33 @@ const DashboardPage = () => {
         return `R$ ${value.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}`;
     };
 
-    // ⚠️ Simple Deposit Click (Payment method hataya)
     const handleDepositClick = (plan) => {
         navigate(`/deposit?plan=${plan.id}&amount=${plan.depositMin}`);
     };
 
     const plans = [
         {
-            id: 'A',
-            name: t('plan_a_name') || 'Starter RP Miner',
-            returnValue: '5%',
-            returnLabel: 'RETURN',
-            depositMin: 100,
-            depositMax: 500,
-            cycle: '120s Fast Mining',
-            hashrate: '25.4 MH/s',
-            benefits: [
-                t('plan_a_benefit_1') || '5% Guaranteed Mining Yield',
-                t('plan_a_benefit_2') || 'Quick 120-Second Mining Period',
-                t('plan_a_benefit_3') || 'Instant Auto-Completion',
-                t('plan_a_benefit_4') || 'Direct Seller Marketplace Liquidity'
-            ],
-            popular: false
+            id: 'A', name: t('plan_a_name') || 'Starter RP Miner', returnValue: '5%', returnLabel: 'RETURN', depositMin: 100, depositMax: 500, cycle: '120s Fast Mining', hashrate: '25.4 MH/s',
+            benefits: [t('plan_a_benefit_1') || '5% Guaranteed Mining Yield', t('plan_a_benefit_2') || 'Quick 120-Second Mining Period', t('plan_a_benefit_3') || 'Instant Auto-Completion', t('plan_a_benefit_4') || 'Direct Seller Marketplace Liquidity'], popular: false
         },
         {
-            id: 'B',
-            name: t('plan_b_name') || 'Silver Growth Rig',
-            returnValue: '8%',
-            returnLabel: 'RETURN',
-            depositMin: 501,
-            depositMax: 1000,
-            cycle: '300s Mining Cycle',
-            hashrate: '64.8 MH/s',
-            benefits: [
-                t('plan_b_benefit_1') || '8% Return on Total Investment',
-                t('plan_b_benefit_2') || 'Dual-Cluster GPU Hash Processing',
-                t('plan_b_benefit_3') || 'Priority Seller Settlement Lane',
-                t('plan_b_benefit_4') || 'Zero Transaction Deductions'
-            ],
-            popular: true
+            id: 'B', name: t('plan_b_name') || 'Silver Growth Rig', returnValue: '8%', returnLabel: 'RETURN', depositMin: 501, depositMax: 1000, cycle: '300s Mining Cycle', hashrate: '64.8 MH/s',
+            benefits: [t('plan_b_benefit_1') || '8% Return on Total Investment', t('plan_b_benefit_2') || 'Dual-Cluster GPU Hash Processing', t('plan_b_benefit_3') || 'Priority Seller Settlement Lane', t('plan_b_benefit_4') || 'Zero Transaction Deductions'], popular: true
         },
         {
-            id: 'C',
-            name: t('plan_c_name') || 'Gold Pro Mining Farm',
-            returnValue: '10%',
-            returnLabel: 'RETURN',
-            depositMin: 1001,
-            depositMax: 1500,
-            cycle: '300s High Yield',
-            hashrate: '142.5 MH/s',
-            benefits: [
-                t('plan_c_benefit_1') || '10% High Commission Profit',
-                t('plan_c_benefit_2') || 'Dedicated ASIC Mining Rig Allocation',
-                t('plan_c_benefit_3') || 'VIP Verified Buyer Matching',
-                t('plan_c_benefit_4') || 'Instant Return to Top-Up Balance'
-            ],
-            popular: false
+            id: 'C', name: t('plan_c_name') || 'Gold Pro Mining Farm', returnValue: '10%', returnLabel: 'RETURN', depositMin: 1001, depositMax: 1500, cycle: '300s High Yield', hashrate: '142.5 MH/s',
+            benefits: [t('plan_c_benefit_1') || '10% High Commission Profit', t('plan_c_benefit_2') || 'Dedicated ASIC Mining Rig Allocation', t('plan_c_benefit_3') || 'VIP Verified Buyer Matching', t('plan_c_benefit_4') || 'Instant Return to Top-Up Balance'], popular: false
         },
         {
-            id: 'D',
-            name: t('plan_d_name') || 'Diamond Quantum Miner',
-            returnValue: '12%',
-            returnLabel: 'RETURN',
-            depositMin: 10000,
-            depositMax: 100000,
-            cycle: '500s VIP Master Cycle',
-            hashrate: '380.0 MH/s',
-            benefits: [
-                t('plan_d_benefit_1') || '12% Maximum Top-Tier Mining Return',
-                t('plan_d_benefit_2') || 'Highest Mining Power & Speed',
-                t('plan_d_benefit_3') || 'Direct 1-Click Instant Sale to Official Desk',
-                t('plan_d_benefit_4') || 'Instant Auto-Refund of Capital + Profit'
-            ],
-            popular: false
+            id: 'D', name: t('plan_d_name') || 'Diamond Quantum Miner', returnValue: '12%', returnLabel: 'RETURN', depositMin: 10000, depositMax: 100000, cycle: '500s VIP Master Cycle', hashrate: '380.0 MH/s',
+            benefits: [t('plan_d_benefit_1') || '12% Maximum Top-Tier Mining Return', t('plan_d_benefit_2') || 'Highest Mining Power & Speed', t('plan_d_benefit_3') || 'Direct 1-Click Instant Sale to Official Desk', t('plan_d_benefit_4') || 'Instant Auto-Refund of Capital + Profit'], popular: false
         }
     ];
 
     return (
         <div className="db-page">
             <DashboardHeader activeNav="home" />
-
             <main className="db-main">
-                {/* LEFT COLUMN (Dashboard ke baqi cards) */}
                 <div className="db-left">
                     <div className="balance-card">
                         <div className="balance-header">
@@ -134,7 +78,6 @@ const DashboardPage = () => {
                         </div>
                         <div className="balance-value">R$ {user?.balance?.toFixed(2) || '0.00'}</div>
                         <div className="balance-sub">{t('balance_step_1')}</div>
-
                         <div className="balance-mini-cards">
                             <div className="mini-card">
                                 <div className="mini-card-label">💵 {t('withdrawable')}</div>
@@ -196,7 +139,6 @@ const DashboardPage = () => {
                     </div>
                 </div>
 
-                {/* RIGHT COLUMN - PLANS (Simple & Clean) */}
                 <div className="db-right">
                     <div className="crypto-rates-bar">
                         <div className="crypto-rates-label">🔴 LIVE RATES (BRL)</div>
@@ -227,8 +169,6 @@ const DashboardPage = () => {
                         {plans.map(plan => (
                             <div key={plan.id} className={`plan-card ${plan.popular ? 'popular' : ''}`}>
                                 {plan.popular && <div className="popular-badge">{t('most_popular')}</div>}
-
-                                {/* Plan Header */}
                                 <div className="plan-header">
                                     <div className="plan-info"><div className="plan-name">{plan.name}</div></div>
                                     <div className="plan-return">
@@ -236,30 +176,19 @@ const DashboardPage = () => {
                                         <div className="plan-return-label">{plan.returnLabel}</div>
                                     </div>
                                 </div>
-
-                                {/* Cycle & Hashrate */}
                                 <div className="plan-details">
                                     <div className="plan-detail">⏱️ {t('cycle')}: <strong>{plan.cycle}</strong></div>
                                     <div className="plan-detail">⚡ {t('hashrate')}: <strong>{plan.hashrate}</strong></div>
                                 </div>
-
-                                {/* Deposit Range */}
                                 <div className="plan-deposit-range">
                                     {t('deposit_range')}: <strong>R$ {plan.depositMin.toLocaleString()} to R$ {plan.depositMax.toLocaleString()}</strong>
                                 </div>
-
-                                {/* Benefits */}
                                 <div className="plan-benefits">
                                     {plan.benefits.map((benefit, idx) => (
                                         <div key={idx} className="plan-benefit">{benefit}</div>
                                     ))}
                                 </div>
-
-                                {/* ⚠️ Simple Deposit Button (Payment method hataya) */}
-                                <button 
-                                    className="plan-deposit-btn"
-                                    onClick={() => handleDepositClick(plan)}
-                                >
+                                <button className="plan-deposit-btn" onClick={() => handleDepositClick(plan)}>
                                     {t('deposit')} R$ {plan.depositMin.toLocaleString()} →
                                 </button>
                             </div>
