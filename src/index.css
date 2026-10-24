@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
 }
 
 /* Remove default button styles */
@@ -30,6 +30,7 @@ button {
 input, select, textarea {
     font-family: inherit;
     outline: none;
+    max-width: 100%;
 }
 
 /* Remove link decoration */
@@ -68,12 +69,17 @@ a {
     text-align: center;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* ================================
    GLOBAL MOBILE RESPONSIVE FIXES
    ================================ */
 
 @media (max-width: 768px) {
-    /* Container padding for mobile */
+    /* Har page ka main container mobile ke liye adjust */
     .container,
     .db-main,
     .dep-container,
@@ -84,27 +90,28 @@ a {
     .lg-container,
     .pr-container,
     .mt-container {
-        padding: 15px !important;
+        padding: 12px !important;
+        display: flex !important;
         flex-direction: column !important;
-        grid-template-columns: 1fr !important;
+        width: 100% !important;
         gap: 15px !important;
     }
 
-    /* Headings smaller on mobile */
+    /* Headings choti karein taake screen mein fit aayen */
     h1, .hero-title, .buyrp-title, .mining-title, .wd-title, .lg-title, .pr-name, .mt-hero-title {
-        font-size: 24px !important;
+        font-size: 22px !important;
         line-height: 1.3 !important;
     }
 
     h2, .plans-title {
-        font-size: 20px !important;
+        font-size: 18px !important;
     }
 
     h3 {
-        font-size: 16px !important;
+        font-size: 15px !important;
     }
 
-    /* Grid layouts to single column */
+    /* Grids ko single column karein (ek ke neeche ek) */
     .plans-grid,
     .hero-cards,
     .quick-actions,
@@ -124,14 +131,16 @@ a {
     .wd-status-grid,
     .lg-stats {
         grid-template-columns: 1fr !important;
+        display: grid !important;
         gap: 12px !important;
     }
 
-    /* Header navigation - stack items */
+    /* Header navigation ko stack karein */
     .db-header,
     .adm-header {
         flex-direction: column !important;
         padding: 10px !important;
+        height: auto !important;
         gap: 10px !important;
     }
 
@@ -147,12 +156,13 @@ a {
         flex-wrap: wrap !important;
         justify-content: center !important;
         width: 100% !important;
+        gap: 5px !important;
     }
 
     .db-nav-item,
     .adm-nav-item {
-        padding: 8px 12px !important;
-        font-size: 12px !important;
+        padding: 6px 10px !important;
+        font-size: 11px !important;
     }
 
     .db-header-right,
@@ -163,24 +173,25 @@ a {
         gap: 8px !important;
     }
 
-    /* Tables scroll on mobile */
+    /* Tables mobile par scroll ho sakein */
     .adm-users-table {
         overflow-x: auto !important;
+        display: block !important;
     }
 
-    .adm-users-table-header,
-    .adm-user-row {
-        display: flex !important;
-        flex-direction: column !important;
-        padding: 12px !important;
-    }
-
-    /* Hide table header on mobile */
     .adm-users-table-header {
         display: none !important;
     }
 
-    /* Forms - full width */
+    .adm-user-row {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 12px !important;
+        gap: 8px !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+    }
+
+    /* Forms full width */
     .form-input-wrapper,
     .wd-amount-input-wrap,
     .buyrp-amount-input-wrap,
@@ -199,9 +210,16 @@ a {
         width: 100% !important;
         font-size: 14px !important;
         padding: 14px !important;
+        margin-top: 10px !important;
     }
 
-    /* Hero section on auth page */
+    /* Auth page */
+    .auth-main {
+        flex-direction: column !important;
+        padding: 15px !important;
+        gap: 20px !important;
+    }
+
     .auth-hero {
         max-width: 100% !important;
         text-align: center !important;
@@ -212,35 +230,37 @@ a {
         padding: 20px !important;
     }
 
-    /* Stat values smaller */
+    /* Stat values */
     .balance-value,
     .adm-stat-value,
     .adm-ud-stat-value {
-        font-size: 24px !important;
+        font-size: 20px !important;
     }
 
-    /* Hide some desktop-only elements */
+    /* Crypto rates bar */
     .crypto-rates-bar {
         flex-wrap: wrap !important;
         gap: 8px !important;
         padding: 10px !important;
+        justify-content: center !important;
     }
 
     .crypto-rate-item {
         flex: 1 1 calc(50% - 8px) !important;
-        min-width: 120px !important;
+        min-width: 100px !important;
     }
 
-    /* Profile page - stack */
+    /* Profile page */
     .pr-container {
         display: flex !important;
         flex-direction: column !important;
     }
 
-    /* Transaction items */
+    /* Admin transaction cards */
     .adm-tx-card-header {
         flex-direction: column !important;
         align-items: flex-start !important;
+        gap: 10px !important;
     }
 
     .adm-tx-card-right {
@@ -248,34 +268,52 @@ a {
         text-align: left !important;
     }
 
-    /* Fixed image sizes */
-    img {
-        max-width: 100% !important;
-        height: auto !important;
+    .adm-tx-actions {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .adm-tx-btn {
+        width: 100% !important;
+    }
+
+    /* Amount/QR card */
+    .dep-balance,
+    .buyrp-balance-card {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
     }
 }
 
 @media (max-width: 480px) {
-    /* Extra small screens */
     h1, .hero-title {
         font-size: 20px !important;
     }
 
     h2 {
-        font-size: 18px !important;
+        font-size: 17px !important;
     }
 
     .hero-badge,
     .plans-badge {
-        font-size: 10px !important;
-        padding: 4px 10px !important;
+        font-size: 9px !important;
+        padding: 4px 8px !important;
     }
 
     .balance-value {
-        font-size: 20px !important;
+        font-size: 18px !important;
     }
 
-    .adm-nav-item span:not(.db-nav-icon) {
+    /* Mobile menu - hide text, show only icons */
+    .db-nav-item span:not(.db-nav-icon),
+    .adm-nav-item span:not(.adm-nav-icon) {
         display: none;
+    }
+
+    .db-nav-item,
+    .adm-nav-item {
+        padding: 8px !important;
+        font-size: 16px !important;
     }
 }
