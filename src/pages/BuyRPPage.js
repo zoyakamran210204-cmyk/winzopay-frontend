@@ -2,37 +2,38 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import api from '../utils/api';
+import api from '../utils/api'; 
 import DashboardHeader from '../components/DashboardHeader';
 import './BuyRPPage.css';
 
 const BuyRPPage = () => {
     const { t } = useTranslation();
-    const { user, login } = useAuth();
+    const { user, login } = useAuth(); 
     const navigate = useNavigate();
 
     const [selectedPlan, setSelectedPlan] = useState('A');
     const [amount, setAmount] = useState('');
     const [selectedCrypto, setSelectedCrypto] = useState('BTC');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(''); 
+    const [loading, setLoading] = useState(false); 
 
+    // ⚠️ Cycle 15 min set kar diya
     const plans = [
         { 
-            id: 'A', name: 'Starter RP Miner', roi: '5%', min: 100, max: 500, cycle: '120s', hashrate: '25.4 MH/s',
+            id: 'A', name: 'Starter RP Miner', roi: '5%', min: 100, max: 500, cycle: '15 min', hashrate: '25.4 MH/s',
             quickAmounts: [100, 200, 300, 500]
         },
         { 
-            id: 'B', name: 'Silver Growth Rig', roi: '8%', min: 501, max: 1000, cycle: '300s', hashrate: '64.8 MH/s',
+            id: 'B', name: 'Silver Growth Rig', roi: '8%', min: 501, max: 1000, cycle: '15 min', hashrate: '64.8 MH/s',
             quickAmounts: [501, 700, 800, 1000]
         },
         { 
-            id: 'C', name: 'Gold Pro Mining Farm', roi: '10%', min: 1001, max: 1500, cycle: '300s', hashrate: '142.5 MH/s',
-            quickAmounts: [1001, 2000, 5000, 10000]
+            id: 'C', name: 'Gold Pro Mining Farm', roi: '10%', min: 1001, max: 5000, cycle: '15 min', hashrate: '142.5 MH/s',
+            quickAmounts: [1001, 2000, 5000]
         },
         { 
-            id: 'D', name: 'Diamond Quantum Miner', roi: '12%', min: 10000, max: 100000, cycle: '500s', hashrate: '380.0 MH/s',
+            id: 'D', name: 'Diamond Quantum Miner', roi: '12%', min: 10000, max: 100000, cycle: '15 min', hashrate: '380.0 MH/s',
             quickAmounts: [10001, 20000, 50000, 100000]
         }
     ];
@@ -168,7 +169,6 @@ const BuyRPPage = () => {
                         />
                     </div>
 
-                    {/* ⚠️ UPDATED: Plan-specific Quick Amounts */}
                     <div className="buyrp-quick-amounts">
                         {currentPlan.quickAmounts.map((amt, idx) => (
                             <button
@@ -182,7 +182,6 @@ const BuyRPPage = () => {
                         ))}
                     </div>
 
-                    {/* Crypto Selection */}
                     <div style={{ marginTop: '20px', marginBottom: '15px' }}>
                         <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', marginBottom: '10px' }}>
                             🪙 Select Crypto Method
@@ -194,35 +193,23 @@ const BuyRPPage = () => {
                                     type="button"
                                     onClick={() => setSelectedCrypto(crypto.key)}
                                     style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        gap: '6px',
+                                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
                                         padding: '12px 8px',
                                         background: selectedCrypto === crypto.key ? '#eff6ff' : '#f8fafc',
                                         border: selectedCrypto === crypto.key ? '2px solid #1e40af' : '1px solid #e2e8f0',
-                                        borderRadius: '10px',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s'
+                                        borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s'
                                     }}
                                 >
                                     <div style={{
-                                        width: '32px',
-                                        height: '32px',
-                                        borderRadius: '50%',
+                                        width: '32px', height: '32px', borderRadius: '50%',
                                         background: crypto.key === 'BTC' ? '#f7931a' : crypto.key === 'BTC(r)' ? '#16a34a' : crypto.key === 'USDT' ? '#26a17b' : '#627eea',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        color: 'white',
-                                        fontWeight: 800,
-                                        fontSize: '14px'
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        color: 'white', fontWeight: 800, fontSize: '14px'
                                     }}>
                                         {crypto.icon}
                                     </div>
                                     <span style={{
-                                        fontSize: '11px',
-                                        fontWeight: 700,
+                                        fontSize: '11px', fontWeight: 700,
                                         color: selectedCrypto === crypto.key ? '#1e40af' : '#475569'
                                     }}>
                                         {crypto.label}
@@ -277,7 +264,7 @@ const BuyRPPage = () => {
                     <ul className="buyrp-rules-list">
                         <li>Plan is purchased directly from your Top-Up balance.</li>
                         <li>Mining starts instantly (no admin approval needed).</li>
-                        <li>Your investment enters an automated mining period.</li>
+                        <li>Your investment enters an automated mining period of 15 minutes.</li>
                         <li>RP cannot be sold until mining duration completes.</li>
                         <li>Once completed, proceed to Step 5: Sell RP to receive Capital + Profit.</li>
                     </ul>
