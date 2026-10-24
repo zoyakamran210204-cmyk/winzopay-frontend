@@ -10,7 +10,7 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
     const navigate = useNavigate();
     
     const [showNotifications, setShowNotifications] = useState(false);
-    const [showInstallModal, setShowInstallModal] = useState(false); // ⚠️ Naya State Install App ke liye
+    const [showInstallModal, setShowInstallModal] = useState(false);
 
     const navItems = [
         { key: 'home', label: t('home'), icon: '🏠', path: '/dashboard' },
@@ -39,7 +39,7 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
                     </div>
                 </div>
 
-                {/* Navigation */}
+                {/* Navigation (Desktop Only) */}
                 <nav className="db-nav">
                     {navItems.map(item => (
                         <button
@@ -78,8 +78,8 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
                     )}
                 </div>
 
-                {/* ↗️ Share Button */}
-                <button className="db-share-btn" onClick={async () => {
+                {/* ↗️ Share Button (Desktop Only) - Mobile par CSS se hide hoga */}
+                <button className="db-share-btn hide-on-mobile" onClick={async () => {
                     const shareData = { title: 'WinzoPay', text: 'Join WinzoPay - Buy & Sell RP Instantly!', url: window.location.origin };
                     try {
                         if (navigator.share) { await navigator.share(shareData); } 
@@ -89,15 +89,16 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
                     ↗️ <span>{t('share')}</span>
                 </button>
 
-                {/* 📱 Install App Button */}
-                <button className="db-install-btn" onClick={() => setShowInstallModal(true)}>
+                {/* 📱 Install App Button (Desktop Only) - Mobile par CSS se hide hoga */}
+                <button className="db-install-btn hide-on-mobile" onClick={() => setShowInstallModal(true)}>
                     📱 <span>{t('install_app')}</span>
                 </button>
 
+                {/* Mobile Menu Button (agar future mein zaroorat pade) */}
                 <button className="db-mobile-menu">☰</button>
             </div>
 
-            {/* ⚠️ Install App Modal (Popup) */}
+            {/* ⚠️ Install App Modal */}
             {showInstallModal && (
                 <div style={{
                     position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
