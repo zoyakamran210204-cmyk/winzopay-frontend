@@ -116,9 +116,9 @@ const WithdrawPage = () => {
 
     const bankDetailsComplete = selectedBank && agency && accountNumber && cpfCnpj;
 
-    const canWithdraw = 
-        amount && 
-        Number(amount) >= 100 && 
+    const canWithdraw =
+        amount &&
+        Number(amount) >= 100 &&
         Number(amount) <= (user?.withdrawableBalance || 0) &&
         (payoutMethod !== 'Bank' || bankDetailsComplete) &&
         (payoutMethod !== 'PIX' || bankDetailsComplete);
@@ -408,18 +408,28 @@ const WithdrawPage = () => {
                         />
                     </div>
 
-                    {/* ⚠️ FIXED: Quick Amounts Logic */}
+                    {/* ✅ FIXED: Quick Amount Buttons */}
                     <div className="wd-quick-amounts">
                         {[25, 50, 75, 100].map(percent => {
-                            const amt = Math.floor((user?.withdrawableBalance || 0) * percent / 100);
-                            const isDisabled = amt < 100; 
+                            const balance = user?.withdrawableBalance || 0;
+                            let amt = Math.floor(balance * percent / 100);
+
+                            // MAX button poora balance use kare
+                            if (percent === 100) {
+                                amt = Number(balance.toFixed(2));
+                            }
+
+                            const isDisabled = amt < 100;
+                            const isActive = Number(amount) === amt;
 
                             return (
                                 <button
                                     key={percent}
                                     type="button"
-                                    className={`wd-quick-btn ${Number(amount) === amt ? 'active' : ''}`}
-                                    onClick={() => !isDisabled && setAmount(String(amt))}
+                                    className={`wd-quick-btn ${isActive ? 'active' : ''}`}
+                                    onClick={() => {
+                                        if (!isDisabled) setAmount(String(amt));
+                                    }}
                                     disabled={isDisabled}
                                     style={{
                                         opacity: isDisabled ? 0.4 : 1,
@@ -452,10 +462,10 @@ const WithdrawPage = () => {
                         disabled={!canWithdraw || loading}
                         onClick={handleWithdraw}
                     >
-                        {loading 
-                            ? '⏳ Processing...' 
+                        {loading
+                            ? '⏳ Processing...'
                             : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !bankDetailsComplete
-                                ? '🏦 Complete Bank Details First' 
+                                ? '🏦 Complete Bank Details First'
                                 : `📤 Request Withdrawal (R$ ${Number(amount || 0).toLocaleString()})`}
                     </button>
 
