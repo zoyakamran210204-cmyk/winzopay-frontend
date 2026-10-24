@@ -28,6 +28,13 @@ const ProfilePage = () => {
     const [resetForm, setResetForm] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
     const [resetLoading, setResetLoading] = useState(false);
 
+    // ⚠️ NAYA: USDT Wallet State
+    const [showWalletForm, setShowWalletForm] = useState(false);
+    const [walletForm, setWalletForm] = useState({ network: 'TRC20', walletAddress: '', label: '' });
+
+    // ⚠️ NAYA: FAQ Modal State
+    const [showFaqModal, setShowFaqModal] = useState(false);
+
     const brazilianBanks = [
         { code: '260', name: 'Nubank' }, { code: '341', name: 'Itaú Unibanco' },
         { code: '237', name: 'Bradesco' }, { code: '001', name: 'Banco do Brasil' },
@@ -45,7 +52,7 @@ const ProfilePage = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    // ✅ Add Bank
+    // Add Bank
     const handleAddBank = async (e) => {
         e.preventDefault();
         setBankLoading(true);
@@ -63,7 +70,7 @@ const ProfilePage = () => {
         }
     };
 
-    // ✅ Reset Password
+    // Reset Password
     const handleResetPassword = async (e) => {
         e.preventDefault();
         if (resetForm.newPassword !== resetForm.confirmPassword) {
@@ -88,7 +95,7 @@ const ProfilePage = () => {
 
     const maskIP = (ip) => (!ip || ip === 'Unknown') ? 'Unknown' : ip;
 
-    // ✅ Services List (Referral aur Online hataye, baqi ko clickable banaya)
+    // Services List
     const services = [
         { 
             icon: '💳', 
@@ -102,7 +109,7 @@ const ProfilePage = () => {
             title: 'USDT Wallets', 
             sub: '0 Added (Link for Crypto)', 
             tag: 'Crypto',
-            onClick: () => alert('USDT Wallet linking coming soon!') 
+            onClick: () => setShowWalletForm(true) // ⚠️ Ab form khulega
         },
         { 
             icon: '📒', 
@@ -116,7 +123,7 @@ const ProfilePage = () => {
             title: 'Common FAQs', 
             sub: 'Trading & UTR questions', 
             tag: null,
-            onClick: () => alert('FAQs:\n1. Deposit takes 5-15 min\n2. Withdrawal via IMPS/PIX\n3. Contact support for help')
+            onClick: () => setShowFaqModal(true) // ⚠️ Ab modal khulega
         },
         { 
             icon: '🔑', 
@@ -182,13 +189,7 @@ const ProfilePage = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="pr-section-card">
-                        <div className="pr-community">
-                            <div className="pr-community-icon">💬</div>
-                            <div className="pr-community-content"><div className="pr-community-title">Join Official Community Channel</div><div className="pr-community-sub">Daily trade signals & updates on Telegram</div></div>
-                            <button className="pr-community-btn">Join ↗</button>
-                        </div>
-                    </div>
+                    {/* ✅ Community Banner Removed */}
                 </div>
             </div>
 
@@ -269,6 +270,73 @@ const ProfilePage = () => {
                                 {resetLoading ? '⏳ Processing...' : '✓ Change Password'}
                             </button>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ⚠️ USDT WALLET MODAL */}
+            {showWalletForm && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px' }}>
+                    <div style={{ background: 'white', borderRadius: '16px', padding: '24px', width: '100%', maxWidth: '400px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a' }}>🔐 Add USDT Wallet</h3>
+                            <button onClick={() => setShowWalletForm(false)} style={{ background: 'transparent', fontSize: '20px', cursor: 'pointer' }}>✕</button>
+                        </div>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            alert('✅ USDT Wallet saved!');
+                            setShowWalletForm(false);
+                        }}>
+                            <div style={{ marginBottom: '12px' }}>
+                                <label style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px' }}>Network</label>
+                                <select value={walletForm.network} onChange={(e) => setWalletForm({ ...walletForm, network: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '14px' }}>
+                                    <option value="TRC20">TRC20 (Tron)</option>
+                                    <option value="BEP20">BEP20 (BSC)</option>
+                                </select>
+                            </div>
+                            <div style={{ marginBottom: '12px' }}>
+                                <label style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px' }}>Wallet Address</label>
+                                <input type="text" value={walletForm.walletAddress} onChange={(e) => setWalletForm({ ...walletForm, walletAddress: e.target.value })} placeholder="e.g. TQn9Y2khEs..." style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '14px' }} required />
+                            </div>
+                            <div style={{ marginBottom: '20px' }}>
+                                <label style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px' }}>Label (Optional)</label>
+                                <input type="text" value={walletForm.label} onChange={(e) => setWalletForm({ ...walletForm, label: e.target.value })} placeholder="e.g. Binance Wallet" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '14px' }} />
+                            </div>
+                            <button type="submit" style={{ width: '100%', padding: '14px', background: '#0f172a', color: 'white', border: 'none', borderRadius: '10px', fontSize: '14px', fontWeight: 800, cursor: 'pointer' }}>
+                                ✓ Save Wallet
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ⚠️ FAQ MODAL */}
+            {showFaqModal && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px' }}>
+                    <div style={{ background: 'white', borderRadius: '16px', padding: '24px', width: '100%', maxWidth: '480px', maxHeight: '80vh', overflowY: 'auto' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a' }}>❓ Frequently Asked Questions</h3>
+                            <button onClick={() => setShowFaqModal(false)} style={{ background: 'transparent', fontSize: '20px', cursor: 'pointer' }}>✕</button>
+                        </div>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                            <div>
+                                <strong style={{ fontSize: '13px', color: '#0f172a' }}>1. How long does a deposit take?</strong>
+                                <p style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>Deposits are verified by admin within 5-15 minutes.</p>
+                            </div>
+                            <div>
+                                <strong style={{ fontSize: '13px', color: '#0f172a' }}>2. How do I withdraw my profits?</strong>
+                                <p style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>Go to Withdraw page, enter amount, and select your bank.</p>
+                            </div>
+                            <div>
+                                <strong style={{ fontSize: '13px', color: '#0f172a' }}>3. What is UTR?</strong>
+                                <p style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>UTR is the transaction reference number you get after bank transfer.</p>
+                            </div>
+                            <div>
+                                <strong style={{ fontSize: '13px', color: '#0f172a' }}>4. How to contact support?</strong>
+                                <p style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>Contact via Help Desk or join Telegram channel.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
