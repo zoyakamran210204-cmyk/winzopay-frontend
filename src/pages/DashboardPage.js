@@ -11,11 +11,9 @@ const DashboardPage = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
 
-    // Crypto rates state
     const [cryptoRates, setCryptoRates] = useState(null);
     const [ratesLoading, setRatesLoading] = useState(true);
 
-    // Selected crypto per plan (default: BTC)
     const [selectedCrypto, setSelectedCrypto] = useState({
         A: 'BTC',
         B: 'BTC',
@@ -23,7 +21,6 @@ const DashboardPage = () => {
         D: 'BTC'
     });
 
-    // Selected bank per plan (default: empty)
     const [selectedBank, setSelectedBank] = useState({
         A: '',
         B: '',
@@ -65,17 +62,7 @@ const DashboardPage = () => {
         { code: '077', name: 'Banco Inter' },
         { code: '380', name: 'PicPay' },
         { code: '323', name: 'Mercado Pago' },
-        { code: '290', name: 'PagBank' },
-        { code: '336', name: 'C6 Bank' },
-        { code: '212', name: 'Banco Original' },
-        { code: '655', name: 'Votorantim' },
-        { code: '422', name: 'Banco Safra' },
-        { code: '389', name: 'Banco Mercantil' },
-        { code: '070', name: 'BRB' },
-        { code: '004', name: 'Banco do Nordeste' },
-        { code: '041', name: 'Banrisul' },
-        { code: '748', name: 'Sicredi' },
-        { code: '756', name: 'Sicoob' }
+        { code: '290', name: 'PagBank' }
     ];
 
     const formatBRL = (value) => {
@@ -108,12 +95,7 @@ const DashboardPage = () => {
             depositMax: 500,
             cycle: '120s Fast Mining',
             hashrate: '25.4 MH/s',
-            benefits: [
-                t('plan_a_benefit_1'),
-                t('plan_a_benefit_2'),
-                t('plan_a_benefit_3'),
-                t('plan_a_benefit_4')
-            ],
+            benefits: [t('plan_a_benefit_1'), t('plan_a_benefit_2'), t('plan_a_benefit_3'), t('plan_a_benefit_4')],
             popular: false
         },
         {
@@ -125,12 +107,7 @@ const DashboardPage = () => {
             depositMax: 1000,
             cycle: '300s Mining Cycle',
             hashrate: '64.8 MH/s',
-            benefits: [
-                t('plan_b_benefit_1'),
-                t('plan_b_benefit_2'),
-                t('plan_b_benefit_3'),
-                t('plan_b_benefit_4')
-            ],
+            benefits: [t('plan_b_benefit_1'), t('plan_b_benefit_2'), t('plan_b_benefit_3'), t('plan_b_benefit_4')],
             popular: true
         },
         {
@@ -142,12 +119,7 @@ const DashboardPage = () => {
             depositMax: 1500,
             cycle: '300s High Yield',
             hashrate: '142.5 MH/s',
-            benefits: [
-                t('plan_c_benefit_1'),
-                t('plan_c_benefit_2'),
-                t('plan_c_benefit_3'),
-                t('plan_c_benefit_4')
-            ],
+            benefits: [t('plan_c_benefit_1'), t('plan_c_benefit_2'), t('plan_c_benefit_3'), t('plan_c_benefit_4')],
             popular: false
         },
         {
@@ -159,12 +131,7 @@ const DashboardPage = () => {
             depositMax: 100000,
             cycle: '500s VIP Master Cycle',
             hashrate: '380.0 MH/s',
-            benefits: [
-                t('plan_d_benefit_1'),
-                t('plan_d_benefit_2'),
-                t('plan_d_benefit_3'),
-                t('plan_d_benefit_4')
-            ],
+            benefits: [t('plan_d_benefit_1'), t('plan_d_benefit_2'), t('plan_d_benefit_3'), t('plan_d_benefit_4')],
             popular: false
         }
     ];
@@ -178,53 +145,33 @@ const DashboardPage = () => {
                 <div className="db-left">
                     <div className="balance-card">
                         <div className="balance-header">
-                            <div className="balance-label">
-                                💰 {t('top_up_balance')} ⓘ
-                            </div>
+                            <div className="balance-label">💰 {t('top_up_balance')} ⓘ</div>
                             <div className="currency-toggle">
                                 <button className="currency-btn active">R$ BRL</button>
                             </div>
                         </div>
 
-                        <div className="balance-value">
-                            R$ {user?.balance?.toFixed(2) || '0.00'}
-                        </div>
-                        <div className="balance-sub">
-                            {t('balance_step_1')}
-                        </div>
+                        <div className="balance-value">R$ {user?.balance?.toFixed(2) || '0.00'}</div>
+                        <div className="balance-sub">{t('balance_step_1')}</div>
 
                         <div className="balance-mini-cards">
                             <div className="mini-card">
                                 <div className="mini-card-label">💵 {t('withdrawable')}</div>
-                                <div className="mini-card-value">
-                                    R$ {user?.withdrawableBalance?.toFixed(2) || '0.00'}
-                                </div>
-                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>
-                                    {t('withdrawable_step')}
-                                </div>
+                                <div className="mini-card-value">R$ {user?.withdrawableBalance?.toFixed(2) || '0.00'}</div>
+                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>{t('withdrawable_step')}</div>
                             </div>
                             <div className="mini-card">
                                 <div className="mini-card-label">⛏️ {t('mining_capital')}</div>
-                                <div className="mini-card-value">
-                                    R$ {user?.miningCapital?.toFixed(2) || '0.00'}
-                                </div>
-                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>
-                                    {t('mining_step')}
-                                </div>
+                                <div className="mini-card-value">R$ {user?.miningCapital?.toFixed(2) || '0.00'}</div>
+                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>{t('mining_step')}</div>
                             </div>
                             <div className="mini-card">
                                 <div className="mini-card-label">💎 {t('rp_balance')}</div>
-                                <div className="mini-card-value">
-                                    R$ {user?.rpBalance?.toFixed(2) || '0.00'}
-                                </div>
-                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>
-                                    {t('rp_step')}
-                                </div>
+                                <div className="mini-card-value">R$ {user?.rpBalance?.toFixed(2) || '0.00'}</div>
+                                <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '4px' }}>{t('rp_step')}</div>
                             </div>
                         </div>
                     </div>
-
-                    {/* App Banner Removed */}
 
                     <div className="quick-actions">
                         <div className="action-card" onClick={() => navigate('/deposit')} style={{ cursor: 'pointer' }}>
@@ -264,36 +211,42 @@ const DashboardPage = () => {
                         </div>
                     </div>
 
+                    {/* ✅ TRANSACTION RECORDS - Ab Clickable */}
                     <div className="transaction-records">
                         <div className="section-title">{t('transaction_records')}</div>
                         <div className="transaction-grid">
-                            <div className="transaction-item">
+                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}>
                                 <div className="transaction-icon">⬇️</div>
                                 <div className="transaction-label">{t('deposits')}</div>
                             </div>
-                            <div className="transaction-item">
+                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}>
                                 <div className="transaction-icon">💰</div>
                                 <div className="transaction-label">{t('plan_purchases')}</div>
                             </div>
-                            <div className="transaction-item">
+                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}>
                                 <div className="transaction-icon">💱</div>
                                 <div className="transaction-label">{t('rp_sales')}</div>
                             </div>
-                            <div className="transaction-item">
+                            <div className="transaction-item" onClick={() => navigate('/ledger')} style={{ cursor: 'pointer' }}>
                                 <div className="transaction-icon">⬆️</div>
                                 <div className="transaction-label">{t('withdrawals')}</div>
                             </div>
                         </div>
                     </div>
 
+                    {/* ✅ LINK BANK ACCOUNT - Ab Clickable */}
                     <div className="bank-account-section">
                         <div className="bank-header">
                             <div className="bank-title">🏦 {t('linked_bank')}</div>
-                            <button className="bank-manage">{t('manage')} (0)</button>
+                            <button className="bank-manage" onClick={() => alert('Bank management coming soon')}>
+                                {t('manage')} (0)
+                            </button>
                         </div>
                         <div className="bank-empty">
                             <p>{t('bank_empty_msg')}</p>
-                            <button className="bank-link-btn">{t('link_bank')}</button>
+                            <button className="bank-link-btn" onClick={() => alert('Bank linking coming soon')}>
+                                {t('link_bank')}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -301,9 +254,7 @@ const DashboardPage = () => {
                 {/* RIGHT COLUMN - PLANS */}
                 <div className="db-right">
                     <div className="crypto-rates-bar">
-                        <div className="crypto-rates-label">
-                            🔴 LIVE RATES (BRL)
-                        </div>
+                        <div className="crypto-rates-label">🔴 LIVE RATES (BRL)</div>
 
                         {ratesLoading ? (
                             <div className="crypto-loading">
@@ -330,13 +281,9 @@ const DashboardPage = () => {
 
                     <div className="plans-header">
                         <div>
-                            <div className="plans-badge">
-                                ⚡ {t('rp_trading_plans')}
-                            </div>
+                            <div className="plans-badge">⚡ {t('rp_trading_plans')}</div>
                             <h2 className="plans-title">{t('plans_title')}</h2>
-                            <p className="plans-subtitle">
-                                {t('plans_subtitle')}
-                            </p>
+                            <p className="plans-subtitle">{t('plans_subtitle')}</p>
                         </div>
                         <div className="plans-platform-badge">
                             <div className="platform-badge-title">{t('platform_fee')}</div>
@@ -346,13 +293,8 @@ const DashboardPage = () => {
 
                     <div className="plans-grid">
                         {plans.map(plan => (
-                            <div
-                                key={plan.id}
-                                className={`plan-card ${plan.popular ? 'popular' : ''}`}
-                            >
-                                {plan.popular && (
-                                    <div className="popular-badge">{t('most_popular')}</div>
-                                )}
+                            <div key={plan.id} className={`plan-card ${plan.popular ? 'popular' : ''}`}>
+                                {plan.popular && <div className="popular-badge">{t('most_popular')}</div>}
 
                                 <div className="plan-header">
                                     <div className="plan-info">
@@ -365,12 +307,8 @@ const DashboardPage = () => {
                                 </div>
 
                                 <div className="plan-details">
-                                    <div className="plan-detail">
-                                        ⏱️ {t('cycle')}: <strong>{plan.cycle}</strong>
-                                    </div>
-                                    <div className="plan-detail">
-                                        ⚡ {t('hashrate')}: <strong>{plan.hashrate}</strong>
-                                    </div>
+                                    <div className="plan-detail">⏱️ {t('cycle')}: <strong>{plan.cycle}</strong></div>
+                                    <div className="plan-detail">⚡ {t('hashrate')}: <strong>{plan.hashrate}</strong></div>
                                 </div>
 
                                 <div className="plan-deposit-range">
@@ -378,9 +316,7 @@ const DashboardPage = () => {
                                 </div>
 
                                 <div className="payment-section">
-                                    <div className="payment-section-title">
-                                        💳 {t('payment_method')}
-                                    </div>
+                                    <div className="payment-section-title">💳 {t('payment_method')}</div>
 
                                     <div className="payment-section-title" style={{ marginTop: '4px', color: '#1e40af' }}>
                                         🪙 {t('crypto_payment')}
