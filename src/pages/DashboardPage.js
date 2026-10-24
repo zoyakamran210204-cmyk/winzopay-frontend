@@ -9,7 +9,7 @@ import './DashboardPage.css';
 const DashboardPage = () => {
     const { t } = useTranslation();
     const { user } = useAuth();
-    const navigate = useNavigate(); // ⚠️ YEH ADD KIA
+    const navigate = useNavigate();
 
     // Crypto rates state
     const [cryptoRates, setCryptoRates] = useState(null);
@@ -31,9 +31,6 @@ const DashboardPage = () => {
         D: ''
     });
 
-    // ================================
-    // Fetch Crypto Rates on Mount
-    // ================================
     useEffect(() => {
         const fetchRates = async () => {
             try {
@@ -51,9 +48,6 @@ const DashboardPage = () => {
         return () => clearInterval(interval);
     }, []);
 
-    // ================================
-    // Crypto Options
-    // ================================
     const cryptoOptions = [
         { key: 'BTC', symbol: 'BTC', label: 'BTC', color: 'btc' },
         { key: 'BTC(r)', symbol: 'BTC(r)', label: 'BTC(r)', color: 'btcr' },
@@ -61,9 +55,6 @@ const DashboardPage = () => {
         { key: 'ETH', symbol: 'ETH', label: 'ETH', color: 'eth' }
     ];
 
-    // ================================
-    // Brazilian Banks (Top 10)
-    // ================================
     const brazilianBanks = [
         { code: '260', name: 'Nubank' },
         { code: '341', name: 'Itaú Unibanco' },
@@ -87,36 +78,26 @@ const DashboardPage = () => {
         { code: '756', name: 'Sicoob' }
     ];
 
-    // ================================
-    // Format BRL value
-    // ================================
     const formatBRL = (value) => {
         if (!value) return '—';
         return `R$ ${value.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}`;
     };
 
-    // Handle crypto select
     const handleCryptoSelect = (planId, crypto) => {
         setSelectedCrypto(prev => ({ ...prev, [planId]: crypto }));
-        setSelectedBank(prev => ({ ...prev, [planId]: '' })); // Bank clear
+        setSelectedBank(prev => ({ ...prev, [planId]: '' }));
     };
 
-    // Handle bank select
     const handleBankSelect = (planId, bankCode) => {
         setSelectedBank(prev => ({ ...prev, [planId]: bankCode }));
-        setSelectedCrypto(prev => ({ ...prev, [planId]: '' })); // Crypto clear
+        setSelectedCrypto(prev => ({ ...prev, [planId]: '' }));
     };
 
-    // ⚠️ NEW: Handle Deposit Button Click
     const handleDepositClick = (plan) => {
-        // Agar bank select kiya hai to Bank method use karein, warna Crypto
         const paymentMethod = selectedBank[plan.id] ? 'Bank' : selectedCrypto[plan.id];
         navigate(`/deposit?plan=${plan.id}&amount=${plan.depositMin}&method=${paymentMethod}`);
     };
 
-    // ================================
-    // 4 Plans (Brazil BRL)
-    // ================================
     const plans = [
         {
             id: 'A',
@@ -190,14 +171,11 @@ const DashboardPage = () => {
 
     return (
         <div className="db-page">
-
             <DashboardHeader activeNav="home" />
 
             <main className="db-main">
-
                 {/* LEFT COLUMN */}
                 <div className="db-left">
-
                     <div className="balance-card">
                         <div className="balance-header">
                             <div className="balance-label">
@@ -246,22 +224,7 @@ const DashboardPage = () => {
                         </div>
                     </div>
 
-                    <div className="app-banner">
-                        <div className="app-banner-left">
-                            <div className="app-banner-icon">WP</div>
-                            <div className="app-banner-content">
-                                <h3>
-                                    WinzoPay App
-                                    <span className="official-badge">{t('official_app')}</span>
-                                </h3>
-                                <p>{t('app_desc')}</p>
-                            </div>
-                        </div>
-                        <div className="app-banner-buttons">
-                            <button className="app-btn-install">📱 {t('install_app')}</button>
-                            <button className="app-btn-share">↗️ {t('share')}</button>
-                        </div>
-                    </div>
+                    {/* App Banner Removed */}
 
                     <div className="quick-actions">
                         <div className="action-card" onClick={() => navigate('/deposit')} style={{ cursor: 'pointer' }}>
@@ -333,13 +296,10 @@ const DashboardPage = () => {
                             <button className="bank-link-btn">{t('link_bank')}</button>
                         </div>
                     </div>
-
                 </div>
 
                 {/* RIGHT COLUMN - PLANS */}
                 <div className="db-right">
-
-                    {/* CRYPTO RATES BAR */}
                     <div className="crypto-rates-bar">
                         <div className="crypto-rates-label">
                             🔴 LIVE RATES (BRL)
@@ -417,13 +377,11 @@ const DashboardPage = () => {
                                     {t('deposit_range')}: <strong>R$ {plan.depositMin.toLocaleString()} to R$ {plan.depositMax.toLocaleString()}</strong>
                                 </div>
 
-                                {/* PAYMENT METHOD SECTION */}
                                 <div className="payment-section">
                                     <div className="payment-section-title">
                                         💳 {t('payment_method')}
                                     </div>
 
-                                    {/* CRYPTO OPTIONS */}
                                     <div className="payment-section-title" style={{ marginTop: '4px', color: '#1e40af' }}>
                                         🪙 {t('crypto_payment')}
                                     </div>
@@ -443,7 +401,6 @@ const DashboardPage = () => {
                                         ))}
                                     </div>
 
-                                    {/* BANK OPTIONS */}
                                     <div className="payment-section-title" style={{ marginTop: '8px', color: '#16a34a' }}>
                                         🏦 {t('bank_payment')}
                                     </div>
@@ -460,7 +417,6 @@ const DashboardPage = () => {
                                         ))}
                                     </select>
 
-                                    {/* Selected Bank Badge */}
                                     {selectedBank[plan.id] && (
                                         <div className="bank-selected-badge">
                                             ✅ {t('selected')}: {brazilianBanks.find(b => b.code === selectedBank[plan.id])?.name}
@@ -474,7 +430,6 @@ const DashboardPage = () => {
                                     ))}
                                 </div>
 
-                                {/* ⚠️ YEH BUTTON CLICKABLE BANAYA */}
                                 <button 
                                     className="plan-deposit-btn"
                                     onClick={() => handleDepositClick(plan)}
@@ -485,13 +440,10 @@ const DashboardPage = () => {
                                         : selectedCrypto[plan.id]
                                     } →
                                 </button>
-
                             </div>
                         ))}
                     </div>
-
                 </div>
-
             </main>
         </div>
     );

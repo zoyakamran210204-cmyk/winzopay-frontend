@@ -13,8 +13,8 @@ const BottomNav = () => {
         { key: 'deposit', icon: '💳', label: t('deposit') || 'Deposit', path: '/deposit' },
         { key: 'buy-rp', icon: '💰', label: t('buy_rp') || 'Buy RP', path: '/buy-rp' },
         { key: 'mining', icon: '⛏️', label: t('mining') || 'Mining', path: '/mining' },
-        { key: 'sell-rp', icon: '💱', label: t('sell_rp') || 'Sell RP', path: '/sell-rp' },
-        { key: 'withdraw', icon: '📤', label: t('withdraw') || 'Withdraw', path: '/withdraw' }
+        { key: 'withdraw', icon: '📤', label: t('withdraw') || 'Withdraw', path: '/withdraw' },
+        { key: 'profile', icon: '👤', label: t('profile') || 'Profile', path: '/profile' }
     ];
 
     return (

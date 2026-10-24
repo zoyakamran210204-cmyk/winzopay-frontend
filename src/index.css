@@ -63,7 +63,7 @@ img { max-width: 100%; height: auto; }
     }
 
     .db-share-btn span, .db-install-btn span { display: none !important; }
-    .db-topup-btn { display: none !important; } /* Hide top-up in header */
+    
 
     /* Main Content */
     .db-main, .auth-main, .dep-container, .buyrp-container, 
@@ -81,7 +81,7 @@ img { max-width: 100%; height: auto; }
     h2, .plans-title { font-size: 18px !important; }
     h3 { font-size: 15px !important; }
 
-    /* Cards - compact, white, rounded */
+    /* Cards */
     .plan-card, .dep-card, .buyrp-input-card, .mining-card, 
     .wd-section, .lg-list, .adm-card, .adm-ud-card, .adm-tx-card {
         background: white !important;
@@ -92,7 +92,7 @@ img { max-width: 100%; height: auto; }
         width: 100% !important;
     }
 
-    /* Grids - 2 column on mobile */
+    /* Grids - 2 column */
     .plans-grid, .quick-actions, .hero-cards {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 10px !important;
@@ -106,7 +106,7 @@ img { max-width: 100%; height: auto; }
     .dep-payment-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 4px !important; }
     .plan-crypto-options { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
 
-    /* Buttons - big and touch friendly */
+    /* Buttons */
     .submit-btn, .buyrp-buy-btn, .dep-proceed-btn, .mining-action-btn, 
     .sellrp-submit-btn, .wd-submit-btn, .plan-deposit-btn, .adm-login-btn {
         width: 100% !important;
@@ -128,7 +128,7 @@ img { max-width: 100%; height: auto; }
     .auth-form-wrapper { padding: 20px !important; border-radius: 16px !important; }
     .auth-hero { text-align: center !important; }
 
-    /* Step indicators - hide to save space */
+    /* Step indicators - hide */
     .buyrp-steps, .dep-steps { display: none !important; }
 
     /* Tab bars */
