@@ -23,6 +23,11 @@ const ProfilePage = () => {
     });
     const [bankLoading, setBankLoading] = useState(false);
 
+    // Reset Password Modal State
+    const [showResetModal, setShowResetModal] = useState(false);
+    const [resetForm, setResetForm] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    const [resetLoading, setResetLoading] = useState(false);
+
     const brazilianBanks = [
         { code: '260', name: 'Nubank' }, { code: '341', name: 'Itaú Unibanco' },
         { code: '237', name: 'Bradesco' }, { code: '001', name: 'Banco do Brasil' },
@@ -40,17 +45,15 @@ const ProfilePage = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    // ✅ Add Bank
     const handleAddBank = async (e) => {
         e.preventDefault();
         setBankLoading(true);
         try {
             const res = await api.post('/bank', bankForm);
             alert('✅ Bank account added successfully!');
-            
-            // Update user context
             const updatedUser = { ...user, bankAccounts: res.data.bankAccounts };
             login(updatedUser, localStorage.getItem('winzopay_token'));
-
             setShowBankForm(false);
             setBankForm({ bankCode: '260', bankName: 'Nubank', accountHolderName: '', accountNumber: '', agency: '', cpfCnpj: '', accountType: 'Corrente' });
         } catch (err) {
@@ -60,16 +63,68 @@ const ProfilePage = () => {
         }
     };
 
+    // ✅ Reset Password
+    const handleResetPassword = async (e) => {
+        e.preventDefault();
+        if (resetForm.newPassword !== resetForm.confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+        setResetLoading(true);
+        try {
+            await api.post('/auth/change-password', {
+                oldPassword: resetForm.oldPassword,
+                newPassword: resetForm.newPassword
+            });
+            alert('✅ Password changed successfully!');
+            setShowResetModal(false);
+            setResetForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
+        } catch (err) {
+            alert(err.response?.data?.message || 'Password change failed');
+        } finally {
+            setResetLoading(false);
+        }
+    };
+
     const maskIP = (ip) => (!ip || ip === 'Unknown') ? 'Unknown' : ip;
 
+    // ✅ Services List (Referral aur Online hataye, baqi ko clickable banaya)
     const services = [
-        { icon: '👥', title: 'My Referral Team', sub: '0 Members Joined', tag: null },
-        { icon: '💳', title: 'Manage Bank Cards', sub: `${user?.bankAccounts?.length || 0} Added`, tag: null, onClick: () => setShowBankForm(true) },
-        { icon: '🔐', title: 'USDT Wallets', sub: '0 Added (Link for Crypto)', tag: 'Crypto' },
-        { icon: '📒', title: 'Ledger & History', sub: 'View all transactions', tag: null },
-        { icon: '🎧', title: 'Online 24/7 Service', sub: '• Live Desk', tag: null },
-        { icon: '❓', title: 'Common FAQs', sub: 'Trading & UTR questions', tag: null },
-        { icon: '🔑', title: 'Reset Password', sub: 'Update account security', tag: null }
+        { 
+            icon: '💳', 
+            title: 'Manage Bank Cards', 
+            sub: `${user?.bankAccounts?.length || 0} Added`, 
+            tag: null, 
+            onClick: () => setShowBankForm(true) 
+        },
+        { 
+            icon: '🔐', 
+            title: 'USDT Wallets', 
+            sub: '0 Added (Link for Crypto)', 
+            tag: 'Crypto',
+            onClick: () => alert('USDT Wallet linking coming soon!') 
+        },
+        { 
+            icon: '📒', 
+            title: 'Ledger & History', 
+            sub: 'View all transactions', 
+            tag: null,
+            onClick: () => navigate('/ledger')
+        },
+        { 
+            icon: '❓', 
+            title: 'Common FAQs', 
+            sub: 'Trading & UTR questions', 
+            tag: null,
+            onClick: () => alert('FAQs:\n1. Deposit takes 5-15 min\n2. Withdrawal via IMPS/PIX\n3. Contact support for help')
+        },
+        { 
+            icon: '🔑', 
+            title: 'Reset Password', 
+            sub: 'Update account security', 
+            tag: null,
+            onClick: () => setShowResetModal(true)
+        }
     ];
 
     return (
@@ -183,6 +238,35 @@ const ProfilePage = () => {
                             </div>
                             <button type="submit" disabled={bankLoading} style={{ width: '100%', padding: '14px', background: '#0f172a', color: 'white', border: 'none', borderRadius: '10px', fontSize: '14px', fontWeight: 800, cursor: 'pointer' }}>
                                 {bankLoading ? '⏳ Saving...' : '✓ Save Bank Account'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ⚠️ RESET PASSWORD MODAL */}
+            {showResetModal && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px' }}>
+                    <div style={{ background: 'white', borderRadius: '16px', padding: '24px', width: '100%', maxWidth: '400px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a' }}>🔑 Reset Password</h3>
+                            <button onClick={() => setShowResetModal(false)} style={{ background: 'transparent', fontSize: '20px', cursor: 'pointer' }}>✕</button>
+                        </div>
+                        <form onSubmit={handleResetPassword}>
+                            <div style={{ marginBottom: '12px' }}>
+                                <label style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px' }}>Old Password</label>
+                                <input type="password" value={resetForm.oldPassword} onChange={(e) => setResetForm({ ...resetForm, oldPassword: e.target.value })} placeholder="Enter old password" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '14px' }} required />
+                            </div>
+                            <div style={{ marginBottom: '12px' }}>
+                                <label style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px' }}>New Password</label>
+                                <input type="password" value={resetForm.newPassword} onChange={(e) => setResetForm({ ...resetForm, newPassword: e.target.value })} placeholder="Enter new password (min 6)" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '14px' }} required />
+                            </div>
+                            <div style={{ marginBottom: '20px' }}>
+                                <label style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', display: 'block', marginBottom: '4px' }}>Confirm New Password</label>
+                                <input type="password" value={resetForm.confirmPassword} onChange={(e) => setResetForm({ ...resetForm, confirmPassword: e.target.value })} placeholder="Re-enter new password" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '14px' }} required />
+                            </div>
+                            <button type="submit" disabled={resetLoading} style={{ width: '100%', padding: '14px', background: '#0f172a', color: 'white', border: 'none', borderRadius: '10px', fontSize: '14px', fontWeight: 800, cursor: 'pointer' }}>
+                                {resetLoading ? '⏳ Processing...' : '✓ Change Password'}
                             </button>
                         </form>
                     </div>
