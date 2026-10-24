@@ -408,16 +408,23 @@ const WithdrawPage = () => {
                         />
                     </div>
 
+                    {/* ⚠️ FIXED: Quick Amounts Logic */}
                     <div className="wd-quick-amounts">
                         {[25, 50, 75, 100].map(percent => {
                             const amt = Math.floor((user?.withdrawableBalance || 0) * percent / 100);
-                            const finalAmt = amt < 100 ? 100 : amt; // ⚠️ Agar 100 se kam hai to 100 set karo
+                            const isDisabled = amt < 100; 
+
                             return (
                                 <button
                                     key={percent}
-                                    className={`wd-quick-btn ${Number(amount) === finalAmt ? 'active' : ''}`}
-                                    onClick={() => setAmount(String(finalAmt))}
-                                    disabled={(user?.withdrawableBalance || 0) < 100} // ⚠️ Sirf tab disable ho jab total balance hi 100 se kam ho
+                                    type="button"
+                                    className={`wd-quick-btn ${Number(amount) === amt ? 'active' : ''}`}
+                                    onClick={() => !isDisabled && setAmount(String(amt))}
+                                    disabled={isDisabled}
+                                    style={{
+                                        opacity: isDisabled ? 0.4 : 1,
+                                        cursor: isDisabled ? 'not-allowed' : 'pointer'
+                                    }}
                                 >
                                     {percent === 100 ? 'MAX' : `${percent}%`}
                                 </button>
