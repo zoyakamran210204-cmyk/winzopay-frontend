@@ -72,12 +72,12 @@ const DashboardPage = () => {
             quickAmounts: [501, 700, 800, 1000]
         },
         {
-            id: 'C', name: t('plan_c_name') || 'Gold Pro Mining Farm', returnValue: '10%', returnLabel: 'RETURN', depositMin: 1001, depositMax: 1500, cycle: '300s High Yield', hashrate: '142.5 MH/s',
+            id: 'C', name: t('plan_c_name') || 'Gold Pro Mining Farm', returnValue: '10%', returnLabel: 'RETURN', depositMin: 1001, depositMax: 10000, cycle: '300s High Yield', hashrate: '142.5 MH/s',
             benefits: [t('plan_c_benefit_1') || '10% High Commission Profit', t('plan_c_benefit_2') || 'Dedicated ASIC Mining Rig Allocation', t('plan_c_benefit_3') || 'VIP Verified Buyer Matching', t('plan_c_benefit_4') || 'Instant Return to Top-Up Balance'], popular: false,
             quickAmounts: [1001, 2000, 5000, 10000]
         },
         {
-            id: 'D', name: t('plan_d_name') || 'Diamond Quantum Miner', returnValue: '12%', returnLabel: 'RETURN', depositMin: 10000, depositMax: 100000, cycle: '500s VIP Master Cycle', hashrate: '380.0 MH/s',
+            id: 'D', name: t('plan_d_name') || 'Diamond Quantum Miner', returnValue: '12%', returnLabel: 'RETURN', depositMin: 10001, depositMax: 100000, cycle: '500s VIP Master Cycle', hashrate: '380.0 MH/s',
             benefits: [t('plan_d_benefit_1') || '12% Maximum Top-Tier Mining Return', t('plan_d_benefit_2') || 'Highest Mining Power & Speed', t('plan_d_benefit_3') || 'Direct 1-Click Instant Sale to Official Desk', t('plan_d_benefit_4') || 'Instant Auto-Refund of Capital + Profit'], popular: false,
             quickAmounts: [10001, 20000, 50000, 100000]
         }

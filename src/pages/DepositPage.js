@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import DashboardHeader from '../components/DashboardHeader';
 import api from '../utils/api';
 import './DepositPage.css';
 
 const DepositPage = () => {
+    const { t } = useTranslation();
+    const { user } = useAuth();
     const [searchParams] = useSearchParams();
-    
+    const navigate = useNavigate();
+
     const planParam = searchParams.get('plan');
     const amountParam = searchParams.get('amount');
 
@@ -22,6 +27,18 @@ const DepositPage = () => {
     const [transactionId, setTransactionId] = useState('');
     const [paymentProof, setPaymentProof] = useState('');
     const [paymentImage, setPaymentImage] = useState(null);
+
+    // ⚠️ NAYA: Plan ke hisaab se quick amounts
+    const planQuickAmounts = {
+        'A': [100, 200, 300, 500],
+        'B': [501, 700, 800, 1000],
+        'C': [1001, 2000, 5000, 10000],
+        'D': [10001, 20000, 50000, 100000]
+    };
+
+    const quickAmounts = planParam 
+        ? planQuickAmounts[planParam] || [100, 500, 1000, 2500, 5000, 10000]
+        : [100, 500, 1000, 2500, 5000, 10000];
 
     useEffect(() => {
         const loadSettings = async () => {
@@ -56,8 +73,6 @@ const DepositPage = () => {
         { key: 'ETH', label: 'ETH', color: 'eth' },
         { key: 'Bank', label: 'BANK', color: 'bank' }
     ];
-
-    const quickAmounts = [100, 500, 1000, 2500, 5000, 10000];
 
     const handleProceed = async () => {
         setError('');
@@ -149,7 +164,6 @@ const DepositPage = () => {
             <DashboardHeader activeNav="deposit" />
 
             <div className="dep-container">
-
                 <div className="dep-breadcrumb">
                     <span>←</span>
                     <div>
@@ -199,6 +213,7 @@ const DepositPage = () => {
                         />
                     </div>
 
+                    {/* ⚠️ Plan specific quick amounts */}
                     <div className="dep-quick-amounts">
                         {quickAmounts.map(amt => (
                             <button
@@ -344,9 +359,6 @@ const DepositPage = () => {
                                     fontFamily: 'monospace'
                                 }}
                             />
-                            <div style={{ fontSize: 10, color: '#92400e', marginTop: 6, fontWeight: 600 }}>
-                                ⚠️ Enter the transaction ID/UTR from your bank receipt. Admin will verify before approving.
-                            </div>
                         </div>
                     )}
 
@@ -472,7 +484,6 @@ const DepositPage = () => {
                         ))
                     )}
                 </div>
-
             </div>
         </div>
     );
