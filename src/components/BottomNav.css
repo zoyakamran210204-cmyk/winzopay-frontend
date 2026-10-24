@@ -1,0 +1,64 @@
+/* ================================
+   Bottom Navigation (Mobile Only)
+   ================================ */
+.bottom-nav {
+    display: none; /* Desktop par hide */
+}
+
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        padding: 8px 4px;
+        z-index: 9999;
+        justify-content: space-around;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+
+    .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 6px 8px;
+        background: transparent;
+        border-radius: 10px;
+        flex: 1;
+        transition: all 0.2s;
+        min-width: 0;
+    }
+
+    .bottom-nav-item.active {
+        background: #eff6ff;
+    }
+
+    .bottom-nav-icon {
+        font-size: 20px;
+        line-height: 1;
+    }
+
+    .bottom-nav-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: #64748b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .bottom-nav-item.active .bottom-nav-label {
+        color: #1e40af;
+    }
+
+    /* Page content ko upar shift karein taake bottom nav na dhake */
+    .db-page, .dep-page, .buyrp-page, .mining-page, 
+    .sellrp-page, .wd-page, .lg-page, .pr-page, .mt-page {
+        padding-bottom: 80px !important;
+    }
+}

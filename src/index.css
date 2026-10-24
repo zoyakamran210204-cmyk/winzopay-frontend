@@ -1,456 +1,178 @@
 /* ================================
    WinzoPay Global Styles
    ================================ */
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     -webkit-tap-highlight-color: transparent;
-}
-
-html {
-    font-size: 16px;
-    -webkit-text-size-adjust: 100%;
 }
 
 body {
-    background: #f5f7fa;
+    background: #f1f5f9;
     color: #1a1a1a;
     min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    width: 100%;
 }
 
-/* Remove default button styles */
-button {
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* Remove default input styles */
-input, select, textarea {
-    font-family: inherit;
-    outline: none;
-    max-width: 100%;
-    font-size: 16px !important; /* Prevents iOS zoom on focus */
-}
-
-/* Remove link decoration */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* Images */
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
-}
-
-/* Utility classes */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.text-center {
-    text-align: center;
-}
+button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+input, select, textarea { font-family: inherit; outline: none; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; height: auto; }
 
 /* ================================
-   GLOBAL MOBILE RESPONSIVE FIXES
+   MOBILE DESIGN (Exact Screenshot Style)
    ================================ */
-
 @media (max-width: 768px) {
-    html, body {
-        font-size: 14px;
-        width: 100%;
-        overflow-x: hidden;
+    html, body { font-size: 14px; }
+
+    /* Top Header - compact */
+    .db-header {
+        padding: 10px 12px !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 8px !important;
+        height: auto !important;
+        background: #0f172a !important;
     }
 
-    /* Har page ka main container mobile ke liye adjust */
-    .container,
-    .db-main,
-    .dep-container,
-    .buyrp-container,
-    .mining-container,
-    .sellrp-container,
-    .wd-container,
-    .lg-container,
-    .pr-container,
-    .mt-container,
-    .auth-main {
-        padding: 12px !important;
+    .db-header-left {
+        flex-direction: row !important;
+        gap: 8px !important;
+    }
+
+    .db-logo-icon { width: 32px !important; height: 32px !important; font-size: 12px !important; }
+    .db-logo-title { font-size: 14px !important; }
+    .db-logo-sub { font-size: 10px !important; }
+
+    /* Nav items - hide on mobile (bottom nav handles it) */
+    .db-nav { display: none !important; }
+
+    .db-header-right {
+        gap: 6px !important;
+    }
+
+    .db-icon-btn, .db-share-btn, .db-install-btn {
+        width: 32px !important;
+        height: 32px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        font-size: 14px !important;
+    }
+
+    .db-share-btn span, .db-install-btn span { display: none !important; }
+    .db-topup-btn { display: none !important; } /* Hide top-up in header */
+
+    /* Main Content */
+    .db-main, .auth-main, .dep-container, .buyrp-container, 
+    .mining-container, .sellrp-container, .wd-container, 
+    .lg-container, .pr-container, .mt-container {
+        padding: 12px 12px 90px 12px !important;
         display: flex !important;
         flex-direction: column !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        gap: 15px !important;
+        gap: 12px !important;
         margin: 0 !important;
     }
 
-    /* Headings choti karein taake screen mein fit aayen */
-    h1, .hero-title, .buyrp-title, .mining-title, .wd-title, .lg-title, .pr-name, .mt-hero-title, .adm-ud-hero-name {
-        font-size: 22px !important;
-        line-height: 1.3 !important;
-        word-wrap: break-word !important;
-    }
+    /* Headings */
+    h1, .hero-title { font-size: 22px !important; line-height: 1.2 !important; }
+    h2, .plans-title { font-size: 18px !important; }
+    h3 { font-size: 15px !important; }
 
-    h2, .plans-title {
-        font-size: 18px !important;
-        line-height: 1.3 !important;
-    }
-
-    h3 {
-        font-size: 15px !important;
-    }
-
-    p {
-        font-size: 13px !important;
-        line-height: 1.5 !important;
-    }
-
-    /* Grids ko single column karein */
-    .plans-grid,
-    .hero-cards,
-    .quick-actions,
-    .balance-mini-cards,
-    .dep-quick-amounts,
-    .dep-payment-grid,
-    .buyrp-plan-grid,
-    .buyrp-quick-amounts,
-    .mining-stats,
-    .mining-details,
-    .adm-stats-grid,
-    .adm-dash-grid,
-    .adm-ud-stats,
-    .adm-ud-grid,
-    .adm-ud-bank-grid,
-    .adm-users-stats,
-    .wd-status-grid,
-    .lg-stats {
-        grid-template-columns: 1fr !important;
-        display: grid !important;
-        gap: 12px !important;
+    /* Cards - compact, white, rounded */
+    .plan-card, .dep-card, .buyrp-input-card, .mining-card, 
+    .wd-section, .lg-list, .adm-card, .adm-ud-card, .adm-tx-card {
+        background: white !important;
+        border-radius: 16px !important;
+        padding: 16px !important;
+        border: 1px solid #e2e8f0 !important;
+        margin: 0 !important;
         width: 100% !important;
     }
 
-    /* Header navigation */
-    .db-header,
-    .adm-header {
-        flex-direction: column !important;
-        padding: 10px !important;
-        height: auto !important;
-        gap: 10px !important;
-        width: 100% !important;
-        overflow-x: hidden !important;
-    }
-
-    .db-header-left,
-    .adm-header-left {
-        flex-direction: column !important;
-        width: 100% !important;
+    /* Grids - 2 column on mobile */
+    .plans-grid, .quick-actions, .hero-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 10px !important;
     }
 
-    .db-nav,
-    .adm-nav {
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        width: 100% !important;
-        gap: 5px !important;
-        padding: 5px !important;
+    .balance-mini-cards, .dep-quick-amounts, .buyrp-quick-amounts {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 6px !important;
     }
 
-    .db-nav-item,
-    .adm-nav-item {
-        padding: 8px 10px !important;
-        font-size: 11px !important;
-        flex: 1 1 auto !important;
-        min-width: 60px !important;
-        justify-content: center !important;
+    .dep-payment-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 4px !important; }
+    .plan-crypto-options { grid-template-columns: repeat(4, 1fr) !important; gap: 4px !important; }
+
+    /* Buttons - big and touch friendly */
+    .submit-btn, .buyrp-buy-btn, .dep-proceed-btn, .mining-action-btn, 
+    .sellrp-submit-btn, .wd-submit-btn, .plan-deposit-btn, .adm-login-btn {
+        width: 100% !important;
+        min-height: 48px !important;
+        font-size: 14px !important;
+        padding: 14px !important;
+        border-radius: 12px !important;
+        margin-top: 10px !important;
     }
 
-    .db-header-right,
-    .adm-header-right {
-        width: 100% !important;
-        justify-content: center !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-    }
-
-    /* Tables scroll on mobile */
-    .adm-users-table {
-        overflow-x: auto !important;
-        display: block !important;
-        width: 100% !important;
+    /* Inputs */
+    input, select, textarea {
+        font-size: 16px !important;
+        min-height: 48px !important;
         border-radius: 12px !important;
     }
 
-    .adm-users-table-header {
-        display: none !important;
-    }
+    /* Auth Page */
+    .auth-form-wrapper { padding: 20px !important; border-radius: 16px !important; }
+    .auth-hero { text-align: center !important; }
 
-    .adm-user-row {
-        display: flex !important;
-        flex-direction: column !important;
-        padding: 12px !important;
-        gap: 8px !important;
-        border-bottom: 1px solid #e2e8f0 !important;
-        width: 100% !important;
-    }
+    /* Step indicators - hide to save space */
+    .buyrp-steps, .dep-steps { display: none !important; }
 
-    /* Forms full width */
-    .form-input-wrapper,
-    .wd-amount-input-wrap,
-    .buyrp-amount-input-wrap,
-    .dep-amount-input-wrap,
-    .adm-login-input {
-        width: 100% !important;
-        max-width: 100% !important;
+    /* Tab bars */
+    .mining-tabs, .wd-payout-tabs, .lg-filters, .adm-tx-tabs {
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        gap: 4px !important;
+        padding: 4px !important;
+        scrollbar-width: none;
     }
+    .mining-tabs::-webkit-scrollbar, .lg-filters::-webkit-scrollbar { display: none; }
 
-    input, select, textarea {
-        width: 100% !important;
-        max-width: 100% !important;
-        font-size: 16px !important;
-    }
-
-    /* Buttons full width aur tap-friendly */
-    .submit-btn,
-    .buyrp-buy-btn,
-    .dep-proceed-btn,
-    .mining-action-btn,
-    .sellrp-submit-btn,
-    .wd-submit-btn,
-    .plan-deposit-btn,
-    .adm-login-btn,
-    .adm-tx-btn,
-    .adm-action-btn,
-    .guest-btn,
-    .app-btn-install,
-    .app-btn-share {
-        width: 100% !important;
-        font-size: 14px !important;
-        padding: 14px !important;
-        margin-top: 10px !important;
-        min-height: 48px !important;
-        border-radius: 10px !important;
-    }
-
-    /* Auth page */
-    .auth-form-wrapper {
-        width: 100% !important;
-        padding: 20px !important;
-        border-radius: 16px !important;
-    }
-
-    .auth-hero {
-        max-width: 100% !important;
-        text-align: center !important;
-    }
-
-    /* Stat values */
-    .balance-value,
-    .adm-stat-value,
-    .adm-ud-stat-value {
-        font-size: 20px !important;
+    .mining-tab, .wd-payout-tab, .lg-filter, .adm-tx-tab {
+        flex: 0 0 auto !important;
+        padding: 8px 14px !important;
+        font-size: 12px !important;
+        border-radius: 20px !important;
+        white-space: nowrap !important;
     }
 
     /* Crypto rates bar */
     .crypto-rates-bar {
-        flex-wrap: wrap !important;
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
         gap: 8px !important;
         padding: 10px !important;
-        justify-content: center !important;
-        width: 100% !important;
-        overflow-x: hidden !important;
+        scrollbar-width: none;
     }
+    .crypto-rates-bar::-webkit-scrollbar { display: none; }
 
     .crypto-rate-item {
-        flex: 1 1 calc(50% - 8px) !important;
-        min-width: 100px !important;
-        justify-content: center !important;
+        flex: 0 0 auto !important;
+        padding: 6px 10px !important;
     }
 
-    /* Profile page */
-    .pr-container {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-    }
+    /* Stat values */
+    .balance-value, .adm-stat-value { font-size: 24px !important; }
 
-    /* Admin transaction cards */
-    .adm-tx-card-header {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 10px !important;
-    }
-
-    .adm-tx-card-right {
-        align-items: flex-start !important;
-        text-align: left !important;
-    }
-
-    .adm-tx-actions {
-        flex-direction: column !important;
-        gap: 8px !important;
-        width: 100% !important;
-    }
-
-    /* Amount/QR card */
-    .dep-balance,
-    .buyrp-balance-card {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 10px !important;
-        width: 100% !important;
-    }
-
-    /* Cards */
-    .dep-card,
-    .buyrp-input-card,
-    .mining-card,
-    .adm-card,
-    .adm-ud-card,
-    .adm-tx-card,
-    .wd-section,
-    .sellrp-section,
-    .lg-list {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 15px !important;
-        margin: 0 !important;
-    }
-
-    /* Crypto buttons per plan */
-    .plan-crypto-options {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 6px !important;
-        width: 100% !important;
-    }
-
-    .plan-crypto-btn {
-        padding: 8px 4px !important;
-        font-size: 10px !important;
-    }
-
-    /* Step indicators */
-    .buyrp-steps,
-    .dep-steps,
-    .wd-step-banner,
-    .sellrp-step-banner {
-        flex-direction: column !important;
-        gap: 8px !important;
-        width: 100% !important;
-        padding: 10px !important;
-    }
-
-    /* Tabs */
-    .mining-tabs,
-    .wd-payout-tabs,
-    .lg-filters,
-    .adm-tx-tabs {
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-        width: 100% !important;
-    }
-
-    .mining-tab,
-    .wd-payout-tab,
-    .lg-filter,
-    .adm-tx-tab {
-        flex: 1 1 calc(50% - 6px) !important;
-        font-size: 11px !important;
-        padding: 10px 8px !important;
-    }
-
-    /* Modals */
-    .modal-content,
-    .adm-install-modal > div {
-        width: 90% !important;
-        max-width: 100% !important;
-        padding: 20px !important;
-    }
-}
-
-/* Extra small screens */
-@media (max-width: 480px) {
-    h1, .hero-title {
-        font-size: 18px !important;
-    }
-
-    h2 {
-        font-size: 16px !important;
-    }
-
-    .hero-badge,
-    .plans-badge {
-        font-size: 9px !important;
-        padding: 4px 8px !important;
-    }
-
-    .balance-value,
-    .adm-stat-value {
-        font-size: 18px !important;
-    }
-
-    /* Mobile menu - hide text, show only icons */
-    .db-nav-item span:not(.db-nav-icon),
-    .adm-nav-item span {
-        display: none;
-    }
-
-    .db-nav-item,
-    .adm-nav-item {
-        padding: 10px !important;
-        font-size: 18px !important;
-        min-width: 44px !important;
-        max-width: 44px !important;
-        height: 44px !important;
-    }
-
-    .plan-crypto-options {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    .crypto-rate-item {
-        flex: 1 1 100% !important;
-    }
-}
-
-/* Fix for safe area on notched phones */
-@supports (padding: max(0px)) {
-    body {
-        padding-left: env(safe-area-inset-left);
-        padding-right: env(safe-area-inset-right);
+    /* Admin Tables */
+    .adm-users-table { overflow-x: auto !important; }
+    .adm-users-table-header { display: none !important; }
+    .adm-user-row { 
+        flex-direction: column !important; 
+        padding: 12px !important; 
+        gap: 8px !important; 
     }
 }
