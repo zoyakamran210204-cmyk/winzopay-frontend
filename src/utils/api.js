@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // ================================
-// Backend URL (Permanent Domain)
+// Backend URL
 // ================================
 const API_URL = 'https://winzopay-backend.vercel.app/api';
 
@@ -61,7 +61,7 @@ export const getCryptoRates = async () => {
     }
 };
 
-// Get Current User Data (For Instant Refresh)
+// ⚠️ NAYA: Get Current User Data (For Instant Refresh)
 export const getMe = async () => {
     try {
         const response = await api.get('/auth/me');
