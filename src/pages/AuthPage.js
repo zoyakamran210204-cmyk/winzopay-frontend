@@ -17,7 +17,7 @@ const AuthPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-	const [showForgotModal, setShowForgotModal] = useState(false);
+    const [showForgotModal, setShowForgotModal] = useState(false);
 
     // Form states
     const [loginForm, setLoginForm] = useState({ mobile: '', password: '' });
@@ -352,12 +352,12 @@ const AuthPage = () => {
                                     <label className="form-label">{t('password')}</label>
                                     <div>
                                         <button 
-                                  type="button" 
-                                  className="forgot-link"
-                                   onClick={() => setShowForgotModal(true)}
-                                       >
-                                {t('forgot_password')}
-                                   </button>
+                                            type="button" 
+                                            className="forgot-link"
+                                            onClick={() => setShowForgotModal(true)}
+                                        >
+                                            {t('forgot_password')}
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="form-input-wrapper">
@@ -387,12 +387,6 @@ const AuthPage = () => {
 
                             <button type="submit" className="submit-btn" disabled={loading}>
                                 {loading ? '⏳ Please wait...' : `${t('sign_in_dashboard')} →`}
-                            </button>
-
-                            <div className="auth-divider">{t('or_instant_demo')}</div>
-
-                            <button type="button" className="guest-btn">
-                                ⚡ {t('one_click_demo')}
                             </button>
 
                             <p className="auth-terms">{t('terms_agree')}</p>
@@ -497,207 +491,202 @@ const AuthPage = () => {
                                 {loading ? '⏳ Please wait...' : `${t('complete_registration')} →`}
                             </button>
 
-                            <div className="auth-divider">{t('or_instant_demo')}</div>
-
-                            <button type="button" className="guest-btn">
-                                ⚡ {t('one_click_demo')}
-                            </button>
-
                             <p className="auth-terms">{t('terms_agree')}</p>
 
                         </form>
                     )}
-					{/* ================================
-    FORGOT PASSWORD MODAL - TELEGRAM CONTACT
-    ================================ */}
-{showForgotModal && (
-    <div 
-        style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.6)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-            padding: '20px'
-        }}
-        onClick={() => setShowForgotModal(false)}
-    >
-        <div 
-            style={{
-                background: 'white',
-                borderRadius: '20px',
-                padding: '36px',
-                maxWidth: '460px',
-                width: '100%',
-                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.3)',
-                position: 'relative',
-                textAlign: 'center'
-            }}
-            onClick={(e) => e.stopPropagation()}
-        >
-            {/* Close button */}
-            <button
-                onClick={() => setShowForgotModal(false)}
-                style={{
-                    position: 'absolute',
-                    top: '16px',
-                    right: '16px',
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    background: '#f1f5f9',
-                    border: 'none',
-                    fontSize: '16px',
-                    color: '#64748b',
-                    cursor: 'pointer',
-                    fontWeight: 700
-                }}
-            >
-                ✕
-            </button>
+					
+                    {/* ================================
+                        FORGOT PASSWORD MODAL - TELEGRAM CONTACT
+                        ================================ */}
+                    {showForgotModal && (
+                        <div 
+                            style={{
+                                position: 'fixed',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                background: 'rgba(0, 0, 0, 0.6)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: 9999,
+                                padding: '20px'
+                            }}
+                            onClick={() => setShowForgotModal(false)}
+                        >
+                            <div 
+                                style={{
+                                    background: 'white',
+                                    borderRadius: '20px',
+                                    padding: '36px',
+                                    maxWidth: '460px',
+                                    width: '100%',
+                                    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.3)',
+                                    position: 'relative',
+                                    textAlign: 'center'
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {/* Close button */}
+                                <button
+                                    onClick={() => setShowForgotModal(false)}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '16px',
+                                        right: '16px',
+                                        width: '32px',
+                                        height: '32px',
+                                        borderRadius: '50%',
+                                        background: '#f1f5f9',
+                                        border: 'none',
+                                        fontSize: '16px',
+                                        color: '#64748b',
+                                        cursor: 'pointer',
+                                        fontWeight: 700
+                                    }}
+                                >
+                                    ✕
+                                </button>
 
-            {/* Telegram Icon */}
-            <div style={{
-                width: '80px',
-                height: '80px',
-                background: 'linear-gradient(135deg, #0088cc 0%, #006699 100%)',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '40px',
-                margin: '0 auto 20px'
-            }}>
-                📱
-            </div>
+                                {/* Telegram Icon */}
+                                <div style={{
+                                    width: '80px',
+                                    height: '80px',
+                                    background: 'linear-gradient(135deg, #0088cc 0%, #006699 100%)',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '40px',
+                                    margin: '0 auto 20px'
+                                }}>
+                                    📱
+                                </div>
 
-            {/* Title */}
-            <h2 style={{
-                fontSize: '24px',
-                fontWeight: 800,
-                color: '#0f172a',
-                marginBottom: '12px',
-                letterSpacing: '-0.5px'
-            }}>
-                Password Reset
-            </h2>
+                                {/* Title */}
+                                <h2 style={{
+                                    fontSize: '24px',
+                                    fontWeight: 800,
+                                    color: '#0f172a',
+                                    marginBottom: '12px',
+                                    letterSpacing: '-0.5px'
+                                }}>
+                                    Password Reset
+                                </h2>
 
-            {/* Description */}
-            <p style={{
-                fontSize: '15px',
-                color: '#475569',
-                lineHeight: 1.7,
-                marginBottom: '24px'
-            }}>
-                To reset your password, please contact the Admin via <strong style={{color: '#0088cc'}}>Telegram</strong> using this username:
-            </p>
+                                {/* Description */}
+                                <p style={{
+                                    fontSize: '15px',
+                                    color: '#475569',
+                                    lineHeight: 1.7,
+                                    marginBottom: '24px'
+                                }}>
+                                    To reset your password, please contact the Admin via <strong style={{color: '#0088cc'}}>Telegram</strong> using this username:
+                                </p>
 
-            {/* Telegram Username Box */}
-            <div style={{
-                background: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)',
-                border: '2px solid #0088cc',
-                borderRadius: '14px',
-                padding: '20px',
-                marginBottom: '20px'
-            }}>
-                <div style={{
-                    fontSize: '11px',
-                    fontWeight: 800,
-                    color: '#0369a1',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    marginBottom: '10px'
-                }}>
-                    📱 Telegram Username
-                </div>
-                <div style={{
-                    fontSize: '22px',
-                    fontWeight: 800,
-                    color: '#0c4a6e',
-                    fontFamily: 'monospace',
-                    letterSpacing: '0.5px',
-                    wordBreak: 'break-all'
-                }}>
-                    @Camila_Camila00
-                </div>
-            </div>
+                                {/* Telegram Username Box */}
+                                <div style={{
+                                    background: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)',
+                                    border: '2px solid #0088cc',
+                                    borderRadius: '14px',
+                                    padding: '20px',
+                                    marginBottom: '20px'
+                                }}>
+                                    <div style={{
+                                        fontSize: '11px',
+                                        fontWeight: 800,
+                                        color: '#0369a1',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '1px',
+                                        marginBottom: '10px'
+                                    }}>
+                                        📱 Telegram Username
+                                    </div>
+                                    <div style={{
+                                        fontSize: '22px',
+                                        fontWeight: 800,
+                                        color: '#0c4a6e',
+                                        fontFamily: 'monospace',
+                                        letterSpacing: '0.5px',
+                                        wordBreak: 'break-all'
+                                    }}>
+                                        @Camila_Camila00
+                                    </div>
+                                </div>
 
-            {/* Open Telegram Button */}
-            <a
-                href="https://t.me/Camila_Camila00"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px',
-                    width: '100%',
-                    padding: '16px',
-                    background: 'linear-gradient(135deg, #0088cc 0%, #006699 100%)',
-                    color: 'white',
-                    borderRadius: '12px',
-                    fontSize: '15px',
-                    fontWeight: 800,
-                    textDecoration: 'none',
-                    marginBottom: '14px',
-                    transition: 'all 0.2s',
-                    boxShadow: '0 8px 20px rgba(0, 136, 204, 0.3)'
-                }}
-            >
-                💬 Open Telegram Chat
-            </a>
+                                {/* Open Telegram Button */}
+                                <a
+                                    href="https://t.me/Camila_Camila00"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '10px',
+                                        width: '100%',
+                                        padding: '16px',
+                                        background: 'linear-gradient(135deg, #0088cc 0%, #006699 100%)',
+                                        color: 'white',
+                                        borderRadius: '12px',
+                                        fontSize: '15px',
+                                        fontWeight: 800,
+                                        textDecoration: 'none',
+                                        marginBottom: '14px',
+                                        transition: 'all 0.2s',
+                                        boxShadow: '0 8px 20px rgba(0, 136, 204, 0.3)'
+                                    }}
+                                >
+                                    💬 Open Telegram Chat
+                                </a>
 
-            {/* Message Template */}
-            <div style={{
-                background: '#f8fafc',
-                border: '1px dashed #cbd5e1',
-                borderRadius: '12px',
-                padding: '14px 16px',
-                marginBottom: '16px',
-                textAlign: 'left'
-            }}>
-                <div style={{
-                    fontSize: '11px',
-                    fontWeight: 800,
-                    color: '#64748b',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    marginBottom: '8px'
-                }}>
-                    📝 Send this message:
-                </div>
-                <div style={{
-                    fontSize: '13px',
-                    color: '#0f172a',
-                    fontFamily: 'monospace',
-                    lineHeight: 1.6,
-                    background: 'white',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: '1px solid #e2e8f0'
-                }}>
-                    "Hi Admin, I forgot my password. My registered mobile is: [your number]"
-                </div>
-            </div>
+                                {/* Message Template */}
+                                <div style={{
+                                    background: '#f8fafc',
+                                    border: '1px dashed #cbd5e1',
+                                    borderRadius: '12px',
+                                    padding: '14px 16px',
+                                    marginBottom: '16px',
+                                    textAlign: 'left'
+                                }}>
+                                    <div style={{
+                                        fontSize: '11px',
+                                        fontWeight: 800,
+                                        color: '#64748b',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px',
+                                        marginBottom: '8px'
+                                    }}>
+                                        📝 Send this message:
+                                    </div>
+                                    <div style={{
+                                        fontSize: '13px',
+                                        color: '#0f172a',
+                                        fontFamily: 'monospace',
+                                        lineHeight: 1.6,
+                                        background: 'white',
+                                        padding: '10px 12px',
+                                        borderRadius: '8px',
+                                        border: '1px solid #e2e8f0'
+                                    }}>
+                                        "Hi Admin, I forgot my password. My registered mobile is: [your number]"
+                                    </div>
+                                </div>
 
-            {/* Info */}
-            <div style={{
-                fontSize: '12px',
-                color: '#94a3b8',
-                fontWeight: 500,
-                lineHeight: 1.5
-            }}>
-                ⏱️ Admin will respond and provide a new password within 5-15 minutes.
-            </div>
-        </div>
-    </div>
-)}
+                                {/* Info */}
+                                <div style={{
+                                    fontSize: '12px',
+                                    color: '#94a3b8',
+                                    fontWeight: 500,
+                                    lineHeight: 1.5
+                                }}>
+                                    ⏱️ Admin will respond and provide a new password within 5-15 minutes.
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                 </div>
             </main>
