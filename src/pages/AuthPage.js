@@ -19,13 +19,9 @@ const AuthPage = () => {
     const [success, setSuccess] = useState('');
     const [showForgotModal, setShowForgotModal] = useState(false);
 
-    // Form states
     const [loginForm, setLoginForm] = useState({ mobile: '', password: '' });
     const [registerForm, setRegisterForm] = useState({
-        name: '',
-        mobile: '',
-        password: '',
-        confirmPassword: ''
+        name: '', mobile: '', password: '', confirmPassword: ''
     });
 
     const changeLanguage = (lang) => {
@@ -33,9 +29,6 @@ const AuthPage = () => {
         setLanguageOpen(false);
     };
 
-    // ================================
-    // Login Submit
-    // ================================
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
@@ -49,6 +42,8 @@ const AuthPage = () => {
             });
 
             // 🔥 SUPERADMIN & ADMIN BLOCK
+            console.log("ROLE CHECK:", response.user.role); // Yeh console mein dikhega
+            
             if (response.user.role === 'Admin' || response.user.role === 'SuperAdmin') {
                 localStorage.removeItem('winzopay_token');
                 localStorage.removeItem('winzopay_user');
@@ -67,9 +62,6 @@ const AuthPage = () => {
         }
     };
 
-    // ================================
-    // Register Submit
-    // ================================
     const handleRegister = async (e) => {
         e.preventDefault();
         setError('');
