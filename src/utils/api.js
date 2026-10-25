@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // ================================
-// Backend URL
+// Permanent Backend URL
 // ================================
 const API_URL = 'https://winzopay-backend.vercel.app/api';
 
@@ -18,7 +18,7 @@ const api = axios.create({
 // ================================
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('winzopay_token');
+        const token = localStorage.getItem('winzopay_token'); // Admin panel mein 'admin_token' hoga
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -31,7 +31,6 @@ api.interceptors.request.use(
 // API Functions
 // ================================
 
-// Register user
 export const registerUser = async (userData) => {
     try {
         const response = await api.post('/auth/register', userData);
@@ -41,7 +40,6 @@ export const registerUser = async (userData) => {
     }
 };
 
-// Login user
 export const loginUser = async (credentials) => {
     try {
         const response = await api.post('/auth/login', credentials);
@@ -51,7 +49,6 @@ export const loginUser = async (credentials) => {
     }
 };
 
-// Get crypto rates (BRL)
 export const getCryptoRates = async () => {
     try {
         const response = await api.get('/auth/crypto-rates');
@@ -61,7 +58,6 @@ export const getCryptoRates = async () => {
     }
 };
 
-// ⚠️ NAYA: Get Current User Data (For Instant Refresh)
 export const getMe = async () => {
     try {
         const response = await api.get('/auth/me');
