@@ -48,8 +48,8 @@ const AuthPage = () => {
                 password: loginForm.password
             });
 
-            // 🚫 Admin ko User panel se login mat karne do
-            if (response.user.role === 'Admin') {
+            // 🔥 SUPERADMIN & ADMIN BLOCK
+            if (response.user.role === 'Admin' || response.user.role === 'SuperAdmin') {
                 localStorage.removeItem('winzopay_token');
                 localStorage.removeItem('winzopay_user');
                 setError('🚫 You are an Admin. Please use the Admin Panel to login.');
