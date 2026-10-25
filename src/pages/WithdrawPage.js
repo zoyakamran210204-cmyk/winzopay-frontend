@@ -10,8 +10,8 @@ const WithdrawPage = () => {
     const [amount, setAmount] = useState('');
     const [payoutMethod, setPayoutMethod] = useState('Bank');
     const [selectedBank, setSelectedBank] = useState('');
-    const [agency, setAgency] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
+    const [accountHolderName, setAccountHolderName] = useState(''); // 👈 Account Holder Name Add kiya
+    const [accountNumber, setAccountNumber] = useState(''); 
     const [cpfCnpj, setCpfCnpj] = useState('');
     const [accountType, setAccountType] = useState('Corrente');
     const [loading, setLoading] = useState(false);
@@ -57,8 +57,8 @@ const WithdrawPage = () => {
                 setMessage({ type: 'error', text: 'Please select a Brazilian bank' });
                 return;
             }
-            if (!agency) {
-                setMessage({ type: 'error', text: 'Please enter bank agency' });
+            if (!accountHolderName) {
+                setMessage({ type: 'error', text: 'Please enter account holder name' });
                 return;
             }
             if (!accountNumber) {
@@ -82,7 +82,7 @@ const WithdrawPage = () => {
                 bankDetails: (payoutMethod === 'Bank' || payoutMethod === 'PIX') ? {
                     bankCode: selectedBank,
                     bankName: selectedBankObj?.name || '',
-                    agency: agency,
+                    accountHolderName: accountHolderName, // 👈 Backend ko bhej diya
                     accountNumber: accountNumber,
                     accountType: accountType,
                     cpfCnpj: cpfCnpj
@@ -92,7 +92,7 @@ const WithdrawPage = () => {
             setMessage({ type: 'success', text: '✅ Withdraw request submitted! Please wait for admin approval.' });
             setAmount('');
             setSelectedBank('');
-            setAgency('');
+            setAccountHolderName('');
             setAccountNumber('');
             setCpfCnpj('');
             setAccountType('Corrente');
@@ -114,7 +114,8 @@ const WithdrawPage = () => {
         });
     };
 
-    const bankDetailsComplete = selectedBank && agency && accountNumber && cpfCnpj;
+    // Account holder name ko validation mein add kiya
+    const bankDetailsComplete = selectedBank && accountHolderName && accountNumber && cpfCnpj;
 
     const canWithdraw =
         amount &&
@@ -216,10 +217,7 @@ const WithdrawPage = () => {
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={{
-                                display: 'block', fontSize: '11px', fontWeight: 700,
-                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                            }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
                                 Select Brazilian Bank
                             </label>
                             <select
@@ -236,46 +234,37 @@ const WithdrawPage = () => {
                             </select>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
-                            <div>
-                                <label style={{
-                                    display: 'block', fontSize: '11px', fontWeight: 700,
-                                    color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                                }}>
-                                    Agency
-                                </label>
-                                <input
-                                    type="text"
-                                    className="wd-bank-select"
-                                    placeholder="e.g. 0001"
-                                    value={agency}
-                                    onChange={(e) => setAgency(e.target.value)}
-                                    style={{ backgroundImage: 'none', paddingRight: '14px' }}
-                                />
-                            </div>
-                            <div>
-                                <label style={{
-                                    display: 'block', fontSize: '11px', fontWeight: 700,
-                                    color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                                }}>
-                                    Account Number
-                                </label>
-                                <input
-                                    type="text"
-                                    className="wd-bank-select"
-                                    placeholder="e.g. 12345-6"
-                                    value={accountNumber}
-                                    onChange={(e) => setAccountNumber(e.target.value)}
-                                    style={{ backgroundImage: 'none', paddingRight: '14px' }}
-                                />
-                            </div>
+                        {/* Account Holder Name */}
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
+                                Account Holder Name
+                            </label>
+                            <input
+                                type="text"
+                                className="wd-bank-select"
+                                placeholder="e.g. John Doe"
+                                value={accountHolderName}
+                                onChange={(e) => setAccountHolderName(e.target.value)}
+                                style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                            />
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={{
-                                display: 'block', fontSize: '11px', fontWeight: 700,
-                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                            }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
+                                Account Number
+                            </label>
+                            <input
+                                type="text"
+                                className="wd-bank-select"
+                                placeholder="e.g. 12345-6"
+                                value={accountNumber}
+                                onChange={(e) => setAccountNumber(e.target.value)}
+                                style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
                                 Account Type
                             </label>
                             <select
@@ -290,10 +279,7 @@ const WithdrawPage = () => {
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={{
-                                display: 'block', fontSize: '11px', fontWeight: 700,
-                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                            }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
                                 CPF / CNPJ
                             </label>
                             <input
@@ -315,10 +301,7 @@ const WithdrawPage = () => {
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={{
-                                display: 'block', fontSize: '11px', fontWeight: 700,
-                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                            }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
                                 Select Brazilian Bank (PIX-linked)
                             </label>
                             <select
@@ -335,46 +318,37 @@ const WithdrawPage = () => {
                             </select>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
-                            <div>
-                                <label style={{
-                                    display: 'block', fontSize: '11px', fontWeight: 700,
-                                    color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                                }}>
-                                    Agency
-                                </label>
-                                <input
-                                    type="text"
-                                    className="wd-bank-select"
-                                    placeholder="e.g. 0001"
-                                    value={agency}
-                                    onChange={(e) => setAgency(e.target.value)}
-                                    style={{ backgroundImage: 'none', paddingRight: '14px' }}
-                                />
-                            </div>
-                            <div>
-                                <label style={{
-                                    display: 'block', fontSize: '11px', fontWeight: 700,
-                                    color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                                }}>
-                                    Account Number
-                                </label>
-                                <input
-                                    type="text"
-                                    className="wd-bank-select"
-                                    placeholder="e.g. 12345-6"
-                                    value={accountNumber}
-                                    onChange={(e) => setAccountNumber(e.target.value)}
-                                    style={{ backgroundImage: 'none', paddingRight: '14px' }}
-                                />
-                            </div>
+                        {/* Account Holder Name */}
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
+                                Account Holder Name
+                            </label>
+                            <input
+                                type="text"
+                                className="wd-bank-select"
+                                placeholder="e.g. John Doe"
+                                value={accountHolderName}
+                                onChange={(e) => setAccountHolderName(e.target.value)}
+                                style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                            />
                         </div>
 
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={{
-                                display: 'block', fontSize: '11px', fontWeight: 700,
-                                color: '#64748b', textTransform: 'uppercase', marginBottom: '6px'
-                            }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
+                                Account Number
+                            </label>
+                            <input
+                                type="text"
+                                className="wd-bank-select"
+                                placeholder="e.g. 12345-6"
+                                value={accountNumber}
+                                onChange={(e) => setAccountNumber(e.target.value)}
+                                style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
                                 CPF / CNPJ (PIX Key Holder)
                             </label>
                             <input
@@ -436,17 +410,11 @@ const WithdrawPage = () => {
                     </button>
 
                     {!canWithdraw && amount && (
-                        <div style={{
-                            textAlign: 'center',
-                            marginTop: '12px',
-                            fontSize: '12px',
-                            color: '#dc2626',
-                            fontWeight: 600
-                        }}>
+                        <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '12px', color: '#dc2626', fontWeight: 600 }}>
                             {(payoutMethod === 'Bank' || payoutMethod === 'PIX') && !selectedBank
                                 ? '⚠️ Please select a Brazilian bank'
-                                : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !agency
-                                    ? '⚠️ Please enter bank agency'
+                                : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !accountHolderName
+                                    ? '⚠️ Please enter account holder name'
                                     : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !accountNumber
                                         ? '⚠️ Please enter account number'
                                         : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !cpfCnpj
