@@ -30,7 +30,7 @@ const AuthPage = () => {
     };
 
     // ================================
-    // Login Submit (Sirf Mobile bhej rahe hain)
+    // Login Submit
     // ================================
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -39,19 +39,14 @@ const AuthPage = () => {
         setLoading(true);
 
         try {
-            // 👈 Yahan hum 'mobile' field bhej rahe hain. 
-            // Agar user ne email daali hai, toh bhi backend usko 'mobile' ki tarah check karega.
             const response = await loginUser({
                 mobile: loginForm.mobile, 
                 password: loginForm.password
             });
 
-            // Frontend par bhi check laga diya hai
+            // 🚫 AGAR ADMIN HAI TOH LOGIN MAT KARO AUR POORA STORAGE CLEAR KARO
             if (response.user.role === 'Admin') {
-                // 👈 Yahan hum purana data clear kar rahe hain
-                localStorage.removeItem('winzopay_token');
-                localStorage.removeItem('winzopay_user');
-                
+                localStorage.clear(); // Purana data 100% delete
                 setError('🚫 You are an Admin. Please use the Admin Panel to login.');
                 setLoading(false);
                 return;
@@ -61,7 +56,6 @@ const AuthPage = () => {
             navigate('/dashboard');
 
         } catch (err) {
-            // Agar backend se error aaya (jo aapne authController mein lagaya hai)
             setError(err.message || 'Login failed. Please try again.');
         } finally {
             setLoading(false);
