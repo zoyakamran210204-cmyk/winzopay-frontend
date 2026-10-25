@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import DashboardHeader from '../components/DashboardHeader';
-import api from '../utils/api';
+import api, { getMe } from '../utils/api'; // 👈 getMe import kiya
 import './WithdrawPage.css';
 
 const WithdrawPage = () => {
-    const { user } = useAuth();
+    const { user, login } = useAuth(); // 👈 login add kiya
 
     const [amount, setAmount] = useState('');
     const [payoutMethod, setPayoutMethod] = useState('Bank');
@@ -15,7 +15,7 @@ const WithdrawPage = () => {
     const [cpfCnpj, setCpfCnpj] = useState('');
     const [accountType, setAccountType] = useState('Corrente');
     
-    // 👈 USDT ke liye naye states add kiye
+    // USDT ke liye states
     const [walletAddress, setWalletAddress] = useState('');
     const [cryptoNetwork, setCryptoNetwork] = useState('TRC20');
 
@@ -31,15 +31,34 @@ const WithdrawPage = () => {
         { code: '323', name: 'Mercado Pago' }, { code: '290', name: 'PagBank' }
     ];
 
+    // ==========================================
+    // 👈 NAYA: Har 3 second baad User Balance update karega
+    // ==========================================
     useEffect(() => {
-        const loadHistory = async () => {
+        const refreshUserData = async () => {
             try {
-                const res = await api.get('/transaction/my-transactions');
-                setHistory(res.data.filter(tx => tx.type === 'Withdraw'));
+                const freshUser = await getMe();
+                login(freshUser, localStorage.getItem('winzopay_token'));
             } catch (err) {
-                console.error('Load failed:', err);
+                console.error('User refresh failed:', err);
             }
         };
+
+        const interval = setInterval(refreshUserData, 3000); // 3 seconds
+        return () => clearInterval(interval);
+    }, [login]);
+
+    // History Load Karne ka function
+    const loadHistory = async () => {
+        try {
+            const res = await api.get('/transaction/my-transactions');
+            setHistory(res.data.filter(tx => tx.type === 'Withdraw'));
+        } catch (err) {
+            console.error('Load failed:', err);
+        }
+    };
+
+    useEffect(() => {
         loadHistory();
     }, []);
 
@@ -57,7 +76,6 @@ const WithdrawPage = () => {
             return;
         }
 
-        // Validation for Bank/PIX
         if (payoutMethod === 'Bank' || payoutMethod === 'PIX') {
             if (!selectedBank) {
                 setMessage({ type: 'error', text: 'Please select a Brazilian bank' });
@@ -77,7 +95,6 @@ const WithdrawPage = () => {
             }
         }
 
-        // Validation for USDT
         if (payoutMethod === 'USDT') {
             if (!walletAddress) {
                 setMessage({ type: 'error', text: 'Please enter your USDT Wallet Address' });
@@ -114,11 +131,11 @@ const WithdrawPage = () => {
             setAccountNumber('');
             setCpfCnpj('');
             setAccountType('Corrente');
-            setWalletAddress(''); // Reset wallet address
+            setWalletAddress('');
             setCryptoNetwork('TRC20');
 
-            const res = await api.get('/transaction/my-transactions');
-            setHistory(res.data.filter(tx => tx.type === 'Withdraw'));
+            // History foran update karein
+            loadHistory();
 
         } catch (err) {
             setMessage({ type: 'error', text: err.response?.data?.message || 'Withdraw failed' });
@@ -143,7 +160,7 @@ const WithdrawPage = () => {
         Number(amount) <= (user?.withdrawableBalance || 0) &&
         (payoutMethod !== 'Bank' || bankDetailsComplete) &&
         (payoutMethod !== 'PIX' || bankDetailsComplete) &&
-        (payoutMethod !== 'USDT' || cryptoDetailsComplete); // 👈 USDT condition add ki
+        (payoutMethod !== 'USDT' || cryptoDetailsComplete);
 
     const pendingWithdraws = history.filter(h => h.status === 'Pending').length;
     const approvedWithdraws = history.filter(h => h.status === 'Approved').reduce((s, h) => s + h.amount, 0);
@@ -231,7 +248,7 @@ const WithdrawPage = () => {
                     </button>
                 </div>
 
-                {/* 👈 USDT Details Section */}
+                {/* USDT Details Section */}
                 {payoutMethod === 'USDT' && (
                     <div className="wd-section">
                         <div className="wd-section-header">
