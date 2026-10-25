@@ -10,13 +10,12 @@ import WithdrawPage from './pages/WithdrawPage';
 import LedgerPage from './pages/LedgerPage';
 import ProfilePage from './pages/ProfilePage';
 
-import BottomNav from './components/BottomNav'; // Bottom Nav Import
+import BottomNav from './components/BottomNav'; 
+import LiveSupport from './components/LiveSupport'; // 👈 Yeh line add karein
 
-// Yeh component check karega ke user Login page par hai ya nahi
 function AppLayout() {
     const location = useLocation();
     
-    // Agar user Login page (/) par hai, to BottomNav na dikhao
     const isAuthPage = location.pathname === '/';
 
     return (
@@ -35,8 +34,13 @@ function AppLayout() {
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
 
-            {/* Bottom Navigation sirf tab dikhe jab user Login page par na ho */}
-            {!isAuthPage && <BottomNav />}
+            {/* 👈 Live Support Add kiya */}
+            {!isAuthPage && (
+                <>
+                    <BottomNav />
+                    <LiveSupport />
+                </>
+            )}
         </div>
     );
 }
