@@ -35,7 +35,7 @@ const AuthPage = () => {
     };
 
     // ================================
-    // Login Submit (Backend Call)
+    // Login Submit (Mobile Only)
     // ================================
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -44,26 +44,31 @@ const AuthPage = () => {
         setLoading(true);
 
         try {
+            // ⚠️ Yahan `email` ki jagah `mobile` bheja gaya hai
             const response = await loginUser({
-                email: loginForm.mobile,
+                mobile: loginForm.mobile,
                 password: loginForm.password
             });
 
-            // Save user data in context
-            login(response.user, response.token);
+            // Check agar admin ghalti se login kare toh
+            if (response.user.role === 'Admin') {
+                setError('Please use the Admin Panel to login as Admin.');
+                setLoading(false);
+                return;
+            }
 
-            // Redirect to dashboard
+            login(response.user, response.token);
             navigate('/dashboard');
 
         } catch (err) {
-            setError(err.message || 'Login failed. Please try again.');
+            setError(err.message || 'Login failed. Please check your mobile number and password.');
         } finally {
             setLoading(false);
         }
     };
 
     // ================================
-    // Register Submit (Backend Call)
+    // Register Submit (Mobile Only)
     // ================================
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -81,12 +86,18 @@ const AuthPage = () => {
             return;
         }
 
+        // Check if user typed email instead of mobile
+        if (registerForm.mobile.includes('@')) {
+            setError('Please enter a valid mobile number, not an email.');
+            return;
+        }
+
         setLoading(true);
 
         try {
+            // ⚠️ Yahan `email` ki jagah `mobile` bheja gaya hai
             await registerUser({
                 name: registerForm.name,
-                email: registerForm.mobile,
                 mobile: registerForm.mobile,
                 password: registerForm.password
             });
@@ -112,9 +123,6 @@ const AuthPage = () => {
     return (
         <div className="auth-container">
 
-            {/* ================================
-                HEADER
-                ================================ */}
             <header className="auth-header">
                 <div className="auth-logo">
                     <div className="auth-logo-icon">WP</div>
@@ -128,7 +136,6 @@ const AuthPage = () => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-
                     {/* Language Selector */}
                     <div style={{ position: 'relative' }}>
                         <button
@@ -150,72 +157,21 @@ const AuthPage = () => {
                                 minWidth: '150px',
                                 zIndex: 100
                             }}>
-                                <button
-                                    onClick={() => changeLanguage('en')}
-                                    style={{
-                                        width: '100%',
-                                        padding: '10px 15px',
-                                        textAlign: 'left',
-                                        background: i18n.language === 'en' ? '#eff6ff' : 'transparent',
-                                        borderRadius: '8px',
-                                        fontSize: '14px',
-                                        fontWeight: 600,
-                                        color: '#0f172a',
-                                        marginBottom: '4px'
-                                    }}
-                                >
-                                    🇬🇧 English
-                                </button>
-                                <button
-                                    onClick={() => changeLanguage('pt')}
-                                    style={{
-                                        width: '100%',
-                                        padding: '10px 15px',
-                                        textAlign: 'left',
-                                        background: i18n.language === 'pt' ? '#eff6ff' : 'transparent',
-                                        borderRadius: '8px',
-                                        fontSize: '14px',
-                                        fontWeight: 600,
-                                        color: '#0f172a',
-                                        marginBottom: '4px'
-                                    }}
-                                >
-                                    🇵🇹 Português
-                                </button>
-                                <button
-                                    onClick={() => changeLanguage('br')}
-                                    style={{
-                                        width: '100%',
-                                        padding: '10px 15px',
-                                        textAlign: 'left',
-                                        background: i18n.language === 'br' ? '#eff6ff' : 'transparent',
-                                        borderRadius: '8px',
-                                        fontSize: '14px',
-                                        fontWeight: 600,
-                                        color: '#0f172a'
-                                    }}
-                                >
-                                    🇧🇷 Brasileiro
-                                </button>
+                                <button onClick={() => changeLanguage('en')} style={{ width: '100%', padding: '10px 15px', textAlign: 'left', background: i18n.language === 'en' ? '#eff6ff' : 'transparent', borderRadius: '8px', fontSize: '14px', fontWeight: 600, color: '#0f172a', marginBottom: '4px' }}>🇬🇧 English</button>
+                                <button onClick={() => changeLanguage('pt')} style={{ width: '100%', padding: '10px 15px', textAlign: 'left', background: i18n.language === 'pt' ? '#eff6ff' : 'transparent', borderRadius: '8px', fontSize: '14px', fontWeight: 600, color: '#0f172a', marginBottom: '4px' }}>🇵🇹 Português</button>
+                                <button onClick={() => changeLanguage('br')} style={{ width: '100%', padding: '10px 15px', textAlign: 'left', background: i18n.language === 'br' ? '#eff6ff' : 'transparent', borderRadius: '8px', fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>🇧🇷 Brasileiro</button>
                             </div>
                         )}
                     </div>
 
-                    {/* Help Desk */}
                     <button className="help-desk-btn">
                         📞 24x7 Help Desk
                     </button>
                 </div>
             </header>
 
-            {/* ================================
-                MAIN CONTENT
-                ================================ */}
             <main className="auth-main">
-
-                {/* LEFT SIDE - HERO */}
                 <div className="auth-hero">
-
                     <div className="hero-badge">
                         <span className="hero-badge-icon">⚡</span>
                         {t('direct_bank_settlement')}
@@ -233,9 +189,7 @@ const AuthPage = () => {
                     <div className="hero-cards">
                         <div className="hero-card">
                             <div className="hero-card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                </svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
                             </div>
                             <div className="hero-card-content">
                                 <div className="hero-card-title">{t('instant_upi_qr')}</div>
@@ -245,9 +199,7 @@ const AuthPage = () => {
 
                         <div className="hero-card">
                             <div className="hero-card-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                                </svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                             </div>
                             <div className="hero-card-content">
                                 <div className="hero-card-title">{t('imps_payouts')}</div>
@@ -258,77 +210,40 @@ const AuthPage = () => {
 
                     <div className="hero-security">
                         <div className="security-item">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                            </svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
                             {t('secure_auth')}
                         </div>
                         <div className="security-item">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                                <polyline points="22 4 12 14.01 9 11.01" />
-                            </svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
                             {t('verified_transfers')}
                         </div>
                     </div>
-
                 </div>
 
-                {/* RIGHT SIDE - AUTH FORM */}
                 <div className="auth-form-wrapper">
-
-                    {/* Tabs */}
                     <div className="auth-tabs">
-                        <button
-                            className={`auth-tab ${activeTab === 'login' ? 'active' : ''}`}
-                            onClick={() => { setActiveTab('login'); setError(''); setSuccess(''); }}
-                        >
+                        <button className={`auth-tab ${activeTab === 'login' ? 'active' : ''}`} onClick={() => { setActiveTab('login'); setError(''); setSuccess(''); }}>
                             {t('login')}
                         </button>
-                        <button
-                            className={`auth-tab ${activeTab === 'register' ? 'active' : ''}`}
-                            onClick={() => { setActiveTab('register'); setError(''); setSuccess(''); }}
-                        >
+                        <button className={`auth-tab ${activeTab === 'register' ? 'active' : ''}`} onClick={() => { setActiveTab('register'); setError(''); setSuccess(''); }}>
                             {t('register')}
                         </button>
                     </div>
 
-                    {/* Error Message */}
                     {error && (
-                        <div style={{
-                            background: '#fee2e2',
-                            color: '#991b1b',
-                            padding: '12px',
-                            borderRadius: '10px',
-                            marginBottom: '15px',
-                            fontSize: '14px',
-                            fontWeight: 600
-                        }}>
+                        <div style={{ background: '#fee2e2', color: '#991b1b', padding: '12px', borderRadius: '10px', marginBottom: '15px', fontSize: '14px', fontWeight: 600 }}>
                             ⚠️ {error}
                         </div>
                     )}
 
-                    {/* Success Message */}
                     {success && (
-                        <div style={{
-                            background: '#dcfce7',
-                            color: '#166534',
-                            padding: '12px',
-                            borderRadius: '10px',
-                            marginBottom: '15px',
-                            fontSize: '14px',
-                            fontWeight: 600
-                        }}>
+                        <div style={{ background: '#dcfce7', color: '#166534', padding: '12px', borderRadius: '10px', marginBottom: '15px', fontSize: '14px', fontWeight: 600 }}>
                             {success}
                         </div>
                     )}
 
-                    {/* ================================
-                        LOGIN FORM
-                        ================================ */}
                     {activeTab === 'login' && (
                         <form onSubmit={handleLogin}>
-
                             <h2 className="auth-form-title">{t('welcome_back')}</h2>
                             <p className="auth-form-subtitle">{t('login_subtitle')}</p>
 
@@ -351,21 +266,14 @@ const AuthPage = () => {
                                 <div className="form-row">
                                     <label className="form-label">{t('password')}</label>
                                     <div>
-                                        <button 
-                                            type="button" 
-                                            className="forgot-link"
-                                            onClick={() => setShowForgotModal(true)}
-                                        >
+                                        <button type="button" className="forgot-link" onClick={() => setShowForgotModal(true)}>
                                             {t('forgot_password')}
                                         </button>
                                     </div>
                                 </div>
                                 <div className="form-input-wrapper">
                                     <div className="input-icon">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                        </svg>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                                     </div>
                                     <input
                                         type={showPassword ? 'text' : 'password'}
@@ -375,11 +283,7 @@ const AuthPage = () => {
                                         onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                                         required
                                     />
-                                    <button
-                                        type="button"
-                                        className="password-toggle"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                    >
+                                    <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
                                         {showPassword ? '👁️' : '👁️‍🗨️'}
                                     </button>
                                 </div>
@@ -390,16 +294,11 @@ const AuthPage = () => {
                             </button>
 
                             <p className="auth-terms">{t('terms_agree')}</p>
-
                         </form>
                     )}
 
-                    {/* ================================
-                        REGISTER FORM
-                        ================================ */}
                     {activeTab === 'register' && (
                         <form onSubmit={handleRegister}>
-
                             <h2 className="auth-form-title">{t('create_account')}</h2>
                             <p className="auth-form-subtitle">{t('register_subtitle')}</p>
 
@@ -437,10 +336,7 @@ const AuthPage = () => {
                                 <label className="form-label">{t('password')}</label>
                                 <div className="form-input-wrapper">
                                     <div className="input-icon">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                        </svg>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                                     </div>
                                     <input
                                         type={showPassword ? 'text' : 'password'}
@@ -450,11 +346,7 @@ const AuthPage = () => {
                                         onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
                                         required
                                     />
-                                    <button
-                                        type="button"
-                                        className="password-toggle"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                    >
+                                    <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
                                         {showPassword ? '👁️' : '👁️‍🗨️'}
                                     </button>
                                 </div>
@@ -464,10 +356,7 @@ const AuthPage = () => {
                                 <label className="form-label">{t('confirm_password')}</label>
                                 <div className="form-input-wrapper">
                                     <div className="input-icon">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                        </svg>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                                     </div>
                                     <input
                                         type={showConfirmPassword ? 'text' : 'password'}
@@ -477,11 +366,7 @@ const AuthPage = () => {
                                         onChange={(e) => setRegisterForm({ ...registerForm, confirmPassword: e.target.value })}
                                         required
                                     />
-                                    <button
-                                        type="button"
-                                        className="password-toggle"
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    >
+                                    <button type="button" className="password-toggle" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                                         {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
                                     </button>
                                 </div>
@@ -492,202 +377,39 @@ const AuthPage = () => {
                             </button>
 
                             <p className="auth-terms">{t('terms_agree')}</p>
-
                         </form>
                     )}
-					
-                    {/* ================================
-                        FORGOT PASSWORD MODAL - TELEGRAM CONTACT
-                        ================================ */}
+
                     {showForgotModal && (
                         <div 
-                            style={{
-                                position: 'fixed',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                background: 'rgba(0, 0, 0, 0.6)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                zIndex: 9999,
-                                padding: '20px'
-                            }}
+                            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0, 0, 0, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px' }}
                             onClick={() => setShowForgotModal(false)}
                         >
                             <div 
-                                style={{
-                                    background: 'white',
-                                    borderRadius: '20px',
-                                    padding: '36px',
-                                    maxWidth: '460px',
-                                    width: '100%',
-                                    boxShadow: '0 25px 60px rgba(0, 0, 0, 0.3)',
-                                    position: 'relative',
-                                    textAlign: 'center'
-                                }}
+                                style={{ background: 'white', borderRadius: '20px', padding: '36px', maxWidth: '460px', width: '100%', boxShadow: '0 25px 60px rgba(0, 0, 0, 0.3)', position: 'relative', textAlign: 'center' }}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                {/* Close button */}
-                                <button
-                                    onClick={() => setShowForgotModal(false)}
-                                    style={{
-                                        position: 'absolute',
-                                        top: '16px',
-                                        right: '16px',
-                                        width: '32px',
-                                        height: '32px',
-                                        borderRadius: '50%',
-                                        background: '#f1f5f9',
-                                        border: 'none',
-                                        fontSize: '16px',
-                                        color: '#64748b',
-                                        cursor: 'pointer',
-                                        fontWeight: 700
-                                    }}
-                                >
-                                    ✕
-                                </button>
-
-                                {/* Telegram Icon */}
-                                <div style={{
-                                    width: '80px',
-                                    height: '80px',
-                                    background: 'linear-gradient(135deg, #0088cc 0%, #006699 100%)',
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '40px',
-                                    margin: '0 auto 20px'
-                                }}>
-                                    📱
-                                </div>
-
-                                {/* Title */}
-                                <h2 style={{
-                                    fontSize: '24px',
-                                    fontWeight: 800,
-                                    color: '#0f172a',
-                                    marginBottom: '12px',
-                                    letterSpacing: '-0.5px'
-                                }}>
-                                    Password Reset
-                                </h2>
-
-                                {/* Description */}
-                                <p style={{
-                                    fontSize: '15px',
-                                    color: '#475569',
-                                    lineHeight: 1.7,
-                                    marginBottom: '24px'
-                                }}>
+                                <button onClick={() => setShowForgotModal(false)} style={{ position: 'absolute', top: '16px', right: '16px', width: '32px', height: '32px', borderRadius: '50%', background: '#f1f5f9', border: 'none', fontSize: '16px', color: '#64748b', cursor: 'pointer', fontWeight: 700 }}>✕</button>
+                                <div style={{ width: '80px', height: '80px', background: 'linear-gradient(135deg, #0088cc 0%, #006699 100%)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', margin: '0 auto 20px' }}>📱</div>
+                                <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '12px', letterSpacing: '-0.5px' }}>Password Reset</h2>
+                                <p style={{ fontSize: '15px', color: '#475569', lineHeight: 1.7, marginBottom: '24px' }}>
                                     To reset your password, please contact the Admin via <strong style={{color: '#0088cc'}}>Telegram</strong> using this username:
                                 </p>
-
-                                {/* Telegram Username Box */}
-                                <div style={{
-                                    background: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)',
-                                    border: '2px solid #0088cc',
-                                    borderRadius: '14px',
-                                    padding: '20px',
-                                    marginBottom: '20px'
-                                }}>
-                                    <div style={{
-                                        fontSize: '11px',
-                                        fontWeight: 800,
-                                        color: '#0369a1',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '1px',
-                                        marginBottom: '10px'
-                                    }}>
-                                        📱 Telegram Username
-                                    </div>
-                                    <div style={{
-                                        fontSize: '22px',
-                                        fontWeight: 800,
-                                        color: '#0c4a6e',
-                                        fontFamily: 'monospace',
-                                        letterSpacing: '0.5px',
-                                        wordBreak: 'break-all'
-                                    }}>
-                                        @Camila_Camila00
-                                    </div>
+                                <div style={{ background: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)', border: '2px solid #0088cc', borderRadius: '14px', padding: '20px', marginBottom: '20px' }}>
+                                    <div style={{ fontSize: '11px', fontWeight: 800, color: '#0369a1', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>📱 Telegram Username</div>
+                                    <div style={{ fontSize: '22px', fontWeight: 800, color: '#0c4a6e', fontFamily: 'monospace', letterSpacing: '0.5px', wordBreak: 'break-all' }}>@Camila_Camila00</div>
                                 </div>
-
-                                {/* Open Telegram Button */}
-                                <a
-                                    href="https://t.me/Camila_Camila00"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '10px',
-                                        width: '100%',
-                                        padding: '16px',
-                                        background: 'linear-gradient(135deg, #0088cc 0%, #006699 100%)',
-                                        color: 'white',
-                                        borderRadius: '12px',
-                                        fontSize: '15px',
-                                        fontWeight: 800,
-                                        textDecoration: 'none',
-                                        marginBottom: '14px',
-                                        transition: 'all 0.2s',
-                                        boxShadow: '0 8px 20px rgba(0, 136, 204, 0.3)'
-                                    }}
-                                >
+                                <a href="https://t.me/Camila_Camila00" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', padding: '16px', background: 'linear-gradient(135deg, #0088cc 0%, #006699 100%)', color: 'white', borderRadius: '12px', fontSize: '15px', fontWeight: 800, textDecoration: 'none', marginBottom: '14px', transition: 'all 0.2s', boxShadow: '0 8px 20px rgba(0, 136, 204, 0.3)' }}>
                                     💬 Open Telegram Chat
                                 </a>
-
-                                {/* Message Template */}
-                                <div style={{
-                                    background: '#f8fafc',
-                                    border: '1px dashed #cbd5e1',
-                                    borderRadius: '12px',
-                                    padding: '14px 16px',
-                                    marginBottom: '16px',
-                                    textAlign: 'left'
-                                }}>
-                                    <div style={{
-                                        fontSize: '11px',
-                                        fontWeight: 800,
-                                        color: '#64748b',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.5px',
-                                        marginBottom: '8px'
-                                    }}>
-                                        📝 Send this message:
-                                    </div>
-                                    <div style={{
-                                        fontSize: '13px',
-                                        color: '#0f172a',
-                                        fontFamily: 'monospace',
-                                        lineHeight: 1.6,
-                                        background: 'white',
-                                        padding: '10px 12px',
-                                        borderRadius: '8px',
-                                        border: '1px solid #e2e8f0'
-                                    }}>
-                                        "Hi Admin, I forgot my password. My registered mobile is: [your number]"
-                                    </div>
+                                <div style={{ background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '12px', padding: '14px 16px', marginBottom: '16px', textAlign: 'left' }}>
+                                    <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>📝 Send this message:</div>
+                                    <div style={{ fontSize: '13px', color: '#0f172a', fontFamily: 'monospace', lineHeight: 1.6, background: 'white', padding: '10px 12px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>"Hi Admin, I forgot my password. My registered mobile is: [your number]"</div>
                                 </div>
-
-                                {/* Info */}
-                                <div style={{
-                                    fontSize: '12px',
-                                    color: '#94a3b8',
-                                    fontWeight: 500,
-                                    lineHeight: 1.5
-                                }}>
-                                    ⏱️ Admin will respond and provide a new password within 5-15 minutes.
-                                </div>
+                                <div style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 500, lineHeight: 1.5 }}>⏱️ Admin will respond and provide a new password within 5-15 minutes.</div>
                             </div>
                         </div>
                     )}
-
                 </div>
             </main>
         </div>
