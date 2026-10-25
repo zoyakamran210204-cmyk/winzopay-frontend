@@ -10,10 +10,15 @@ const WithdrawPage = () => {
     const [amount, setAmount] = useState('');
     const [payoutMethod, setPayoutMethod] = useState('Bank');
     const [selectedBank, setSelectedBank] = useState('');
-    const [accountHolderName, setAccountHolderName] = useState(''); // 👈 Account Holder Name Add kiya
+    const [accountHolderName, setAccountHolderName] = useState('');
     const [accountNumber, setAccountNumber] = useState(''); 
     const [cpfCnpj, setCpfCnpj] = useState('');
     const [accountType, setAccountType] = useState('Corrente');
+    
+    // 👈 USDT ke liye naye states add kiye
+    const [walletAddress, setWalletAddress] = useState('');
+    const [cryptoNetwork, setCryptoNetwork] = useState('TRC20');
+
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
     const [history, setHistory] = useState([]);
@@ -52,6 +57,7 @@ const WithdrawPage = () => {
             return;
         }
 
+        // Validation for Bank/PIX
         if (payoutMethod === 'Bank' || payoutMethod === 'PIX') {
             if (!selectedBank) {
                 setMessage({ type: 'error', text: 'Please select a Brazilian bank' });
@@ -71,6 +77,14 @@ const WithdrawPage = () => {
             }
         }
 
+        // Validation for USDT
+        if (payoutMethod === 'USDT') {
+            if (!walletAddress) {
+                setMessage({ type: 'error', text: 'Please enter your USDT Wallet Address' });
+                return;
+            }
+        }
+
         setLoading(true);
         try {
             const selectedBankObj = brazilianBanks.find(b => b.code === selectedBank);
@@ -82,10 +96,14 @@ const WithdrawPage = () => {
                 bankDetails: (payoutMethod === 'Bank' || payoutMethod === 'PIX') ? {
                     bankCode: selectedBank,
                     bankName: selectedBankObj?.name || '',
-                    accountHolderName: accountHolderName, // 👈 Backend ko bhej diya
+                    accountHolderName: accountHolderName,
                     accountNumber: accountNumber,
                     accountType: accountType,
                     cpfCnpj: cpfCnpj
+                } : null,
+                cryptoDetails: payoutMethod === 'USDT' ? {
+                    walletAddress: walletAddress,
+                    network: cryptoNetwork
                 } : null
             });
 
@@ -96,6 +114,8 @@ const WithdrawPage = () => {
             setAccountNumber('');
             setCpfCnpj('');
             setAccountType('Corrente');
+            setWalletAddress(''); // Reset wallet address
+            setCryptoNetwork('TRC20');
 
             const res = await api.get('/transaction/my-transactions');
             setHistory(res.data.filter(tx => tx.type === 'Withdraw'));
@@ -114,15 +134,16 @@ const WithdrawPage = () => {
         });
     };
 
-    // Account holder name ko validation mein add kiya
     const bankDetailsComplete = selectedBank && accountHolderName && accountNumber && cpfCnpj;
+    const cryptoDetailsComplete = walletAddress.trim() !== '';
 
     const canWithdraw =
         amount &&
         Number(amount) >= 100 &&
         Number(amount) <= (user?.withdrawableBalance || 0) &&
         (payoutMethod !== 'Bank' || bankDetailsComplete) &&
-        (payoutMethod !== 'PIX' || bankDetailsComplete);
+        (payoutMethod !== 'PIX' || bankDetailsComplete) &&
+        (payoutMethod !== 'USDT' || cryptoDetailsComplete); // 👈 USDT condition add ki
 
     const pendingWithdraws = history.filter(h => h.status === 'Pending').length;
     const approvedWithdraws = history.filter(h => h.status === 'Approved').reduce((s, h) => s + h.amount, 0);
@@ -210,6 +231,43 @@ const WithdrawPage = () => {
                     </button>
                 </div>
 
+                {/* 👈 USDT Details Section */}
+                {payoutMethod === 'USDT' && (
+                    <div className="wd-section">
+                        <div className="wd-section-header">
+                            <div className="wd-section-title">🪙 USDT WALLET DETAILS</div>
+                        </div>
+
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
+                                Select Network
+                            </label>
+                            <select
+                                className="wd-bank-select"
+                                value={cryptoNetwork}
+                                onChange={(e) => setCryptoNetwork(e.target.value)}
+                            >
+                                <option value="TRC20">TRC20 (Tron)</option>
+                                <option value="BEP20">BEP20 (Binance Smart Chain)</option>
+                            </select>
+                        </div>
+
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
+                                USDT Wallet Address
+                            </label>
+                            <input
+                                type="text"
+                                className="wd-bank-select"
+                                placeholder="Enter your USDT address"
+                                value={walletAddress}
+                                onChange={(e) => setWalletAddress(e.target.value)}
+                                style={{ backgroundImage: 'none', paddingRight: '14px' }}
+                            />
+                        </div>
+                    </div>
+                )}
+
                 {payoutMethod === 'Bank' && (
                     <div className="wd-section">
                         <div className="wd-section-header">
@@ -234,7 +292,6 @@ const WithdrawPage = () => {
                             </select>
                         </div>
 
-                        {/* Account Holder Name */}
                         <div style={{ marginBottom: '12px' }}>
                             <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
                                 Account Holder Name
@@ -318,7 +375,6 @@ const WithdrawPage = () => {
                             </select>
                         </div>
 
-                        {/* Account Holder Name */}
                         <div style={{ marginBottom: '12px' }}>
                             <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>
                                 Account Holder Name
@@ -404,8 +460,8 @@ const WithdrawPage = () => {
                     >
                         {loading
                             ? '⏳ Processing...'
-                            : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !bankDetailsComplete
-                                ? '🏦 Complete Bank Details First'
+                            : ((payoutMethod === 'Bank' || payoutMethod === 'PIX') && !bankDetailsComplete) || (payoutMethod === 'USDT' && !cryptoDetailsComplete)
+                                ? '🏦 Complete Details First'
                                 : `📤 Request Withdrawal (R$ ${Number(amount || 0).toLocaleString()})`}
                     </button>
 
@@ -419,9 +475,11 @@ const WithdrawPage = () => {
                                         ? '⚠️ Please enter account number'
                                         : (payoutMethod === 'Bank' || payoutMethod === 'PIX') && !cpfCnpj
                                             ? '⚠️ Please enter CPF/CNPJ'
-                                            : Number(amount) > (user?.withdrawableBalance || 0)
-                                                ? '⚠️ Insufficient withdrawable balance'
-                                                : '⚠️ Amount must be at least R$ 100'}
+                                            : payoutMethod === 'USDT' && !walletAddress
+                                                ? '⚠️ Please enter your USDT Wallet Address'
+                                                : Number(amount) > (user?.withdrawableBalance || 0)
+                                                    ? '⚠️ Insufficient withdrawable balance'
+                                                    : '⚠️ Amount must be at least R$ 100'}
                         </div>
                     )}
                 </div>
