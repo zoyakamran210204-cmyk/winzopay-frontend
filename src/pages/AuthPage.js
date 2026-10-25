@@ -40,14 +40,16 @@ const AuthPage = () => {
 
         try {
             const response = await loginUser({
-                mobile: loginForm.mobile, 
+                mobile: loginForm.mobile,
                 password: loginForm.password
             });
 
-            // 🚫 AGAR ADMIN HAI TOH LOGIN MAT KARO AUR POORA STORAGE CLEAR KARO
+            // 🚫 AGAR ADMIN HAI TOH USER PANEL SE LOGIN MAT KARO
             if (response.user.role === 'Admin') {
-                localStorage.clear(); // Purana data 100% delete
-                setError('🚫 You are an Admin. Please use the Admin Panel to login.');
+                // Sirf user-panel keys hatao (admin panel ki keys safe rahengi)
+                localStorage.removeItem('winzopay_token');
+                localStorage.removeItem('winzopay_user');
+                setError('🚫 You are an Admin. Please use the Admin Panel to login (/admin/login).');
                 setLoading(false);
                 return;
             }
