@@ -48,6 +48,10 @@ const AuthPage = () => {
 
             // Frontend par bhi check laga diya hai
             if (response.user.role === 'Admin') {
+                // 👈 Yahan hum purana data clear kar rahe hain
+                localStorage.removeItem('winzopay_token');
+                localStorage.removeItem('winzopay_user');
+                
                 setError('🚫 You are an Admin. Please use the Admin Panel to login.');
                 setLoading(false);
                 return;
