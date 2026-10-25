@@ -13,6 +13,20 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [showInstallModal, setShowInstallModal] = useState(false);
 
+    // 👈 Fake Notifications for Attraction
+    const [notifications, setNotifications] = useState([
+        { id: 1, title: '🎉 Welcome to WinzoPay!', text: 'Your account is verified. Start your mining journey today.', time: 'Just now', unread: true, icon: '🎁' },
+        { id: 2, title: '💸 Payout Successful', text: 'User João V. withdrew R$ 500.00 to Nubank.', time: '5 mins ago', unread: true, icon: '✅' },
+        { id: 3, title: '🔥 Plan B is Trending!', text: 'Join 1,200+ users earning 8% daily returns.', time: '1 hour ago', unread: false, icon: '📈' },
+        { id: 4, title: '📢 System Notice', text: 'Instant PIX withdrawals are running smoothly 24x7.', time: '2 hours ago', unread: false, icon: '⚡' },
+    ]);
+
+    const markAsRead = () => {
+        setNotifications(notifications.map(n => ({ ...n, unread: false })));
+    };
+
+    const unreadCount = notifications.filter(n => n.unread).length;
+
     const navItems = [
         { key: 'home', label: t('home'), icon: '🏠', path: '/dashboard' },
         { key: 'deposit', label: t('deposit'), icon: '💳', path: '/deposit' },
@@ -64,16 +78,32 @@ const DashboardHeader = ({ activeNav = 'home' }) => {
                 <div style={{ position: 'relative' }}>
                     <button className="db-icon-btn" onClick={() => setShowNotifications(!showNotifications)}>
                         🔔
-                        <span className="notification-badge">1</span>
+                        {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
                     </button>
+                    
+                    {/* 👈 Updated Notification Dropdown */}
                     {showNotifications && (
-                        <div style={{
-                            position: 'absolute', top: '50px', right: 0, width: '300px',
-                            background: 'white', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-                            padding: '15px', zIndex: 1000, border: '1px solid #e2e8f0'
-                        }}>
-                            <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', marginBottom: '10px' }}>🔔 Notifications</div>
-                            <div style={{ fontSize: '12px', color: '#64748b', textAlign: 'center', padding: '20px 0' }}>No new notifications yet.</div>
+                        <div className="custom-notif-dropdown">
+                            <div className="custom-notif-header">
+                                <h4>Notifications</h4>
+                                <button className="custom-notif-mark" onClick={markAsRead}>Mark all as read</button>
+                            </div>
+                            <div className="custom-notif-list">
+                                {notifications.map(n => (
+                                    <div key={n.id} className={`custom-notif-item ${n.unread ? 'unread' : ''}`}>
+                                        <div className="custom-notif-icon">{n.icon}</div>
+                                        <div className="custom-notif-content">
+                                            <div className="custom-notif-title">{n.title}</div>
+                                            <div className="custom-notif-text">{n.text}</div>
+                                            <div className="custom-notif-time">{n.time}</div>
+                                        </div>
+                                        {n.unread && <div className="custom-notif-unread"></div>}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="custom-notif-footer">
+                                <button onClick={() => { setShowNotifications(false); navigate('/ledger'); }}>View All History</button>
+                            </div>
                         </div>
                     )}
                 </div>

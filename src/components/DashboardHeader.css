@@ -210,6 +210,144 @@
 }
 
 /* ================================
+   NOTIFICATIONS DROPDOWN (Naya Design)
+   ================================ */
+.custom-notif-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 340px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e2e8f0;
+    z-index: 1000;
+    color: #0f172a;
+    overflow: hidden;
+    animation: dropIn 0.2s ease-out;
+}
+
+@keyframes dropIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.custom-notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
+}
+
+.custom-notif-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.custom-notif-mark {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.custom-notif-mark:hover {
+    text-decoration: underline;
+}
+
+.custom-notif-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.custom-notif-item {
+    display: flex;
+    gap: 12px;
+    padding: 15px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.2s;
+    position: relative;
+}
+
+.custom-notif-item:hover {
+    background: #f8fafc;
+}
+
+.custom-notif-item.unread {
+    background: #eff6ff;
+}
+
+.custom-notif-icon {
+    font-size: 20px;
+    background: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+}
+
+.custom-notif-content {
+    flex: 1;
+}
+
+.custom-notif-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.custom-notif-text {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.custom-notif-time {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.custom-notif-unread {
+    width: 8px;
+    height: 8px;
+    background: #3b82f6;
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    right: 15px;
+}
+
+.custom-notif-footer {
+    padding: 12px;
+    text-align: center;
+    border-top: 1px solid #f1f5f9;
+}
+
+.custom-notif-footer button {
+    background: none;
+    border: none;
+    color: #0f172a;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.custom-notif-footer button:hover {
+    color: #3b82f6;
+}
+
+/* ================================
    RESPONSIVE
    ================================ */
 @media (max-width: 1200px) {
@@ -254,7 +392,13 @@
     .db-logo-title {
         font-size: 14px;
     }
+
+    .custom-notif-dropdown {
+        width: 300px;
+        right: -50px;
+    }
 }
+
 @media (max-width: 768px) {
     .hide-on-mobile {
         display: none !important;
