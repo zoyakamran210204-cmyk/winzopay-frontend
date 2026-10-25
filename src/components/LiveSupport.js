@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 
 const LiveSupport = () => {
+    // Default username 'vickypp' set kar diya hai
     const [telegramUser, setTelegramUser] = useState('vickypp');
     const [isOpen, setIsOpen] = useState(false);
 
@@ -9,19 +10,21 @@ const LiveSupport = () => {
         const fetchSettings = async () => {
             try {
                 const res = await api.get('/payment');
-                if (res.data.telegramSupport) {
+                if (res.data && res.data.telegramSupport) {
                     setTelegramUser(res.data.telegramSupport);
                 }
             } catch (err) {
-                console.error('Failed to load support settings', err);
+                // Agar backend se error aaye, toh button chup nahi hoga, default username use karega
+                console.log('Backend settings could not load, using default support.');
             }
         };
         fetchSettings();
     }, []);
 
     return (
-        <div style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 9999 }}>
-            {/* Chat Box */}
+        <div style={{ position: 'fixed', bottom: '80px', right: '20px', zIndex: 9999 }}>
+            {/* Button ab z-index mein sabse upar hai aur bottom 80px par hai taake mobile navbar ke peeche na chhupe */}
+            
             {isOpen && (
                 <div style={{
                     position: 'absolute', bottom: '70px', right: '0', width: '300px',
@@ -55,7 +58,6 @@ const LiveSupport = () => {
                 </div>
             )}
 
-            {/* Floating Button */}
             <button 
                 onClick={() => setIsOpen(!isOpen)}
                 style={{
