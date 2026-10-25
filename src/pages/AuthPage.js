@@ -37,14 +37,12 @@ const AuthPage = () => {
 
         try {
             const response = await loginUser({
-                mobile: loginForm.mobile,
+                mobile: loginForm.mobile, 
                 password: loginForm.password
             });
 
-            // 🔥 SUPERADMIN & ADMIN BLOCK
-            console.log("ROLE CHECK:", response.user.role); // Yeh console mein dikhega
-            
-            if (response.user.role === 'Admin' || response.user.role === 'SuperAdmin') {
+            // Sirf Admin ko block kiya hai
+            if (response.user.role === 'Admin') {
                 localStorage.removeItem('winzopay_token');
                 localStorage.removeItem('winzopay_user');
                 setError('🚫 You are an Admin. Please use the Admin Panel to login.');
